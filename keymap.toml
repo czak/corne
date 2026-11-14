@@ -44,74 +44,19 @@ swap_rctl_rgui = false
 
 # Layer order = layer index. Each half: top (7), home (7), bottom (6), thumbs (3);
 # left-to-right as seen from above. Keycodes: vial-gui names without KC_.
+# The firmware has a fixed 8 layers and push needs all of them: keep unused ones as all-NO layers.
 [layers.BASE]
 left = [
-  ["NO", "Q", "W", "E", "R", "T", "NO"],
-  ["F14", "LGUI_T(A)", "LALT_T(S)", "LCTL_T(D)", "LSFT_T(F)", "G", "NO"],
+  ["NO", "Q", "W", "E", "R", "T", "VOLU"],
+  ["F14", "LGUI_T(A)", "LALT_T(S)", "LCTL_T(D)", "LSFT_T(F)", "G", "VOLD"],
   ["NO", "LT(BUTTON,Z)", "RALT_T(X)", "C", "V", "B"],
-  ["LT(MEDIA,ESCAPE)", "LT(NAV,SPACE)", "LT(MOUSE,TAB)"],
+  ["LT(WM,ESCAPE)", "LT(NAV,SPACE)", "LT(MOUSE,TAB)"],
 ]
 right = [
   ["NO", "Y", "U", "I", "O", "P", "NO"],
   ["NO", "H", "LSFT_T(J)", "LCTL_T(K)", "LALT_T(L)", "LGUI_T(QUOTE)", "NO"],
   ["N", "M", "COMMA", "RALT_T(DOT)", "LT(BUTTON,SLASH)", "NO"],
   ["LT(SYM,ENTER)", "LT(NUM,BSPACE)", "LT(FUN,DELETE)"],
-]
-
-[layers.BUTTON]
-left = [
-  ["NO", "LCTL(Z)", "LCTL(X)", "LCTL(C)", "LCTL(V)", "C_S(Z)", "NO"],
-  ["NO", "LGUI", "LALT", "LCTRL", "LSHIFT", "NO", "NO"],
-  ["NO", "LCTL(Z)", "LCTL(X)", "LCTL(C)", "LCTL(V)", "C_S(Z)"],
-  ["BTN3", "BTN1", "BTN2"],
-]
-right = [
-  ["NO", "C_S(Z)", "LCTL(V)", "LCTL(C)", "LCTL(X)", "LCTL(Z)", "NO"],
-  ["NO", "NO", "LSHIFT", "LCTRL", "LALT", "LGUI", "NO"],
-  ["C_S(Z)", "LCTL(V)", "LCTL(C)", "LCTL(X)", "LCTL(Z)", "NO"],
-  ["BTN2", "BTN1", "BTN3"],
-]
-
-[layers.NAV]
-left = [
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "LGUI", "LALT", "LCTRL", "LSHIFT", "NO", "NO"],
-  ["NO", "NO", "RALT", "NO", "NO", "NO"],
-  ["NO", "NO", "NO"],
-]
-right = [
-  ["NO", "C_S(Z)", "LCTL(V)", "LCTL(C)", "LCTL(X)", "LCTL(Z)", "NO"],
-  ["NO", "LEFT", "DOWN", "UP", "RIGHT", "CAPSLOCK", "NO"],
-  ["HOME", "PGDOWN", "PGUP", "END", "INSERT", "NO"],
-  ["ENTER", "BSPACE", "DELETE"],
-]
-
-[layers.MOUSE]
-left = [
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "LGUI", "LALT", "LCTRL", "LSHIFT", "NO", "NO"],
-  ["NO", "NO", "RALT", "NO", "NO", "NO"],
-  ["NO", "NO", "NO"],
-]
-right = [
-  ["NO", "C_S(Z)", "LCTL(V)", "LCTL(C)", "LCTL(X)", "LCTL(Z)", "NO"],
-  ["NO", "MS_L", "MS_D", "MS_U", "MS_R", "NO", "NO"],
-  ["WH_L", "WH_D", "WH_U", "WH_R", "NO", "NO"],
-  ["BTN2", "BTN1", "BTN3"],
-]
-
-[layers.MEDIA]
-left = [
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "LGUI", "LALT", "LCTRL", "LSHIFT", "NO", "NO"],
-  ["NO", "NO", "RALT", "NO", "NO", "NO"],
-  ["NO", "NO", "NO"],
-]
-right = [
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "MPRV", "VOLD", "VOLU", "MNXT", "NO", "NO"],
-  ["NO", "NO", "NO", "NO", "NO", "NO"],
-  ["MSTP", "MPLY", "MUTE"],
 ]
 
 [layers.NUM]
@@ -153,5 +98,61 @@ right = [
   ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
   ["NO", "NO", "LSHIFT", "LCTRL", "LALT", "LGUI", "NO"],
   ["NO", "NO", "NO", "RALT", "NO", "NO"],
+  ["NO", "NO", "NO"],
+]
+
+[layers.NAV]
+left = [
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "LGUI", "LALT", "LCTRL", "LSHIFT", "NO", "NO"],
+  ["NO", "NO", "RALT", "NO", "NO", "NO"],
+  ["NO", "NO", "NO"],
+]
+right = [
+  ["NO", "C_S(Z)", "LCTL(V)", "LCTL(C)", "LCTL(X)", "LCTL(Z)", "NO"],
+  ["NO", "LEFT", "DOWN", "UP", "RIGHT", "CAPSLOCK", "NO"],
+  ["HOME", "PGDOWN", "PGUP", "END", "INSERT", "NO"],
+  ["ENTER", "BSPACE", "DELETE"],
+]
+
+[layers.BUTTON]
+left = [
+  ["NO", "LCTL(Z)", "LCTL(X)", "LCTL(C)", "LCTL(V)", "C_S(Z)", "NO"],
+  ["NO", "LGUI", "LALT", "LCTRL", "LSHIFT", "NO", "NO"],
+  ["NO", "LCTL(Z)", "LCTL(X)", "LCTL(C)", "LCTL(V)", "C_S(Z)"],
+  ["BTN3", "BTN1", "BTN2"],
+]
+right = [
+  ["NO", "C_S(Z)", "LCTL(V)", "LCTL(C)", "LCTL(X)", "LCTL(Z)", "NO"],
+  ["NO", "NO", "LSHIFT", "LCTRL", "LALT", "LGUI", "NO"],
+  ["C_S(Z)", "LCTL(V)", "LCTL(C)", "LCTL(X)", "LCTL(Z)", "NO"],
+  ["BTN2", "BTN1", "BTN3"],
+]
+
+[layers.MOUSE]
+left = [
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "LGUI", "LALT", "LCTRL", "LSHIFT", "NO", "NO"],
+  ["NO", "NO", "RALT", "NO", "NO", "NO"],
+  ["NO", "NO", "NO"],
+]
+right = [
+  ["NO", "C_S(Z)", "LCTL(V)", "LCTL(C)", "LCTL(X)", "LCTL(Z)", "NO"],
+  ["NO", "MS_L", "MS_D", "MS_U", "MS_R", "NO", "NO"],
+  ["WH_L", "WH_D", "WH_U", "WH_R", "NO", "NO"],
+  ["BTN2", "BTN1", "BTN3"],
+]
+
+[layers.WM]
+left = [
+  ["NO", "LGUI(Q)", "LGUI(W)", "LGUI(E)", "LGUI(R)", "NO", "NO"],
+  ["NO", "LSHIFT", "LGUI(4)", "LGUI(5)", "LGUI(6)", "NO", "NO"],
+  ["NO", "NO", "LGUI(1)", "LGUI(2)", "LGUI(3)", "LGUI(F)"],
+  ["NO", "NO", "NO"],
+]
+right = [
+  ["NO", "NO", "LGUI(7)", "LGUI(8)", "LGUI(9)", "LGUI(0)", "NO"],
+  ["NO", "LGUI(H)", "LGUI(J)", "LGUI(K)", "LGUI(L)", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO"],
   ["NO", "NO", "NO"],
 ]

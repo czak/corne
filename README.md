@@ -22,22 +22,6 @@ The keyboard is reached over raw HID through its 2.4G dongle. The `KEYCODES` tab
 
 ![BASE layer](docs/base.svg)
 
-### BUTTON
-
-![BUTTON layer](docs/button.svg)
-
-### NAV
-
-![NAV layer](docs/nav.svg)
-
-### MOUSE
-
-![MOUSE layer](docs/mouse.svg)
-
-### MEDIA
-
-![MEDIA layer](docs/media.svg)
-
 ### NUM
 
 ![NUM layer](docs/num.svg)
@@ -49,5 +33,21 @@ The keyboard is reached over raw HID through its 2.4G dongle. The `KEYCODES` tab
 ### FUN
 
 ![FUN layer](docs/fun.svg)
+
+### NAV
+
+![NAV layer](docs/nav.svg)
+
+### BUTTON
+
+![BUTTON layer](docs/button.svg)
+
+### MOUSE
+
+![MOUSE layer](docs/mouse.svg)
+
+### WM
+
+![WM layer](docs/wm.svg)
 
 <!-- keymap:end -->

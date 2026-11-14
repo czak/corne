@@ -53,7 +53,8 @@ def dump(km: Keymap) -> str:
     return toml_writer.dumps(doc, comments={
         "settings": "QMK settings (QMK config.h names)",
         f"layers.{km.names[0]}": "Layer order = layer index. Each half: top (7), home (7), bottom (6), thumbs (3);\n"
-                                 "left-to-right as seen from above. Keycodes: vial-gui names without KC_.",
+                                 "left-to-right as seen from above. Keycodes: vial-gui names without KC_.\n"
+                                 "The firmware has a fixed 8 layers and push needs all of them: keep unused ones as all-NO layers.",
     })
 
 
