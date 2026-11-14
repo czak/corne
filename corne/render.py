@@ -20,11 +20,17 @@ MARGIN = 12
 CAP_SIDE, CAP_TOP, CAP_BOTTOM = 4, 2, 14
 # Concave keycap top: the upper rim shades the dish, which brightens toward the bottom; the rim itself catches
 # the light (strongest on top). Both are white/black overlays, so they work on any cap color.
-DISH_DEFS = ('<defs><linearGradient id="dish" x1="0" y1="0" x2="0" y2="1">'
-             '<stop offset="0" class="dish-shade"/><stop offset="0.5" class="dish-shade dish-clear"/>'
-             '<stop offset="0.5" class="dish-light dish-clear"/><stop offset="1" class="dish-light"/>'
-             '</linearGradient><linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">'
-             '<stop offset="0" class="rim-top"/><stop offset="1" class="rim-bottom"/></linearGradient></defs>')
+GRADIENT_DEFS = """\
+  <linearGradient id="dish" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" class="dish-shade"/>
+    <stop offset="0.5" class="dish-shade dish-clear"/>
+    <stop offset="0.5" class="dish-light dish-clear"/>
+    <stop offset="1" class="dish-light"/>
+  </linearGradient>
+  <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" class="rim-top"/>
+    <stop offset="1" class="rim-bottom"/>
+  </linearGradient>"""
 RIM = 1.2   # rim highlight stroke width (px), drawn just inside the cap edge
 
 # Layer colors (hue only; lightness set per theme in CSS)
@@ -145,9 +151,34 @@ def _fit(text: str, size: float, width: float) -> float:
     return size if est <= width else max(6.0, size * width / est)
 
 
+def _n(v: float) -> str:
+    """Compact number: one decimal at most, no trailing ``.0``."""
+    return f"{v:.1f}".removesuffix(".0").replace("-0", "0") if v else "0"
+
+
 def _text(x, y, s, size, cls, width) -> str:
     fs = _fit(s, size, width)
-    return (f'<text x="{x:.1f}" y="{y:.1f}" class="{cls}" font-size="{fs:.1f}">{_esc(s)}</text>')
+    return f'<text x="{_n(x)}" y="{_n(y)}" class="{cls}" font-size="{_n(fs)}">{_esc(s)}</text>'
+
+
+def _body_id(w: float, h: float) -> str:
+    return f"key-{_n(w)}x{_n(h)}"   # skirt size in px
+
+
+def _body(w: float, h: float) -> str:
+    """Keycap body of skirt size ``w`` x ``h`` px (skirt, top, dish, rim) at the origin, shared by every key of this size via ``<use>``.
+
+    Colors come from custom properties set on the key's ``<g>`` (``--k-*``), which inherit into the ``<use>`` copy.
+    """
+    tw, th = w - 2 * CAP_SIDE, h - CAP_TOP - CAP_BOTTOM
+    rect = f'x="{_n(CAP_SIDE)}" y="{_n(CAP_TOP)}" width="{_n(tw)}" height="{_n(th)}" rx="4"'
+    return (f'  <g id="{_body_id(w, h)}">\n'
+            f'    <rect class="skirt" width="{_n(w)}" height="{_n(h)}" rx="6"/>\n'
+            f'    <rect class="cap" {rect}/>\n'
+            f'    <rect class="dish" {rect}/>\n'
+            f'    <rect class="rim" x="{_n(CAP_SIDE + RIM / 2)}" y="{_n(CAP_TOP + RIM / 2)}" width="{_n(tw - RIM)}" '
+            f'height="{_n(th - RIM)}" rx="{_n(4 - RIM / 2)}" stroke-width="{_n(RIM)}"/>\n'
+            f'  </g>')
 
 
 class Svg:
@@ -159,33 +190,33 @@ class Svg:
         self.height = (max(ys) - min(ys)) * U + 2 * MARGIN
 
     def render(self, key_fn, title: str, css: str) -> str:
-        """Standalone SVG document.
+        """Standalone SVG document, one element per line so diffs stay small.
 
         ``key_fn(geom)`` returns ``(cls, skirt, inner)``: the key's CSS classes, an optional ``(text, cls)`` written
         on the skirt's bottom shade below the keycap top (the hold function), and ``inner(cx, cy, w, h)`` giving the text elements
-        for the top surface's box.
+        for the top surface's box. Each key is drawn in its own coordinates (origin at the skirt's top-left corner).
         """
-        oy, h = self.oy, self.height
-        parts = [f'<svg xmlns="http://www.w3.org/2000/svg" role="img" width="{self.width:.0f}" height="{h:.0f}" '
-                 f'viewBox="{self.ox:.1f} {oy:.1f} {self.width:.1f} {h:.1f}">'
-                 f'<title>{_esc(title)}</title><style>{css}</style>{DISH_DEFS}']
+        sizes = dict.fromkeys(((g.w * U - 2 * PAD, g.h * U - 2 * PAD) for g in self.geoms))
+        parts = [f'<svg xmlns="http://www.w3.org/2000/svg" role="img" width="{self.width:.0f}" '
+                 f'height="{self.height:.0f}" viewBox="{_n(self.ox)} {_n(self.oy)} {_n(self.width)} {_n(self.height)}">',
+                 f'<title>{_esc(title)}</title>',
+                 f'<style>{css.rstrip()}\n</style>',
+                 '<defs>', GRADIENT_DEFS, *(_body(w, h) for w, h in sizes), '</defs>']
         for g in self.geoms:
             cls, skirt, inner = key_fn(g)
             x, y, w, h = g.x * U + PAD, g.y * U + PAD, g.w * U - 2 * PAD, g.h * U - 2 * PAD
-            tr = f' transform="rotate({g.r} {g.rx * U:.1f} {g.ry * U:.1f})"' if g.r else ""
-            tx, ty, tw, th = x + CAP_SIDE, y + CAP_TOP, w - 2 * CAP_SIDE, h - CAP_TOP - CAP_BOTTOM
-            parts.append(f'<g class="key {cls}"{tr}>'
-                         f'<rect class="skirt" x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" rx="6"/>'
-                         f'<rect class="cap" x="{tx:.1f}" y="{ty:.1f}" width="{tw:.1f}" height="{th:.1f}" rx="4"/>'
-                         f'<rect class="dish" x="{tx:.1f}" y="{ty:.1f}" width="{tw:.1f}" height="{th:.1f}" rx="4"/>'
-                         f'<rect class="rim" x="{tx + RIM / 2:.1f}" y="{ty + RIM / 2:.1f}" width="{tw - RIM:.1f}" '
-                         f'height="{th - RIM:.1f}" rx="{4 - RIM / 2:.1f}" stroke-width="{RIM}"/>')
+            tr = f"translate({_n(x)} {_n(y)})"
+            if g.r:
+                tr = f"rotate({_n(g.r)} {_n(g.rx * U)} {_n(g.ry * U)}) {tr}"
+            tw, th = w - 2 * CAP_SIDE, h - CAP_TOP - CAP_BOTTOM
+            parts.append(f'<g class="key {cls}" transform="{tr}">')
+            parts.append(f'  <use href="#{_body_id(w, h)}"/>')
             if skirt:
-                parts.append(_text(x + w / 2, y + h - 4, skirt[0], 9, skirt[1], w - 6))
-            parts.extend(inner(tx + tw / 2, ty + th / 2, tw, th))
+                parts.append("  " + _text(w / 2, h - 4, skirt[0], 9, skirt[1], w - 6))
+            parts.extend("  " + t for t in inner(CAP_SIDE + tw / 2, CAP_TOP + th / 2, tw, th))
             parts.append("</g>")
-        parts.append("</svg>")
-        return "".join(parts)
+        parts.append("</svg>\n")
+        return "\n".join(parts)
 
 
 def _hold_label(lg: Legend) -> tuple[str, str] | None:
@@ -270,26 +301,27 @@ def combined_svg(km: Keymap, svg: Svg) -> str:
 SVG_CSS = """
 :root { --fg:#222; --muted:#6f6f6b; --cap:#f6f6f3; --skirt:#dcdcd7; --edge:#b9b9b3;
         --none-cap:#f4f4f1; --none-skirt:#e7e7e3; --mod-cap:#f1f0ec; --mod-skirt:#d4d3cd;
-        --S:70%; --Lt:36%; --capS:60%; --capL:95%; --skirtL:84%; --edgeL:62%; --heldCapL:86%; --heldSkirtL:72%; --dish-shade:0.07; --dish-light:0.35; --rim-top:0.6; --rim-bottom:0.3; }
+        --S:70%; --Lt:36%; --capS:60%; --capL:95%; --skirtL:84%; --edgeL:62%; --heldCapL:86%; --heldSkirtL:72%;
+        --dish-shade:0.07; --dish-light:0.35; --rim-top:0.6; --rim-bottom:0.3; }
 @media (prefers-color-scheme: dark) {
   :root { --fg:#ececea; --muted:#9a9a98; --cap:#3a3d42; --skirt:#25272b; --edge:#17181a;
           --none-cap:#24262a; --none-skirt:#1c1d20; --mod-cap:#34363b; --mod-skirt:#222327;
-          --S:55%; --Lt:74%; --capS:32%; --capL:30%; --skirtL:19%; --edgeL:12%; --heldCapL:40%; --heldSkirtL:27%; --dish-shade:0.25; --dish-light:0.05; --rim-top:0.06; --rim-bottom:0.025; } }
+          --S:55%; --Lt:74%; --capS:32%; --capL:30%; --skirtL:19%; --edgeL:12%; --heldCapL:40%; --heldSkirtL:27%;
+          --dish-shade:0.25; --dish-light:0.05; --rim-top:0.06; --rim-bottom:0.025; } }
 text { font-family: system-ui, sans-serif; }
-.key .skirt { fill: var(--skirt); stroke: var(--edge); stroke-width: 1; }
-.key .cap { fill: var(--cap); }
-.key .dish { fill: url(#dish); }
+.key { --k-cap: var(--cap); --k-skirt: var(--skirt); --k-edge: var(--edge); --k-dash: none; }
+.skirt { fill: var(--k-skirt); stroke: var(--k-edge); stroke-width: 1; stroke-dasharray: var(--k-dash); }
+.cap { fill: var(--k-cap); }
+.dish { fill: url(#dish); }
+.rim { fill: none; stroke: url(#rim); }
 .dish-shade { stop-color: #000; stop-opacity: var(--dish-shade); }
 .dish-light { stop-color: #fff; stop-opacity: var(--dish-light); }
 .dish-clear { stop-opacity: 0; }
-.key .rim { fill: none; stroke: url(#rim); }
 .rim-top { stop-color: #fff; stop-opacity: var(--rim-top); }
 .rim-bottom { stop-color: #fff; stop-opacity: var(--rim-bottom); }
-.key.none .skirt { fill: var(--none-skirt); stroke-dasharray: 3 3; }
-.key.none .cap, .key.trns .cap { fill: var(--none-cap); }
-.key.trns .skirt { fill: var(--none-skirt); }
-.key.mod .cap { fill: var(--mod-cap); }
-.key.mod .skirt { fill: var(--mod-skirt); }
+.key.none { --k-cap: var(--none-cap); --k-skirt: var(--none-skirt); --k-dash: 3 3; }
+.key.trns { --k-cap: var(--none-cap); --k-skirt: var(--none-skirt); }
+.key.mod { --k-cap: var(--mod-cap); --k-skirt: var(--mod-skirt); }
 .key text { text-anchor: middle; fill: var(--fg); }
 .key .shifted, .key.trns text { fill: var(--muted); }
 .key .hold { font-weight: 600; fill: var(--muted); }
@@ -298,16 +330,15 @@ text { font-family: system-ui, sans-serif; }
 
 
 def svg_css(n: int) -> str:
-    out = [SVG_CSS]
+    out = [SVG_CSS.strip()]
     for i in range(n):
         h = HUES[i % len(HUES)]
-        out.append(
-            f".key.lt.l{i} .cap {{ fill: hsl({h} var(--capS) var(--capL)); }}"
-            f".key.lt.l{i} .skirt {{ fill: hsl({h} 35% var(--skirtL)); stroke: hsl({h} 30% var(--edgeL)); }}"
-            f".key.held.l{i} .cap {{ fill: hsl({h} var(--capS) var(--heldCapL)); }}"
-            f".key.held.l{i} .skirt {{ fill: hsl({h} 45% var(--heldSkirtL)); stroke: hsl({h} 50% var(--edgeL)); }}"
-            f".key text.l{i} {{ fill: hsl({h} var(--S) var(--Lt)); }}")
-    return "\n".join(out)
+        out += [f".key.lt.l{i} {{ --k-cap: hsl({h} var(--capS) var(--capL)); "
+                f"--k-skirt: hsl({h} 35% var(--skirtL)); --k-edge: hsl({h} 30% var(--edgeL)); }}",
+                f".key.held.l{i} {{ --k-cap: hsl({h} var(--capS) var(--heldCapL)); "
+                f"--k-skirt: hsl({h} 45% var(--heldSkirtL)); --k-edge: hsl({h} 50% var(--edgeL)); }}",
+                f".key text.l{i} {{ fill: hsl({h} var(--S) var(--Lt)); }}"]
+    return "\n" + "\n".join(out)
 
 
 PAGE_CSS = """
@@ -336,13 +367,13 @@ def render_svgs(km: Keymap) -> dict[str, str]:
 
 def render_html(km: Keymap) -> str:
     """Local preview page showing the SVG files."""
-    body = ['<h1>Corne keymap</h1><img src="combined.svg" alt="All layers">']
+    body = ['<h1>Corne keymap</h1>', '<img src="combined.svg" alt="All layers">']
     for name in km.names:
-        body.append(f'<h2>{_esc(name)}</h2><img src="{svg_name(name)}" alt="{_esc(name)} layer">')
-    return ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
-            '<meta name="viewport" content="width=device-width, initial-scale=1">'
-            f'<title>Corne keymap</title><style>{PAGE_CSS}</style></head>'
-            f'<body><main>{"".join(body)}</main></body></html>\n')
+        body += [f'<h2>{_esc(name)}</h2>', f'<img src="{svg_name(name)}" alt="{_esc(name)} layer">']
+    return ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+            '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+            f'<title>Corne keymap</title>\n<style>{PAGE_CSS}</style>\n</head>\n'
+            f'<body>\n<main>\n{chr(10).join(body)}\n</main>\n</body>\n</html>\n')
 
 
 README_START, README_END = "<!-- keymap:start -->", "<!-- keymap:end -->"
