@@ -16,6 +16,16 @@ from .layout import Keymap
 U = 60          # px per key unit
 PAD = 3         # gap between keys (px, each side)
 MARGIN = 12
+# Keycap top surface inset from the skirt (px); the deeper bottom shade carries the hold label
+CAP_SIDE, CAP_TOP, CAP_BOTTOM = 4, 2, 14
+# Concave keycap top: the upper rim shades the dish, which brightens toward the bottom; the rim itself catches
+# the light (strongest on top). Both are white/black overlays, so they work on any cap color.
+DISH_DEFS = ('<defs><linearGradient id="dish" x1="0" y1="0" x2="0" y2="1">'
+             '<stop offset="0" class="dish-shade"/><stop offset="0.5" class="dish-shade dish-clear"/>'
+             '<stop offset="0.5" class="dish-light dish-clear"/><stop offset="1" class="dish-light"/>'
+             '</linearGradient><linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">'
+             '<stop offset="0" class="rim-top"/><stop offset="1" class="rim-bottom"/></linearGradient></defs>')
+RIM = 1.2   # rim highlight stroke width (px), drawn just inside the cap edge
 
 # Layer colors (hue only; lightness set per theme in CSS)
 HUES = [220, 15, 165, 280, 45, 200, 330, 100, 0, 250, 130, 60, 300, 185, 35, 260]
@@ -149,38 +159,53 @@ class Svg:
         self.height = (max(ys) - min(ys)) * U + 2 * MARGIN
 
     def render(self, key_fn, title: str, css: str) -> str:
-        """Standalone SVG document."""
+        """Standalone SVG document.
+
+        ``key_fn(geom)`` returns ``(cls, skirt, inner)``: the key's CSS classes, an optional ``(text, cls)`` written
+        on the skirt's bottom shade below the keycap top (the hold function), and ``inner(cx, cy, w, h)`` giving the text elements
+        for the top surface's box.
+        """
         oy, h = self.oy, self.height
         parts = [f'<svg xmlns="http://www.w3.org/2000/svg" role="img" width="{self.width:.0f}" height="{h:.0f}" '
                  f'viewBox="{self.ox:.1f} {oy:.1f} {self.width:.1f} {h:.1f}">'
-                 f'<title>{_esc(title)}</title><style>{css}</style>']
+                 f'<title>{_esc(title)}</title><style>{css}</style>{DISH_DEFS}']
         for g in self.geoms:
-            cls, inner = key_fn(g)
+            cls, skirt, inner = key_fn(g)
             x, y, w, h = g.x * U + PAD, g.y * U + PAD, g.w * U - 2 * PAD, g.h * U - 2 * PAD
             tr = f' transform="rotate({g.r} {g.rx * U:.1f} {g.ry * U:.1f})"' if g.r else ""
-            cx, cy = x + w / 2, y + h / 2
-            parts.append(f'<g class="key {cls}"{tr}><rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" '
-                         f'height="{h:.1f}" rx="6"/>')
-            parts.extend(inner(cx, cy, w, h))
+            tx, ty, tw, th = x + CAP_SIDE, y + CAP_TOP, w - 2 * CAP_SIDE, h - CAP_TOP - CAP_BOTTOM
+            parts.append(f'<g class="key {cls}"{tr}>'
+                         f'<rect class="skirt" x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" rx="6"/>'
+                         f'<rect class="cap" x="{tx:.1f}" y="{ty:.1f}" width="{tw:.1f}" height="{th:.1f}" rx="4"/>'
+                         f'<rect class="dish" x="{tx:.1f}" y="{ty:.1f}" width="{tw:.1f}" height="{th:.1f}" rx="4"/>'
+                         f'<rect class="rim" x="{tx + RIM / 2:.1f}" y="{ty + RIM / 2:.1f}" width="{tw - RIM:.1f}" '
+                         f'height="{th - RIM:.1f}" rx="{4 - RIM / 2:.1f}" stroke-width="{RIM}"/>')
+            if skirt:
+                parts.append(_text(x + w / 2, y + h - 4, skirt[0], 9, skirt[1], w - 6))
+            parts.extend(inner(tx + tw / 2, ty + th / 2, tw, th))
             parts.append("</g>")
         parts.append("</svg>")
         return "".join(parts)
 
 
+def _hold_label(lg: Legend) -> tuple[str, str] | None:
+    if not lg.hold:
+        return None
+    return lg.hold, (f"hold l{lg.hold_layer}" if lg.hold_layer is not None else "hold")
+
+
 def _tap_texts(lg: Legend, cx, cy, w, h, big=15.0) -> list[str]:
     out = []
     n = len(lg.tap)
+    if lg.shifted:
+        out.append(_text(cx, cy - h / 2 + 9, lg.shifted, 8, "shifted", w - 6))
+        cy += 4
     if n:
         size = big if n == 1 else 11.0
         lh = size * 1.1
-        y0 = cy - (n - 1) * lh / 2 + size * 0.35 - (5 if lg.hold else 0)
+        y0 = cy - (n - 1) * lh / 2 + size * 0.35
         for i, line in enumerate(lg.tap):
-            out.append(_text(cx, y0 + i * lh, line, size, "tap", w - 8))
-    if lg.shifted:
-        out.append(_text(cx, cy - h / 2 + 12, lg.shifted, 9, "shifted", w - 8))
-    if lg.hold:
-        cls = f"hold l{lg.hold_layer}" if lg.hold_layer is not None else "hold"
-        out.append(_text(cx, cy + h / 2 - 7, lg.hold, 9, cls, w - 8))
+            out.append(_text(cx, y0 + i * lh, line, size, "tap", w - 6))
     return out
 
 
@@ -193,13 +218,12 @@ def layer_svg(km: Keymap, li: int, svg: Svg, acts) -> str:
         v = m[g.pos[0]][g.pos[1]]
         lg = legend(v, codec)
         if g.pos in held:
-            return f"held l{li}", lambda cx, cy, w, h: [
-                _text(cx, cy + 4, km.names[li], 12, "tap", w - 8),
-                _text(cx, cy + h / 2 - 7, "held", 9, "hold", w - 8)]
+            return f"held l{li}", ("held", "hold"), lambda cx, cy, w, h: [
+                _text(cx, cy + 4, km.names[li], 12, "tap", w - 6)]
         cls = lg.kind
         if lg.hold_layer is not None:
             cls += f" lt l{lg.hold_layer}"
-        return cls, lambda cx, cy, w, h: _tap_texts(lg, cx, cy, w, h)
+        return cls, _hold_label(lg), lambda cx, cy, w, h: _tap_texts(lg, cx, cy, w, h)
 
     return svg.render(key_fn, f"{km.names[li]} layer", svg_css(len(km.layers)))
 
@@ -227,36 +251,45 @@ def combined_svg(km: Keymap, svg: Svg) -> str:
             out = []
             n = len(base.tap)
             if n:
-                size = 14.0 if n == 1 else 10.0
-                y0 = cy - (n - 1) * size * 0.55 + size * 0.35 - 2
+                size = min(13.0, h * 0.34) if n == 1 else 9.0
+                y0 = cy - (n - 1) * size * 0.55 + size * 0.35
                 for i, line in enumerate(base.tap):
-                    out.append(_text(cx, y0 + i * size * 1.1, line, size, "tap", w - 10))
-            if base.hold:
-                hc = f"hold l{base.hold_layer}" if base.hold_layer is not None else "hold"
-                out.append(_text(cx, cy + 11, base.hold, 8, hc, w - 10))
+                    out.append(_text(cx, y0 + i * size * 1.1, line, size, "tap", w - 14))
             for (li, s), (sx, sy) in zip(extras[:4], corners):
                 tx = cx + sx * (w / 4)
-                ty = cy + sy * (h / 2 - 8) + 3
-                out.append(_text(tx, ty, s, 8, f"sub l{li}", w / 2 - 4))
+                ty = cy + sy * (h / 2 - 5) + 2.5
+                out.append(_text(tx, ty, s, 7, f"sub l{li}", w / 2 - 4))
             return out
 
-        return cls, inner
+        return cls, _hold_label(base), inner
 
     return svg.render(key_fn, "All layers", svg_css(len(layers)))
 
 
 # ---------------------------------------------------------------- styles + output
 SVG_CSS = """
-:root { --fg:#222; --muted:#888; --key:#fff; --stroke:#c9c9c4; --none:#efefec; --mod:#ecebe6;
-        --L:58%; --Lt:38%; --S:70%; --tint:93%; --held:80%; }
+:root { --fg:#222; --muted:#6f6f6b; --cap:#f6f6f3; --skirt:#dcdcd7; --edge:#b9b9b3;
+        --none-cap:#f4f4f1; --none-skirt:#e7e7e3; --mod-cap:#f1f0ec; --mod-skirt:#d4d3cd;
+        --S:70%; --Lt:36%; --capS:60%; --capL:95%; --skirtL:84%; --edgeL:62%; --heldCapL:86%; --heldSkirtL:72%; --dish-shade:0.07; --dish-light:0.35; --rim-top:0.6; --rim-bottom:0.3; }
 @media (prefers-color-scheme: dark) {
-  :root { --fg:#e8e8e6; --muted:#8a8a8a; --key:#26282b; --stroke:#3b3e43; --none:#1e2022; --mod:#2e3034;
-          --L:68%; --Lt:72%; --S:60%; --tint:22%; --held:34%; } }
+  :root { --fg:#ececea; --muted:#9a9a98; --cap:#3a3d42; --skirt:#25272b; --edge:#17181a;
+          --none-cap:#24262a; --none-skirt:#1c1d20; --mod-cap:#34363b; --mod-skirt:#222327;
+          --S:55%; --Lt:74%; --capS:32%; --capL:30%; --skirtL:19%; --edgeL:12%; --heldCapL:40%; --heldSkirtL:27%; --dish-shade:0.25; --dish-light:0.05; --rim-top:0.06; --rim-bottom:0.025; } }
 text { font-family: system-ui, sans-serif; }
-.key rect { fill: var(--key); stroke: var(--stroke); stroke-width: 1; }
-.key.none rect { fill: var(--none); stroke-dasharray: 3 3; }
-.key.trns rect { fill: var(--none); }
-.key.mod rect { fill: var(--mod); }
+.key .skirt { fill: var(--skirt); stroke: var(--edge); stroke-width: 1; }
+.key .cap { fill: var(--cap); }
+.key .dish { fill: url(#dish); }
+.dish-shade { stop-color: #000; stop-opacity: var(--dish-shade); }
+.dish-light { stop-color: #fff; stop-opacity: var(--dish-light); }
+.dish-clear { stop-opacity: 0; }
+.key .rim { fill: none; stroke: url(#rim); }
+.rim-top { stop-color: #fff; stop-opacity: var(--rim-top); }
+.rim-bottom { stop-color: #fff; stop-opacity: var(--rim-bottom); }
+.key.none .skirt { fill: var(--none-skirt); stroke-dasharray: 3 3; }
+.key.none .cap, .key.trns .cap { fill: var(--none-cap); }
+.key.trns .skirt { fill: var(--none-skirt); }
+.key.mod .cap { fill: var(--mod-cap); }
+.key.mod .skirt { fill: var(--mod-skirt); }
 .key text { text-anchor: middle; fill: var(--fg); }
 .key .shifted, .key.trns text { fill: var(--muted); }
 .key .hold { font-weight: 600; fill: var(--muted); }
@@ -268,10 +301,11 @@ def svg_css(n: int) -> str:
     out = [SVG_CSS]
     for i in range(n):
         h = HUES[i % len(HUES)]
-        col = f"hsl({h} var(--S) var(--L))"
         out.append(
-            f".key.lt.l{i} rect {{ fill: hsl({h} 60% var(--tint)); stroke: {col}; }}"
-            f".key.held.l{i} rect {{ fill: hsl({h} 60% var(--held)); stroke: {col}; stroke-width: 2; }}"
+            f".key.lt.l{i} .cap {{ fill: hsl({h} var(--capS) var(--capL)); }}"
+            f".key.lt.l{i} .skirt {{ fill: hsl({h} 35% var(--skirtL)); stroke: hsl({h} 30% var(--edgeL)); }}"
+            f".key.held.l{i} .cap {{ fill: hsl({h} var(--capS) var(--heldCapL)); }}"
+            f".key.held.l{i} .skirt {{ fill: hsl({h} 45% var(--heldSkirtL)); stroke: hsl({h} 50% var(--edgeL)); }}"
             f".key text.l{i} {{ fill: hsl({h} var(--S) var(--Lt)); }}")
     return "\n".join(out)
 
