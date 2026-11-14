@@ -1,0 +1,157 @@
+# QMK settings (QMK config.h names)
+[settings]
+GRAVE_ESC_ALT_OVERRIDE = false
+GRAVE_ESC_CTRL_OVERRIDE = false
+GRAVE_ESC_GUI_OVERRIDE = false
+GRAVE_ESC_SHIFT_OVERRIDE = false
+COMBO_TERM = 50
+AUTO_SHIFT_ENABLE = false
+AUTO_SHIFT_MODIFIERS = false
+NO_AUTO_SHIFT_SPECIAL = false
+NO_AUTO_SHIFT_NUMERIC = false
+NO_AUTO_SHIFT_ALPHA = false
+AUTO_SHIFT_REPEAT = false
+AUTO_SHIFT_NO_AUTO_REPEAT = false
+AUTO_SHIFT_TIMEOUT = 175
+ONESHOT_TAP_TOGGLE = 5
+ONESHOT_TIMEOUT = 5000
+TAPPING_TERM = 200
+PERMISSIVE_HOLD = false
+IGNORE_MOD_TAP_INTERRUPT = true
+TAPPING_FORCE_HOLD = true
+RETRO_TAPPING = false
+MOUSEKEY_DELAY = 0
+MOUSEKEY_INTERVAL = 16
+MOUSEKEY_MOVE_DELTA = 8
+MOUSEKEY_MAX_SPEED = 6
+MOUSEKEY_TIME_TO_MAX = 64
+MOUSEKEY_WHEEL_DELAY = 0
+MOUSEKEY_WHEEL_INTERVAL = 80
+MOUSEKEY_WHEEL_MAX_SPEED = 8
+TAP_CODE_DELAY = 50
+TAP_HOLD_CAPS_DELAY = 80
+TAPPING_TOGGLE = 5
+swap_control_capslock = false
+capslock_to_control = false
+swap_lalt_lgui = false
+swap_ralt_rgui = false
+no_gui = false
+swap_grave_esc = false
+swap_backslash_backspace = false
+nkro = false
+swap_lctl_lgui = false
+swap_rctl_rgui = false
+
+# Layer order = layer index. Each half: top (7), home (7), bottom (6), thumbs (3);
+# left-to-right as seen from above. Keycodes: vial-gui names without KC_.
+[layers.BASE]
+left = [
+  ["NO", "Q", "W", "E", "R", "T", "NO"],
+  ["F14", "LGUI_T(A)", "LALT_T(S)", "LCTL_T(D)", "LSFT_T(F)", "G", "NO"],
+  ["NO", "LT(BUTTON,Z)", "RALT_T(X)", "C", "V", "B"],
+  ["LT(MEDIA,ESCAPE)", "LT(NAV,SPACE)", "LT(MOUSE,TAB)"],
+]
+right = [
+  ["NO", "Y", "U", "I", "O", "P", "NO"],
+  ["NO", "H", "LSFT_T(J)", "LCTL_T(K)", "LALT_T(L)", "LGUI_T(QUOTE)", "NO"],
+  ["N", "M", "COMMA", "RALT_T(DOT)", "LT(BUTTON,SLASH)", "NO"],
+  ["LT(SYM,ENTER)", "LT(NUM,BSPACE)", "LT(FUN,DELETE)"],
+]
+
+[layers.BUTTON]
+left = [
+  ["NO", "LCTL(Z)", "LCTL(X)", "LCTL(C)", "LCTL(V)", "C_S(Z)", "NO"],
+  ["NO", "LGUI", "LALT", "LCTRL", "LSHIFT", "NO", "NO"],
+  ["NO", "LCTL(Z)", "LCTL(X)", "LCTL(C)", "LCTL(V)", "C_S(Z)"],
+  ["BTN3", "BTN1", "BTN2"],
+]
+right = [
+  ["NO", "C_S(Z)", "LCTL(V)", "LCTL(C)", "LCTL(X)", "LCTL(Z)", "NO"],
+  ["NO", "NO", "LSHIFT", "LCTRL", "LALT", "LGUI", "NO"],
+  ["C_S(Z)", "LCTL(V)", "LCTL(C)", "LCTL(X)", "LCTL(Z)", "NO"],
+  ["BTN2", "BTN1", "BTN3"],
+]
+
+[layers.NAV]
+left = [
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "LGUI", "LALT", "LCTRL", "LSHIFT", "NO", "NO"],
+  ["NO", "NO", "RALT", "NO", "NO", "NO"],
+  ["NO", "NO", "NO"],
+]
+right = [
+  ["NO", "C_S(Z)", "LCTL(V)", "LCTL(C)", "LCTL(X)", "LCTL(Z)", "NO"],
+  ["NO", "LEFT", "DOWN", "UP", "RIGHT", "CAPSLOCK", "NO"],
+  ["HOME", "PGDOWN", "PGUP", "END", "INSERT", "NO"],
+  ["ENTER", "BSPACE", "DELETE"],
+]
+
+[layers.MOUSE]
+left = [
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "LGUI", "LALT", "LCTRL", "LSHIFT", "NO", "NO"],
+  ["NO", "NO", "RALT", "NO", "NO", "NO"],
+  ["NO", "NO", "NO"],
+]
+right = [
+  ["NO", "C_S(Z)", "LCTL(V)", "LCTL(C)", "LCTL(X)", "LCTL(Z)", "NO"],
+  ["NO", "MS_L", "MS_D", "MS_U", "MS_R", "NO", "NO"],
+  ["WH_L", "WH_D", "WH_U", "WH_R", "NO", "NO"],
+  ["BTN2", "BTN1", "BTN3"],
+]
+
+[layers.MEDIA]
+left = [
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "LGUI", "LALT", "LCTRL", "LSHIFT", "NO", "NO"],
+  ["NO", "NO", "RALT", "NO", "NO", "NO"],
+  ["NO", "NO", "NO"],
+]
+right = [
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "MPRV", "VOLD", "VOLU", "MNXT", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO"],
+  ["MSTP", "MPLY", "MUTE"],
+]
+
+[layers.NUM]
+left = [
+  ["NO", "LBRACKET", "7", "8", "9", "RBRACKET", "NO"],
+  ["NO", "SCOLON", "4", "5", "6", "EQUAL", "NO"],
+  ["NO", "GRAVE", "1", "2", "3", "BSLASH"],
+  ["DOT", "0", "MINUS"],
+]
+right = [
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "LSHIFT", "LCTRL", "LALT", "LGUI", "NO"],
+  ["NO", "NO", "NO", "RALT", "NO", "NO"],
+  ["NO", "NO", "NO"],
+]
+
+[layers.SYM]
+left = [
+  ["NO", "LCBR", "AMPR", "ASTR", "LPRN", "RCBR", "NO"],
+  ["NO", "COLN", "DLR", "PERC", "CIRC", "PLUS", "NO"],
+  ["NO", "TILD", "EXLM", "AT", "HASH", "PIPE"],
+  ["LPRN", "RPRN", "UNDS"],
+]
+right = [
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "LSHIFT", "LCTRL", "LALT", "LGUI", "NO"],
+  ["NO", "NO", "NO", "RALT", "NO", "NO"],
+  ["NO", "NO", "NO"],
+]
+
+[layers.FUN]
+left = [
+  ["NO", "F12", "F7", "F8", "F9", "PSCREEN", "NO"],
+  ["NO", "F11", "F4", "F5", "F6", "SCROLLLOCK", "NO"],
+  ["NO", "F10", "F1", "F2", "F3", "PAUSE"],
+  ["APPLICATION", "SPACE", "TAB"],
+]
+right = [
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "LSHIFT", "LCTRL", "LALT", "LGUI", "NO"],
+  ["NO", "NO", "NO", "RALT", "NO", "NO"],
+  ["NO", "NO", "NO"],
+]
