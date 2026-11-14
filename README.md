@@ -42,12 +42,12 @@ The keyboard is reached over raw HID through its 2.4G dongle. The `KEYCODES` tab
 
 ![BUTTON layer](docs/button.svg)
 
-### MOUSE
-
-![MOUSE layer](docs/mouse.svg)
-
 ### WM
 
 ![WM layer](docs/wm.svg)
+
+### APP
+
+![APP layer](docs/app.svg)
 
 <!-- keymap:end -->
