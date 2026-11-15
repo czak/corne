@@ -379,7 +379,7 @@ def render_svgs(km: Keymap) -> dict[str, str]:
 
 def render_html(km: Keymap) -> str:
     """Local preview page showing the SVG files."""
-    body = ['<h1>Corne keymap</h1>', '<p><a href="typing.html">Typing tutor</a></p>', '<img src="combined.svg" alt="All layers">']
+    body = ['<h1>Corne keymap</h1>', '<p><a href="../tutor/index.html">Typing tutor</a></p>', '<img src="combined.svg" alt="All layers">']
     for name in km.names:
         body += [f'<h2>{_esc(name)}</h2>', f'<img src="{svg_name(name)}" alt="{_esc(name)} layer">']
     return ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'

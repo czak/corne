@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corne typing tutor</title>
+<link rel="stylesheet" href="tutor.css">
+</head>
+<body>
+<main>
+
+<section id="setup">
+  <div class="row"><label>Sample <select id="sample"><option value="">Choose a sample text…</option></select></label></div>
+  <textarea id="src" spellcheck="false" placeholder="Paste some text here…"></textarea>
+  <div class="row"><button class="primary" id="start">Start typing</button>
+    <span id="warn"></span></div>
+</section>
+
+<section id="play" class="hidden">
+  <div class="stats">
+    <div class="stat"><b id="s-wpm">0</b><span>wpm</span></div>
+    <div class="stat"><b id="s-acc">100</b><span>% accuracy</span></div>
+    <div class="stat"><b id="s-err">0</b><span>mistakes</span></div>
+    <div class="stat"><b id="s-pos">0</b><span id="s-len">/ 0</span></div>
+  </div>
+  <div class="bar"><i id="bar"></i></div>
+  <div class="stage mono"><div class="strip" id="strip"></div></div>
+  <div class="hint" id="hint"></div>
+</section>
+
+<section id="done" class="hidden">
+  <div class="result">
+    <div class="big" id="r-wpm"></div>
+    <div class="muted" id="r-line"></div>
+    <p class="missed" id="r-missed"></p>
+    <div class="row" style="justify-content:center">
+      <button class="primary" id="again">Again</button><button id="new">New text</button></div>
+  </div>
+</section>
+
+<div class="kbd" id="kbdwrap">
+</div>
+<div class="toolbar"><button id="toggle-focus">Show all labels</button><button id="toggle-kbd">Hide keyboard</button></div>
+</main>
+
+<script src="keymap.js"></script>
+<script src="samples.js"></script>
+<script src="tutor.js"></script>
+</body>
+</html>

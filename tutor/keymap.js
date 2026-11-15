@@ -1,133 +1,172 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Corne typing tutor</title>
-<style>
-:root { color-scheme: light dark;
-  --pg-bg:#f6f6f4; --pg-fg:#222; --pg-muted:#76766f; --pg-faint:#b4b4ad; --pg-panel:#fff; --pg-line:#e2e2dc;
-  --pg-ok:#2f8f4e; --pg-bad:#d2392f; --pg-bad-bg:#fbe3e0; --pg-cur-bg:#fff4c9; --pg-accent:#3b6fd8;
-  --hl-tap-cap:#ffd23f; --hl-tap-skirt:#e6a900; --hl-tap-edge:#9c7200;
-  --hl-hold-cap:#9cc3ff; --hl-hold-skirt:#5b8fe0; --hl-hold-edge:#2f5fae;
-  --hl-bad-cap:#ff9d93; --hl-bad-skirt:#e0574b; --hl-bad-edge:#a12a20; }
-@media (prefers-color-scheme: dark) { :root {
-  --pg-bg:#17181a; --pg-fg:#e8e8e6; --pg-muted:#9a9a96; --pg-faint:#55575b; --pg-panel:#202226; --pg-line:#303236;
-  --pg-ok:#6fcf8b; --pg-bad:#ff7a6e; --pg-bad-bg:#4a2422; --pg-cur-bg:#4a4020; --pg-accent:#7aa2ff;
-  --hl-tap-cap:#c79a12; --hl-tap-skirt:#8a6a06; --hl-tap-edge:#3f3002;
-  --hl-hold-cap:#3d6bb8; --hl-hold-skirt:#284b85; --hl-hold-edge:#10203d;
-  --hl-bad-cap:#b8433a; --hl-bad-skirt:#7d2620; --hl-bad-edge:#3b100d; } }
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--pg-bg); color: var(--pg-fg); font: 15px/1.45 system-ui, sans-serif; }
-main { max-width: 1100px; margin: 0 auto; padding: 20px 16px 48px; }
-h1 { font-size: 20px; margin: 0 0 12px; }
-button { font: inherit; padding: 7px 16px; border-radius: 8px; border: 1px solid var(--pg-line);
-  background: var(--pg-panel); color: var(--pg-fg); cursor: pointer; }
-button.primary { background: var(--pg-accent); border-color: var(--pg-accent); color: #fff; }
-button:focus-visible { outline: 2px solid var(--pg-accent); outline-offset: 2px; }
-.mono { font-family: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace; }
-.hidden { display: none !important; }
-.muted { color: var(--pg-muted); }
-
-/* setup */
-textarea { width: 100%; min-height: 220px; padding: 12px; border-radius: 10px; border: 1px solid var(--pg-line);
-  background: var(--pg-panel); color: var(--pg-fg); font: 15px/1.5 ui-monospace, Menlo, Consolas, monospace; resize: vertical; }
-.row { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 12px 0; }
-label { display: inline-flex; gap: 6px; align-items: center; }
-#warn { color: var(--pg-bad); }
-
-/* practice */
-.stats { display: flex; gap: 22px; flex-wrap: wrap; align-items: baseline; }
-.stat b { font-size: 22px; font-variant-numeric: tabular-nums; } .stat span { color: var(--pg-muted); margin-left: 4px; }
-.bar { height: 4px; background: var(--pg-line); border-radius: 2px; margin: 10px 0 0; overflow: hidden; }
-.bar i { display: block; height: 100%; width: 0; background: var(--pg-accent); transition: width .15s; }
-.stage { display: flex; justify-content: center; align-items: center; height: 170px; overflow: hidden; margin-top: 8px;
-  white-space: pre; user-select: none; }
-.strip { display: flex; align-items: center; font-size: 30px; }
-.strip .past { flex: 1 1 0; display: flex; justify-content: flex-end; overflow: hidden; color: var(--pg-ok); min-width: 0; }
-.strip .next { flex: 1 1 0; display: flex; overflow: hidden; color: var(--pg-muted); min-width: 0; }
-.strip .err { color: var(--pg-bad); text-decoration: underline; }
-.strip .ws { color: var(--pg-faint); }
-.strip .skip { color: var(--pg-faint); text-decoration: line-through; }
-.cur { flex: none; min-width: 1.1em; padding: 0 .12em; margin: 0 .2em; font-size: 108px; line-height: 150px; text-align: center;
-  background: var(--pg-cur-bg); border-radius: 14px; }
-.cur.ws { color: var(--pg-muted); }
-.cur.shake { animation: shake .22s; background: var(--pg-bad-bg); }
-@keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
-.hint { min-height: 30px; text-align: center; font-size: 15px; }
-.chip { display: inline-block; padding: 2px 10px; margin: 0 3px; border-radius: 999px; font-weight: 600; }
-.chip.hold { background: var(--hl-hold-cap); color: #0d1f3f; }
-.chip.tap { background: var(--hl-tap-cap); color: #3a2a00; }
-@media (prefers-color-scheme: dark) { .chip.hold, .chip.tap { color: #fff; } }
-.kbd { margin-top: 10px; }
-.kbd svg { width: 100%; height: auto; display: block; }
-.toolbar { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-top: 8px; }
-
-/* highlights on the embedded keymap (id selector outranks the per-layer key colors) */
-#kbd .key.hl-hold { --k-cap: var(--hl-hold-cap); --k-skirt: var(--hl-hold-skirt); --k-edge: var(--hl-hold-edge); --k-dash: none; }
-#kbd .key.hl-tap { --k-cap: var(--hl-tap-cap); --k-skirt: var(--hl-tap-skirt); --k-edge: var(--hl-tap-edge); --k-dash: none; }
-#kbd .key.hl-bad { --k-cap: var(--hl-bad-cap); --k-skirt: var(--hl-bad-skirt); --k-edge: var(--hl-bad-edge); }
-#kbd .key.hl-tap .skirt, #kbd .key.hl-hold .skirt { stroke-width: 2; }
-#kbd .key.hl-tap { animation: pulse 1s ease-in-out infinite; transform-box: fill-box; }
-@keyframes pulse { 50% { opacity: .72; } }
-/* focus mode: only the labels of the layer the current character needs */
-#kbd .lay { display: none; fill: var(--fg); font-weight: 600; }
-#kbd.focus .sub { display: none; }
-#kbd.focus:not(.on-l0) .tap, #kbd.focus:not(.on-l0) .hold { display: none; }
-#kbd.focus.on-l1 .lay.l1, #kbd.focus.on-l1 .hold.l1 { display: inline; }
-#kbd.focus.on-l2 .lay.l2, #kbd.focus.on-l2 .hold.l2 { display: inline; }
-#kbd.focus.on-l3 .lay.l3, #kbd.focus.on-l3 .hold.l3 { display: inline; }
-#kbd.focus.on-l4 .lay.l4, #kbd.focus.on-l4 .hold.l4 { display: inline; }
-#kbd.focus.on-l5 .lay.l5, #kbd.focus.on-l5 .hold.l5 { display: inline; }
-#kbd.focus.on-l6 .lay.l6, #kbd.focus.on-l6 .hold.l6 { display: inline; }
-#kbd.focus.on-l7 .lay.l7, #kbd.focus.on-l7 .hold.l7 { display: inline; }
-#kbd.focus .key.off:not(.hl-tap):not(.hl-hold):not(.hl-bad) { opacity: .3; }
-
-/* results */
-.result { text-align: center; padding: 30px 0 10px; }
-.result .big { font-size: 46px; font-weight: 700; font-variant-numeric: tabular-nums; }
-.missed span { display: inline-block; margin: 3px; padding: 2px 8px; border-radius: 6px; background: var(--pg-bad-bg); }
-@media (max-width: 640px) { .cur { font-size: 72px; line-height: 104px; } .stage { height: 120px; } .strip { font-size: 20px; } }
-</style>
-</head>
-<body>
-<main>
-<h1>Corne typing tutor</h1>
-
-<section id="setup">
-  <textarea id="src" spellcheck="false" placeholder="Paste some text here…"></textarea>
-  <div class="row">
-    <label><input type="checkbox" id="opt-newlines" checked> Line breaks as Enter</label>
-    <label><input type="checkbox" id="opt-typo" checked> Plain ASCII punctuation (“ ” – … → " " - ...)</label>
-    <span id="warn"></span>
-  </div>
-  <div class="row"><button class="primary" id="start">Start typing</button>
-    <span class="muted">Esc stops. Mistakes don't advance: type the right key to move on.</span></div>
-</section>
-
-<section id="play" class="hidden">
-  <div class="stats">
-    <div class="stat"><b id="s-wpm">0</b><span>wpm</span></div>
-    <div class="stat"><b id="s-acc">100</b><span>% accuracy</span></div>
-    <div class="stat"><b id="s-err">0</b><span>mistakes</span></div>
-    <div class="stat"><b id="s-pos">0</b><span id="s-len">/ 0</span></div>
-  </div>
-  <div class="bar"><i id="bar"></i></div>
-  <div class="stage mono"><div class="strip" id="strip"></div></div>
-  <div class="hint" id="hint"></div>
-</section>
-
-<section id="done" class="hidden">
-  <div class="result">
-    <div class="big" id="r-wpm"></div>
-    <div class="muted" id="r-line"></div>
-    <p class="missed" id="r-missed"></p>
-    <div class="row" style="justify-content:center">
-      <button class="primary" id="again">Again</button><button id="new">New text</button></div>
-  </div>
-</section>
-
-<div class="kbd" id="kbdwrap">
+// Generated by `kb render` from keymap.toml. Do not edit.
+const KEYMAP = {
+  layers: ["BASE", "NUM", "SYM", "FUN", "NAV", "BUTTON", "WM", "APP"],
+  chords: {
+    "\t": {"tap": "3,5", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "\n": {"tap": "3,6", "hold": [], "layer": null, "altgr": false, "shift": false},
+    " ": {"tap": "3,4", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "!": {"tap": "2,2", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    "\"": {"tap": "1,11", "hold": ["1,4"], "layer": null, "altgr": false, "shift": true},
+    "#": {"tap": "2,4", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    "$": {"tap": "1,2", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    "%": {"tap": "1,3", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    "&": {"tap": "0,2", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    "'": {"tap": "1,11", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "(": {"tap": "0,4", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    ")": {"tap": "3,4", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    "*": {"tap": "0,3", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    "+": {"tap": "1,5", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    ",": {"tap": "2,9", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "-": {"tap": "3,5", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    ".": {"tap": "2,10", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "/": {"tap": "2,11", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "0": {"tap": "3,4", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    "1": {"tap": "2,2", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    "2": {"tap": "2,3", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    "3": {"tap": "2,4", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    "4": {"tap": "1,2", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    "5": {"tap": "1,3", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    "6": {"tap": "1,4", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    "7": {"tap": "0,2", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    "8": {"tap": "0,3", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    "9": {"tap": "0,4", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    ":": {"tap": "1,1", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    ";": {"tap": "1,1", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    "<": {"tap": "2,9", "hold": ["1,4"], "layer": null, "altgr": false, "shift": true},
+    "=": {"tap": "1,5", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    ">": {"tap": "2,10", "hold": ["1,4"], "layer": null, "altgr": false, "shift": true},
+    "?": {"tap": "2,11", "hold": ["1,4"], "layer": null, "altgr": false, "shift": true},
+    "@": {"tap": "2,3", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    "A": {"tap": "1,1", "hold": ["1,8"], "layer": null, "altgr": false, "shift": true},
+    "B": {"tap": "2,5", "hold": ["1,8"], "layer": null, "altgr": false, "shift": true},
+    "C": {"tap": "2,3", "hold": ["1,8"], "layer": null, "altgr": false, "shift": true},
+    "D": {"tap": "1,3", "hold": ["1,8"], "layer": null, "altgr": false, "shift": true},
+    "E": {"tap": "0,3", "hold": ["1,8"], "layer": null, "altgr": false, "shift": true},
+    "F": {"tap": "1,4", "hold": ["1,8"], "layer": null, "altgr": false, "shift": true},
+    "G": {"tap": "1,5", "hold": ["1,8"], "layer": null, "altgr": false, "shift": true},
+    "H": {"tap": "1,7", "hold": ["1,4"], "layer": null, "altgr": false, "shift": true},
+    "I": {"tap": "0,9", "hold": ["1,4"], "layer": null, "altgr": false, "shift": true},
+    "J": {"tap": "1,8", "hold": ["1,4"], "layer": null, "altgr": false, "shift": true},
+    "K": {"tap": "1,9", "hold": ["1,4"], "layer": null, "altgr": false, "shift": true},
+    "L": {"tap": "1,10", "hold": ["1,4"], "layer": null, "altgr": false, "shift": true},
+    "M": {"tap": "2,8", "hold": ["1,4"], "layer": null, "altgr": false, "shift": true},
+    "N": {"tap": "2,7", "hold": ["1,4"], "layer": null, "altgr": false, "shift": true},
+    "O": {"tap": "0,10", "hold": ["1,4"], "layer": null, "altgr": false, "shift": true},
+    "P": {"tap": "0,11", "hold": ["1,4"], "layer": null, "altgr": false, "shift": true},
+    "Q": {"tap": "0,1", "hold": ["1,8"], "layer": null, "altgr": false, "shift": true},
+    "R": {"tap": "0,4", "hold": ["1,8"], "layer": null, "altgr": false, "shift": true},
+    "S": {"tap": "1,2", "hold": ["1,8"], "layer": null, "altgr": false, "shift": true},
+    "T": {"tap": "0,5", "hold": ["1,8"], "layer": null, "altgr": false, "shift": true},
+    "U": {"tap": "0,8", "hold": ["1,4"], "layer": null, "altgr": false, "shift": true},
+    "V": {"tap": "2,4", "hold": ["1,8"], "layer": null, "altgr": false, "shift": true},
+    "W": {"tap": "0,2", "hold": ["1,8"], "layer": null, "altgr": false, "shift": true},
+    "X": {"tap": "2,2", "hold": ["1,8"], "layer": null, "altgr": false, "shift": true},
+    "Y": {"tap": "0,7", "hold": ["1,4"], "layer": null, "altgr": false, "shift": true},
+    "Z": {"tap": "2,1", "hold": ["1,8"], "layer": null, "altgr": false, "shift": true},
+    "[": {"tap": "0,1", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    "\\": {"tap": "2,5", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    "]": {"tap": "0,5", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    "^": {"tap": "1,4", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    "_": {"tap": "3,5", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    "`": {"tap": "2,1", "hold": ["3,7"], "layer": "NUM", "altgr": false, "shift": false},
+    "a": {"tap": "1,1", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "b": {"tap": "2,5", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "c": {"tap": "2,3", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "d": {"tap": "1,3", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "e": {"tap": "0,3", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "f": {"tap": "1,4", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "g": {"tap": "1,5", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "h": {"tap": "1,7", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "i": {"tap": "0,9", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "j": {"tap": "1,8", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "k": {"tap": "1,9", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "l": {"tap": "1,10", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "m": {"tap": "2,8", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "n": {"tap": "2,7", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "o": {"tap": "0,10", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "p": {"tap": "0,11", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "q": {"tap": "0,1", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "r": {"tap": "0,4", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "s": {"tap": "1,2", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "t": {"tap": "0,5", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "u": {"tap": "0,8", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "v": {"tap": "2,4", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "w": {"tap": "0,2", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "x": {"tap": "2,2", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "y": {"tap": "0,7", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "z": {"tap": "2,1", "hold": [], "layer": null, "altgr": false, "shift": false},
+    "{": {"tap": "0,1", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    "|": {"tap": "2,5", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    "}": {"tap": "0,5", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    "~": {"tap": "2,1", "hold": ["3,6"], "layer": "SYM", "altgr": false, "shift": false},
+    "Ó": {"tap": "0,10", "hold": ["2,2", "1,4"], "layer": null, "altgr": true, "shift": true},
+    "ó": {"tap": "0,10", "hold": ["2,2"], "layer": null, "altgr": true, "shift": false},
+    "Ą": {"tap": "1,1", "hold": ["2,10", "1,8"], "layer": null, "altgr": true, "shift": true},
+    "ą": {"tap": "1,1", "hold": ["2,10"], "layer": null, "altgr": true, "shift": false},
+    "Ć": {"tap": "2,3", "hold": ["2,10", "1,8"], "layer": null, "altgr": true, "shift": true},
+    "ć": {"tap": "2,3", "hold": ["2,10"], "layer": null, "altgr": true, "shift": false},
+    "Ę": {"tap": "0,3", "hold": ["2,10", "1,8"], "layer": null, "altgr": true, "shift": true},
+    "ę": {"tap": "0,3", "hold": ["2,10"], "layer": null, "altgr": true, "shift": false},
+    "Ł": {"tap": "1,10", "hold": ["2,2", "1,4"], "layer": null, "altgr": true, "shift": true},
+    "ł": {"tap": "1,10", "hold": ["2,2"], "layer": null, "altgr": true, "shift": false},
+    "Ń": {"tap": "2,7", "hold": ["2,2", "1,4"], "layer": null, "altgr": true, "shift": true},
+    "ń": {"tap": "2,7", "hold": ["2,2"], "layer": null, "altgr": true, "shift": false},
+    "Ś": {"tap": "1,2", "hold": ["2,10", "1,8"], "layer": null, "altgr": true, "shift": true},
+    "ś": {"tap": "1,2", "hold": ["2,10"], "layer": null, "altgr": true, "shift": false},
+    "Ź": {"tap": "2,2", "hold": ["2,10", "1,8"], "layer": null, "altgr": true, "shift": true},
+    "ź": {"tap": "2,2", "hold": ["2,10"], "layer": null, "altgr": true, "shift": false},
+    "Ż": {"tap": "2,1", "hold": ["2,10", "1,8"], "layer": null, "altgr": true, "shift": true},
+    "ż": {"tap": "2,1", "hold": ["2,10"], "layer": null, "altgr": true, "shift": false},
+  },
+  names: {
+    "0,0": "Esc",
+    "0,1": "Q",
+    "0,2": "W",
+    "0,3": "E",
+    "0,4": "R",
+    "0,5": "T",
+    "3,0": "Vol +",
+    "1,0": "F14",
+    "1,1": "A",
+    "1,2": "S",
+    "1,3": "D",
+    "1,4": "F",
+    "1,5": "G",
+    "3,1": "Vol -",
+    "2,0": "",
+    "2,1": "Z",
+    "2,2": "X",
+    "2,3": "C",
+    "2,4": "V",
+    "2,5": "B",
+    "3,3": "WM+Gui",
+    "3,4": "Space",
+    "3,5": "Tab",
+    "0,6": "",
+    "0,7": "Y",
+    "0,8": "U",
+    "0,9": "I",
+    "0,10": "O",
+    "0,11": "P",
+    "3,9": "",
+    "1,6": "",
+    "1,7": "H",
+    "1,8": "J",
+    "1,9": "K",
+    "1,10": "L",
+    "1,11": "'",
+    "3,10": "",
+    "2,7": "N",
+    "2,8": "M",
+    "2,9": ",",
+    "2,10": ".",
+    "2,11": "/",
+    "3,11": "",
+    "3,6": "Enter",
+    "3,7": "Bksp",
+    "3,8": "Del",
+  },
+  svg: `
 <svg xmlns="http://www.w3.org/2000/svg" role="img" width="954" height="326" viewBox="18 48 954 325.5">
 <title>All layers</title>
 <style>
@@ -372,11 +411,11 @@ text { font-family: system-ui, sans-serif; }
   <use href="#key-54x54"/>
   <text x="27" y="50" class="hold l5" font-size="9">BUTTON</text>
   <text x="27" y="25.5" class="tap" font-size="12.9">Z</text>
-  <text x="15.5" y="9.5" class="sub l1" font-size="7">`</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">\`</text>
   <text x="38.5" y="9.5" class="sub l2" font-size="7">~</text>
   <text x="15.5" y="37.5" class="sub l3" font-size="7">F10</text>
   <text x="38.5" y="37.5" class="sub l5" font-size="6">Ctrl+Z</text>
-  <text x="27" y="26.2" class="lay l1" font-size="15">`</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">\`</text>
   <text x="27" y="26.2" class="lay l2" font-size="15">~</text>
   <text x="27" y="26.2" class="lay l3" font-size="15">F10</text>
   <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+Z</text>
@@ -428,11 +467,11 @@ text { font-family: system-ui, sans-serif; }
 <g class="key key" data-pos="2,5" transform="translate(333 198)">
   <use href="#key-54x54"/>
   <text x="27" y="25.5" class="tap" font-size="12.9">B</text>
-  <text x="15.5" y="9.5" class="sub l1" font-size="7">\</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">\\</text>
   <text x="38.5" y="9.5" class="sub l2" font-size="7">|</text>
   <text x="15.5" y="37.5" class="sub l3" font-size="6.6">Pause</text>
   <text x="38.5" y="37.5" class="sub l5" font-size="6">C_S(Z)</text>
-  <text x="27" y="26.2" class="lay l1" font-size="15">\</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">\\</text>
   <text x="27" y="26.2" class="lay l2" font-size="15">|</text>
   <text x="27" y="26.2" class="lay l3" font-size="13.8">Pause</text>
   <text x="27" y="26.2" class="lay l5" font-size="6">Ctrl+Shift+Z</text>
@@ -713,182 +752,5 @@ text { font-family: system-ui, sans-serif; }
   <text x="27" y="30" class="lay l5" font-size="10">3</text>
 </g>
 </svg>
-</div>
-<div class="toolbar"><button id="toggle-focus">Show all labels</button><button id="toggle-kbd">Hide keyboard</button></div>
-</main>
-
-<script>
-const DATA = {"chords":{"\t":{"tap":"3,5","hold":[],"layer":null,"shift":false},"\n":{"tap":"3,6","hold":[],"layer":null,"shift":false}," ":{"tap":"3,4","hold":[],"layer":null,"shift":false},"!":{"tap":"2,2","hold":["3,6"],"layer":"SYM","shift":false},"\"":{"tap":"1,11","hold":["1,4"],"layer":null,"shift":true},"#":{"tap":"2,4","hold":["3,6"],"layer":"SYM","shift":false},"$":{"tap":"1,2","hold":["3,6"],"layer":"SYM","shift":false},"%":{"tap":"1,3","hold":["3,6"],"layer":"SYM","shift":false},"&":{"tap":"0,2","hold":["3,6"],"layer":"SYM","shift":false},"'":{"tap":"1,11","hold":[],"layer":null,"shift":false},"(":{"tap":"0,4","hold":["3,6"],"layer":"SYM","shift":false},")":{"tap":"3,4","hold":["3,6"],"layer":"SYM","shift":false},"*":{"tap":"0,3","hold":["3,6"],"layer":"SYM","shift":false},"+":{"tap":"1,5","hold":["3,6"],"layer":"SYM","shift":false},",":{"tap":"2,9","hold":[],"layer":null,"shift":false},"-":{"tap":"3,5","hold":["3,7"],"layer":"NUM","shift":false},".":{"tap":"2,10","hold":[],"layer":null,"shift":false},"/":{"tap":"2,11","hold":[],"layer":null,"shift":false},"0":{"tap":"3,4","hold":["3,7"],"layer":"NUM","shift":false},"1":{"tap":"2,2","hold":["3,7"],"layer":"NUM","shift":false},"2":{"tap":"2,3","hold":["3,7"],"layer":"NUM","shift":false},"3":{"tap":"2,4","hold":["3,7"],"layer":"NUM","shift":false},"4":{"tap":"1,2","hold":["3,7"],"layer":"NUM","shift":false},"5":{"tap":"1,3","hold":["3,7"],"layer":"NUM","shift":false},"6":{"tap":"1,4","hold":["3,7"],"layer":"NUM","shift":false},"7":{"tap":"0,2","hold":["3,7"],"layer":"NUM","shift":false},"8":{"tap":"0,3","hold":["3,7"],"layer":"NUM","shift":false},"9":{"tap":"0,4","hold":["3,7"],"layer":"NUM","shift":false},":":{"tap":"1,1","hold":["3,6"],"layer":"SYM","shift":false},";":{"tap":"1,1","hold":["3,7"],"layer":"NUM","shift":false},"<":{"tap":"2,9","hold":["1,4"],"layer":null,"shift":true},"=":{"tap":"1,5","hold":["3,7"],"layer":"NUM","shift":false},">":{"tap":"2,10","hold":["1,4"],"layer":null,"shift":true},"?":{"tap":"2,11","hold":["1,4"],"layer":null,"shift":true},"@":{"tap":"2,3","hold":["3,6"],"layer":"SYM","shift":false},"A":{"tap":"1,1","hold":["1,8"],"layer":null,"shift":true},"B":{"tap":"2,5","hold":["1,8"],"layer":null,"shift":true},"C":{"tap":"2,3","hold":["1,8"],"layer":null,"shift":true},"D":{"tap":"1,3","hold":["1,8"],"layer":null,"shift":true},"E":{"tap":"0,3","hold":["1,8"],"layer":null,"shift":true},"F":{"tap":"1,4","hold":["1,8"],"layer":null,"shift":true},"G":{"tap":"1,5","hold":["1,8"],"layer":null,"shift":true},"H":{"tap":"1,7","hold":["1,4"],"layer":null,"shift":true},"I":{"tap":"0,9","hold":["1,4"],"layer":null,"shift":true},"J":{"tap":"1,8","hold":["1,4"],"layer":null,"shift":true},"K":{"tap":"1,9","hold":["1,4"],"layer":null,"shift":true},"L":{"tap":"1,10","hold":["1,4"],"layer":null,"shift":true},"M":{"tap":"2,8","hold":["1,4"],"layer":null,"shift":true},"N":{"tap":"2,7","hold":["1,4"],"layer":null,"shift":true},"O":{"tap":"0,10","hold":["1,4"],"layer":null,"shift":true},"P":{"tap":"0,11","hold":["1,4"],"layer":null,"shift":true},"Q":{"tap":"0,1","hold":["1,8"],"layer":null,"shift":true},"R":{"tap":"0,4","hold":["1,8"],"layer":null,"shift":true},"S":{"tap":"1,2","hold":["1,8"],"layer":null,"shift":true},"T":{"tap":"0,5","hold":["1,8"],"layer":null,"shift":true},"U":{"tap":"0,8","hold":["1,4"],"layer":null,"shift":true},"V":{"tap":"2,4","hold":["1,8"],"layer":null,"shift":true},"W":{"tap":"0,2","hold":["1,8"],"layer":null,"shift":true},"X":{"tap":"2,2","hold":["1,8"],"layer":null,"shift":true},"Y":{"tap":"0,7","hold":["1,4"],"layer":null,"shift":true},"Z":{"tap":"2,1","hold":["1,8"],"layer":null,"shift":true},"[":{"tap":"0,1","hold":["3,7"],"layer":"NUM","shift":false},"\\":{"tap":"2,5","hold":["3,7"],"layer":"NUM","shift":false},"]":{"tap":"0,5","hold":["3,7"],"layer":"NUM","shift":false},"^":{"tap":"1,4","hold":["3,6"],"layer":"SYM","shift":false},"_":{"tap":"3,5","hold":["3,6"],"layer":"SYM","shift":false},"`":{"tap":"2,1","hold":["3,7"],"layer":"NUM","shift":false},"a":{"tap":"1,1","hold":[],"layer":null,"shift":false},"b":{"tap":"2,5","hold":[],"layer":null,"shift":false},"c":{"tap":"2,3","hold":[],"layer":null,"shift":false},"d":{"tap":"1,3","hold":[],"layer":null,"shift":false},"e":{"tap":"0,3","hold":[],"layer":null,"shift":false},"f":{"tap":"1,4","hold":[],"layer":null,"shift":false},"g":{"tap":"1,5","hold":[],"layer":null,"shift":false},"h":{"tap":"1,7","hold":[],"layer":null,"shift":false},"i":{"tap":"0,9","hold":[],"layer":null,"shift":false},"j":{"tap":"1,8","hold":[],"layer":null,"shift":false},"k":{"tap":"1,9","hold":[],"layer":null,"shift":false},"l":{"tap":"1,10","hold":[],"layer":null,"shift":false},"m":{"tap":"2,8","hold":[],"layer":null,"shift":false},"n":{"tap":"2,7","hold":[],"layer":null,"shift":false},"o":{"tap":"0,10","hold":[],"layer":null,"shift":false},"p":{"tap":"0,11","hold":[],"layer":null,"shift":false},"q":{"tap":"0,1","hold":[],"layer":null,"shift":false},"r":{"tap":"0,4","hold":[],"layer":null,"shift":false},"s":{"tap":"1,2","hold":[],"layer":null,"shift":false},"t":{"tap":"0,5","hold":[],"layer":null,"shift":false},"u":{"tap":"0,8","hold":[],"layer":null,"shift":false},"v":{"tap":"2,4","hold":[],"layer":null,"shift":false},"w":{"tap":"0,2","hold":[],"layer":null,"shift":false},"x":{"tap":"2,2","hold":[],"layer":null,"shift":false},"y":{"tap":"0,7","hold":[],"layer":null,"shift":false},"z":{"tap":"2,1","hold":[],"layer":null,"shift":false},"{":{"tap":"0,1","hold":["3,6"],"layer":"SYM","shift":false},"|":{"tap":"2,5","hold":["3,6"],"layer":"SYM","shift":false},"}":{"tap":"0,5","hold":["3,6"],"layer":"SYM","shift":false},"~":{"tap":"2,1","hold":["3,6"],"layer":"SYM","shift":false}},"names":{"0,0":"Esc","0,1":"Q","0,2":"W","0,3":"E","0,4":"R","0,5":"T","3,0":"Vol +","1,0":"F14","1,1":"A","1,2":"S","1,3":"D","1,4":"F","1,5":"G","3,1":"Vol -","2,0":"","2,1":"Z","2,2":"X","2,3":"C","2,4":"V","2,5":"B","3,3":"WM+Gui","3,4":"Space","3,5":"Tab","0,6":"","0,7":"Y","0,8":"U","0,9":"I","0,10":"O","0,11":"P","3,9":"","1,6":"","1,7":"H","1,8":"J","1,9":"K","1,10":"L","1,11":"'","3,10":"","2,7":"N","2,8":"M","2,9":",","2,10":".","2,11":"/","3,11":"","3,6":"Enter","3,7":"Bksp","3,8":"Del"},"layers":["BASE","NUM","SYM","FUN","NAV","BUTTON","WM","APP"]};
-const CH = DATA.chords, NAMES = DATA.names;
-const $ = id => document.getElementById(id);
-const kbd = document.querySelector("#kbdwrap svg");
-kbd.id = "kbd";
-const keyEls = {};
-kbd.querySelectorAll(".key[data-pos]").forEach(el => keyEls[el.dataset.pos] = el);
-
-const store = {
-  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
-  set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+`,
 };
-
-const TYPO = [[/[‘’‚′]/g, "'"], [/[“”„″]/g, '"'], [/[–—−]/g, "-"],
-  [/…/g, "..."], [/[   ]/g, " "], [/•/g, "*"]];
-
-function prepare(raw) {
-  let t = raw.replace(/\r\n?/g, "\n");
-  if ($("opt-typo").checked) for (const [re, s] of TYPO) t = t.replace(re, s);
-  t = t.split("\n").map(l => l.replace(/[ \t]+$/, "")).join("\n").replace(/\n{3,}/g, "\n\n").trim();
-  if (!$("opt-newlines").checked) t = t.replace(/\s*\n\s*/g, " ");
-  return t;
-}
-
-function shown(c) { return c === " " ? "␣" : c === "\n" ? "↵" : c === "\t" ? "⇥" : c; }
-function isWs(c) { return c === " " || c === "\n" || c === "\t"; }
-
-// ---------------------------------------------------------------- highlighting
-function clearKeys(cls) { kbd.querySelectorAll("." + cls).forEach(el => el.classList.remove(cls)); }
-let focusOn = store.get("corne-typing-focus") !== "0";
-function setLayer(li) {   // li: active layer index, or null for the full combined view
-  kbd.classList.forEach(c => c.startsWith("on-l") && kbd.classList.remove(c));
-  kbd.classList.toggle("focus", focusOn && li !== null);
-  clearKeys("off");
-  if (li === null) return;
-  kbd.classList.add("on-l" + li);
-  if (li) for (const el of Object.values(keyEls)) if (!el.querySelector(".lay.l" + li)) el.classList.add("off");
-}
-function highlight(ch) {
-  clearKeys("hl-tap"); clearKeys("hl-hold");
-  const c = CH[ch];
-  setLayer(c ? (c.layer ? DATA.layers.indexOf(c.layer) : 0) : null);
-  if (!c) return;
-  for (const p of c.hold) keyEls[p]?.classList.add("hl-hold");
-  keyEls[c.tap]?.classList.add("hl-tap");
-}
-let badTimer;
-function flashBad(ch) {
-  clearTimeout(badTimer); clearKeys("hl-bad");
-  const c = CH[ch];
-  if (c && !keyEls[c.tap].classList.contains("hl-tap")) keyEls[c.tap].classList.add("hl-bad");
-  badTimer = setTimeout(() => clearKeys("hl-bad"), 350);
-}
-function hintFor(ch) {
-  const c = CH[ch];
-  if (!c) return '<span class="muted">not on the keymap — skipped</span>';
-  const parts = [];
-  if (c.layer) parts.push(`hold <span class="chip hold">${esc(c.layer)}</span> (${esc(NAMES[c.hold[0]])} thumb)`);
-  if (c.shift) parts.push(`hold <span class="chip hold">Shift</span> (${esc(NAMES[c.hold[c.hold.length - 1]])})`);
-  parts.push(`tap <span class="chip tap">${esc(shown(ch))}</span>`);
-  return parts.join(" + ");
-}
-function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]); }
-
-// ---------------------------------------------------------------- game
-let text = "", pos = 0, marks = [], errors = 0, strokes = 0, t0 = 0, missed = {}, running = false, timer;
-
-function start(t) {
-  text = t; pos = 0; marks = new Array(text.length).fill(0); errors = 0; strokes = 0; t0 = 0; missed = {};
-  running = true;
-  show("play"); skipUntypeable(); draw();
-  clearInterval(timer); timer = setInterval(stats, 500);
-}
-function show(id) { for (const s of ["setup", "play", "done"]) $(s).classList.toggle("hidden", s !== id); }
-function skipUntypeable() { while (pos < text.length && !CH[text[pos]]) { marks[pos] = 2; pos++; } }
-
-function draw() {
-  if (pos >= text.length) return finish();
-  const ch = text[pos];
-  const span = (c, i) => {
-    const cls = [marks[i] === 1 ? "err" : "", marks[i] === 2 ? "skip" : "", isWs(c) ? "ws" : ""].filter(Boolean).join(" ");
-    return `<span${cls ? ` class="${cls}"` : ""}>${esc(shown(c))}</span>`;
-  };
-  let past = "", next = "";
-  for (let i = Math.max(0, pos - 24); i < pos; i++) past += span(text[i], i);
-  for (let i = pos + 1; i < Math.min(text.length, pos + 30); i++) next += span(text[i], i);
-  $("strip").innerHTML = `<div class="past">${past}</div><div class="cur${isWs(ch) ? " ws" : ""}" id="cur">${esc(shown(ch))}</div><div class="next">${next}</div>`;
-  $("hint").innerHTML = hintFor(ch);
-  highlight(ch);
-  stats();
-}
-
-function stats() {
-  const mins = t0 ? (performance.now() - t0) / 60000 : 0;
-  const good = marks.slice(0, pos).filter(m => m !== 2).length;
-  $("s-wpm").textContent = mins > 0.05 ? Math.round(good / 5 / mins) : 0;
-  $("s-acc").textContent = strokes ? Math.round(100 * (strokes - errors) / strokes) : 100;
-  $("s-err").textContent = errors;
-  $("s-pos").textContent = pos; $("s-len").textContent = "/ " + text.length;
-  $("bar").style.width = (text.length ? 100 * pos / text.length : 0) + "%";
-}
-
-function finish() {
-  running = false; clearInterval(timer);
-  clearKeys("hl-tap"); clearKeys("hl-hold"); setLayer(null);
-  const mins = t0 ? (performance.now() - t0) / 60000 : 0;
-  const good = marks.filter(m => m !== 2).length;
-  const wpm = mins ? Math.round(good / 5 / mins) : 0;
-  const acc = strokes ? Math.round(100 * (strokes - errors) / strokes) : 100;
-  $("r-wpm").textContent = `${wpm} wpm`;
-  const secs = Math.round(mins * 60);
-  $("r-line").textContent = `${acc}% accuracy · ${errors} mistake${errors === 1 ? "" : "s"} · ${good} characters in ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
-  const top = Object.entries(missed).sort((a, b) => b[1] - a[1]).slice(0, 12);
-  $("r-missed").innerHTML = top.length ? "Most missed: " + top.map(([c, n]) => `<span class="mono">${esc(shown(c))} ×${n}</span>`).join("") : "No mistakes!";
-  show("done");
-  $("again").focus();
-}
-
-function stop() { running = false; clearInterval(timer); clearKeys("hl-tap"); clearKeys("hl-hold"); setLayer(null); show("setup"); $("src").focus(); }
-
-document.addEventListener("keydown", e => {
-  if (!running) return;
-  if (e.key === "Escape") { e.preventDefault(); return stop(); }
-  if (e.ctrlKey || e.metaKey || (e.altKey && !e.getModifierState("AltGraph"))) return;
-  let k = e.key;
-  if (k === "Enter") k = "\n"; else if (k === "Tab") k = "\t";
-  if (k.length !== 1) return;                 // Shift, CapsLock, arrows, dead keys…
-  e.preventDefault();
-  if (!t0) t0 = performance.now();
-  strokes++;
-  const want = text[pos];
-  if (k === want) {
-    pos++; skipUntypeable(); draw();
-  } else {
-    errors++; marks[pos] = 1; missed[want] = (missed[want] || 0) + 1;
-    flashBad(k);
-    const cur = $("cur"); cur.classList.remove("shake"); void cur.offsetWidth; cur.classList.add("shake");
-    draw();
-  }
-});
-
-$("start").onclick = () => {
-  const t = prepare($("src").value);
-  if (!t) { $("warn").textContent = "Paste some text first."; return; }
-  store.set("corne-typing-text", $("src").value);
-  start(t);
-};
-$("again").onclick = () => start(text);
-$("new").onclick = () => { show("setup"); $("src").focus(); };
-$("src").addEventListener("input", checkText);
-for (const id of ["opt-newlines", "opt-typo"]) $(id).addEventListener("change", checkText);
-function checkText() {
-  const bad = [...new Set([...prepare($("src").value)].filter(c => !CH[c]))];
-  $("warn").textContent = bad.length ? `Not on the keymap (will be skipped): ${bad.slice(0, 20).map(shown).join(" ")}` : "";
-}
-$("toggle-kbd").onclick = () => {
-  const h = $("kbdwrap").classList.toggle("hidden");
-  $("toggle-kbd").textContent = h ? "Show keyboard" : "Hide keyboard";
-  store.set("corne-typing-kbd", h ? "0" : "1");
-};
-if (store.get("corne-typing-kbd") === "0") $("toggle-kbd").click();
-function focusLabel() { $("toggle-focus").textContent = focusOn ? "Show all labels" : "Show current layer only"; }
-$("toggle-focus").onclick = () => {
-  focusOn = !focusOn; focusLabel(); store.set("corne-typing-focus", focusOn ? "1" : "0");
-  if (running) highlight(text[pos]);
-};
-focusLabel();
-$("src").value = store.get("corne-typing-text") ||
-  "The quick brown fox jumps over the lazy dog.\nif (x[0] == 42) { return \"ok\"; } // 100% sure: a+b=c & d|e ~ f^g!";
-checkText();
-$("src").focus();
-</script>
-</body>
-</html>

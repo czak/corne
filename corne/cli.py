@@ -4,7 +4,7 @@
     kb diff                    show keyboard vs keymap.toml
     kb check                   validate keymap.toml (no keyboard needed)
     kb push   [FILE] [--force] keymap.toml (or FILE, e.g. a backup) -> keyboard
-    kb render [FILE]           keymap.toml -> docs/*.svg, docs/keymap.html, docs/typing.html, README.md
+    kb render [FILE]           keymap.toml -> docs/*.svg, docs/keymap.html, tutor/keymap.js, README.md
 """
 from __future__ import annotations
 
@@ -25,6 +25,7 @@ KEYMAP = ROOT / "keymap.toml"
 BACKUPS = ROOT / "backups"
 STATE = ROOT / ".kb-state.json"
 DOCS = ROOT / "docs"
+TUTOR = ROOT / "tutor"
 README = ROOT / "README.md"   # last state kb wrote to / read from the keyboard
 
 LINE_NAMES = ["top", "home", "bottom", "thumb"]
@@ -169,7 +170,7 @@ def cmd_push(args):
 
 def cmd_render(args):
     from .render import render_html, render_svgs, update_readme
-    from .typing import render_typing
+    from .typing import render_data
     km = load_keymap(args.file)
     DOCS.mkdir(exist_ok=True)
     svgs = render_svgs(km)
@@ -179,9 +180,9 @@ def cmd_render(args):
     for name, text in svgs.items():
         (DOCS / name).write_text(text)
     (DOCS / "keymap.html").write_text(render_html(km))
-    (DOCS / "typing.html").write_text(render_typing(km))
+    (TUTOR / "keymap.js").write_text(render_data(km))
     README.write_text(update_readme(README.read_text(), km))
-    print(f"wrote {len(svgs)} SVGs + keymap.html + typing.html in docs/, updated README.md")
+    print(f"wrote {len(svgs)} SVGs + keymap.html in docs/, tutor/keymap.js, updated README.md")
 
 
 def main(argv=None):
@@ -192,7 +193,7 @@ def main(argv=None):
     s.add_argument("--names", help="comma-separated layer names (default: keep those in keymap.toml)")
     s.set_defaults(fn=cmd_pull)
     for name, fn, help_ in (("diff", cmd_diff, "keyboard vs keymap"), ("check", cmd_check, "validate keymap"),
-                            ("render", cmd_render, "keymap -> docs/*.svg + keymap.html + typing.html + README")):
+                            ("render", cmd_render, "keymap -> docs/*.svg + keymap.html + tutor/keymap.js + README")):
         s = sub.add_parser(name, help=help_)
         s.add_argument("file", nargs="?", type=Path, default=KEYMAP)
         s.set_defaults(fn=fn)
