@@ -92,7 +92,7 @@ text { font-family: system-ui, sans-serif; }
   <text x="16.5" y="9.5" class="sub l1" font-size="7">[</text>
   <text x="41.5" y="9.5" class="sub l2" font-size="7">{</text>
   <text x="16.5" y="41.5" class="sub l3" font-size="7">F12</text>
-  <text x="41.5" y="41.5" class="sub l5" font-size="6">Ctrl+Z</text>
+  <text x="41.5" y="41.5" class="sub l5" font-size="7">Gui+Q</text>
 </g>
 <g class="key key" transform="translate(151 68.5)">
   <use href="#key-58x58"/>
@@ -100,7 +100,7 @@ text { font-family: system-ui, sans-serif; }
   <text x="16.5" y="9.5" class="sub l1" font-size="7">7</text>
   <text x="41.5" y="9.5" class="sub l2" font-size="7">&amp;</text>
   <text x="16.5" y="41.5" class="sub l3" font-size="7">F7</text>
-  <text x="41.5" y="41.5" class="sub l5" font-size="6">Ctrl+X</text>
+  <text x="41.5" y="41.5" class="sub l5" font-size="7">Gui+W</text>
 </g>
 <g class="key key" transform="translate(211 61)">
   <use href="#key-58x58"/>
@@ -108,7 +108,7 @@ text { font-family: system-ui, sans-serif; }
   <text x="16.5" y="9.5" class="sub l1" font-size="7">8</text>
   <text x="41.5" y="9.5" class="sub l2" font-size="7">*</text>
   <text x="16.5" y="41.5" class="sub l3" font-size="7">F8</text>
-  <text x="41.5" y="41.5" class="sub l5" font-size="6">Ctrl+C</text>
+  <text x="41.5" y="41.5" class="sub l5" font-size="7">Gui+E</text>
 </g>
 <g class="key key" transform="translate(271 68.5)">
   <use href="#key-58x58"/>
@@ -116,7 +116,7 @@ text { font-family: system-ui, sans-serif; }
   <text x="16.5" y="9.5" class="sub l1" font-size="7">9</text>
   <text x="41.5" y="9.5" class="sub l2" font-size="7">(</text>
   <text x="16.5" y="41.5" class="sub l3" font-size="7">F9</text>
-  <text x="41.5" y="41.5" class="sub l5" font-size="6">Ctrl+V</text>
+  <text x="41.5" y="41.5" class="sub l5" font-size="7">Gui+R</text>
 </g>
 <g class="key key" transform="translate(331 76)">
   <use href="#key-58x58"/>
@@ -174,7 +174,6 @@ text { font-family: system-ui, sans-serif; }
   <text x="29" y="27.6" class="tap" font-size="13">G</text>
   <text x="16.5" y="9.5" class="sub l1" font-size="7">=</text>
   <text x="41.5" y="9.5" class="sub l2" font-size="7">+</text>
-  <text x="16.5" y="41.5" class="sub l3" font-size="6">SCROLLLOCK</text>
 </g>
 <g class="key key" transform="translate(391 166)">
   <use href="#key-58x58"/>
@@ -184,14 +183,12 @@ text { font-family: system-ui, sans-serif; }
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">F14</text>
 </g>
-<g class="key key lt l5" transform="translate(91 203.5)">
+<g class="key key" transform="translate(91 203.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="54" class="hold l5" font-size="9">BUTTON</text>
   <text x="29" y="27.6" class="tap" font-size="13">Z</text>
   <text x="16.5" y="9.5" class="sub l1" font-size="7">`</text>
   <text x="41.5" y="9.5" class="sub l2" font-size="7">~</text>
   <text x="16.5" y="41.5" class="sub l3" font-size="7">F10</text>
-  <text x="41.5" y="41.5" class="sub l5" font-size="6">Ctrl+Z</text>
 </g>
 <g class="key key" transform="translate(151 188.5)">
   <use href="#key-58x58"/>
@@ -223,16 +220,13 @@ text { font-family: system-ui, sans-serif; }
   <text x="29" y="27.6" class="tap" font-size="13">B</text>
   <text x="16.5" y="9.5" class="sub l1" font-size="7">\</text>
   <text x="41.5" y="9.5" class="sub l2" font-size="7">|</text>
-  <text x="16.5" y="41.5" class="sub l3" font-size="7">Pause</text>
-  <text x="41.5" y="41.5" class="sub l5" font-size="6">C_S(Z)</text>
 </g>
-<g class="key layer lt l6" transform="translate(241 256)">
+<g class="key layer lt l5" transform="translate(241 256)">
   <use href="#key-58x58"/>
-  <text x="29" y="54" class="hold l6" font-size="9">WM+Gui</text>
+  <text x="29" y="54" class="hold l5" font-size="9">WM+Gui</text>
   <text x="16.5" y="9.5" class="sub l1" font-size="7">.</text>
   <text x="41.5" y="9.5" class="sub l2" font-size="7">(</text>
   <text x="16.5" y="41.5" class="sub l3" font-size="7">Menu</text>
-  <text x="41.5" y="41.5" class="sub l5" font-size="6">Mouse 3</text>
 </g>
 <g class="key key lt l4" transform="rotate(15 270 546) translate(241 256)">
   <use href="#key-58x58"/>
@@ -241,7 +235,6 @@ text { font-family: system-ui, sans-serif; }
   <text x="16.5" y="9.5" class="sub l1" font-size="7">0</text>
   <text x="41.5" y="9.5" class="sub l2" font-size="7">)</text>
   <text x="16.5" y="41.5" class="sub l3" font-size="7">Space</text>
-  <text x="41.5" y="41.5" class="sub l5" font-size="6">Mouse 1</text>
 </g>
 <g class="key key" transform="rotate(30 324 558) translate(241 256)">
   <use href="#key-58x88"/>
@@ -249,7 +242,6 @@ text { font-family: system-ui, sans-serif; }
   <text x="16.5" y="9.5" class="sub l1" font-size="7">-</text>
   <text x="41.5" y="9.5" class="sub l2" font-size="7">_</text>
   <use href="#icon-tab" class="icon sub l3" x="11.2" y="63.8" width="10.5" height="10.5"/>
-  <text x="41.5" y="71.5" class="sub l5" font-size="6">Mouse 2</text>
 </g>
 <g class="key none" transform="translate(541 106)">
   <use href="#key-58x58"/>
@@ -257,32 +249,27 @@ text { font-family: system-ui, sans-serif; }
 <g class="key key" transform="translate(601 76)">
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">Y</text>
-  <text x="16.5" y="9.5" class="sub l5" font-size="6">C_S(Z)</text>
-  <text x="41.5" y="9.5" class="sub l6" font-size="7">Gui+6</text>
+  <text x="16.5" y="9.5" class="sub l5" font-size="7">Gui+6</text>
 </g>
 <g class="key key" transform="translate(661 68.5)">
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">U</text>
-  <text x="16.5" y="9.5" class="sub l5" font-size="6">Ctrl+V</text>
-  <text x="41.5" y="9.5" class="sub l6" font-size="7">Gui+7</text>
+  <text x="16.5" y="9.5" class="sub l5" font-size="7">Gui+7</text>
 </g>
 <g class="key key" transform="translate(721 61)">
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">I</text>
-  <text x="16.5" y="9.5" class="sub l5" font-size="6">Ctrl+C</text>
-  <text x="41.5" y="9.5" class="sub l6" font-size="7">Gui+8</text>
+  <text x="16.5" y="9.5" class="sub l5" font-size="7">Gui+8</text>
 </g>
 <g class="key key" transform="translate(781 68.5)">
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">O</text>
-  <text x="16.5" y="9.5" class="sub l5" font-size="6">Ctrl+X</text>
-  <text x="41.5" y="9.5" class="sub l6" font-size="7">Gui+9</text>
+  <text x="16.5" y="9.5" class="sub l5" font-size="7">Gui+9</text>
 </g>
 <g class="key key" transform="translate(841 83.5)">
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">P</text>
-  <text x="16.5" y="9.5" class="sub l5" font-size="6">Ctrl+Z</text>
-  <text x="41.5" y="9.5" class="sub l6" font-size="7">Gui+0</text>
+  <text x="16.5" y="9.5" class="sub l5" font-size="7">Gui+0</text>
 </g>
 <g class="key none" transform="translate(901 83.5)">
   <use href="#key-58x58"/>
@@ -294,28 +281,28 @@ text { font-family: system-ui, sans-serif; }
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">H</text>
   <text x="16.5" y="9.5" class="sub l4" font-size="7">Left</text>
-  <text x="41.5" y="9.5" class="sub l6" font-size="7">Gui+H</text>
+  <text x="41.5" y="9.5" class="sub l5" font-size="7">Gui+H</text>
 </g>
 <g class="key key" transform="translate(661 128.5)">
   <use href="#key-58x58"/>
   <text x="29" y="54" class="hold" font-size="9">Shift</text>
   <text x="29" y="27.6" class="tap" font-size="13">J</text>
   <text x="16.5" y="9.5" class="sub l4" font-size="7">Down</text>
-  <text x="41.5" y="9.5" class="sub l6" font-size="7">Gui+J</text>
+  <text x="41.5" y="9.5" class="sub l5" font-size="7">Gui+J</text>
 </g>
 <g class="key key" transform="translate(721 121)">
   <use href="#key-58x58"/>
   <text x="29" y="54" class="hold" font-size="9">Ctrl</text>
   <text x="29" y="27.6" class="tap" font-size="13">K</text>
   <text x="16.5" y="9.5" class="sub l4" font-size="7">Up</text>
-  <text x="41.5" y="9.5" class="sub l6" font-size="7">Gui+K</text>
+  <text x="41.5" y="9.5" class="sub l5" font-size="7">Gui+K</text>
 </g>
 <g class="key key" transform="translate(781 128.5)">
   <use href="#key-58x58"/>
   <text x="29" y="54" class="hold" font-size="9">Alt</text>
   <text x="29" y="27.6" class="tap" font-size="13">L</text>
   <text x="16.5" y="9.5" class="sub l4" font-size="7">Right</text>
-  <text x="41.5" y="9.5" class="sub l6" font-size="7">Gui+L</text>
+  <text x="41.5" y="9.5" class="sub l5" font-size="7">Gui+L</text>
 </g>
 <g class="key key" transform="translate(841 143.5)">
   <use href="#key-58x58"/>
@@ -328,36 +315,30 @@ text { font-family: system-ui, sans-serif; }
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">N</text>
   <text x="16.5" y="9.5" class="sub l4" font-size="7">Home</text>
-  <text x="41.5" y="9.5" class="sub l5" font-size="6">C_S(Z)</text>
-  <text x="16.5" y="41.5" class="sub l6" font-size="7">WH_L</text>
+  <text x="41.5" y="9.5" class="sub l5" font-size="7">WH_L</text>
 </g>
 <g class="key key" transform="translate(661 188.5)">
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">M</text>
   <text x="16.5" y="9.5" class="sub l4" font-size="6">PGDOWN</text>
-  <text x="41.5" y="9.5" class="sub l5" font-size="6">Ctrl+V</text>
-  <text x="16.5" y="41.5" class="sub l6" font-size="7">WH_D</text>
+  <text x="41.5" y="9.5" class="sub l5" font-size="7">WH_D</text>
 </g>
 <g class="key key" transform="translate(721 181)">
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">,</text>
   <text x="16.5" y="9.5" class="sub l4" font-size="6">Page Up</text>
-  <text x="41.5" y="9.5" class="sub l5" font-size="6">Ctrl+C</text>
-  <text x="16.5" y="41.5" class="sub l6" font-size="7">WH_U</text>
+  <text x="41.5" y="9.5" class="sub l5" font-size="7">WH_U</text>
 </g>
 <g class="key key" transform="translate(781 188.5)">
   <use href="#key-58x58"/>
   <text x="29" y="54" class="hold" font-size="9">AltGr</text>
   <text x="29" y="27.6" class="tap" font-size="13">.</text>
   <text x="16.5" y="9.5" class="sub l4" font-size="7">End</text>
-  <text x="41.5" y="9.5" class="sub l5" font-size="6">Ctrl+X</text>
-  <text x="16.5" y="41.5" class="sub l6" font-size="7">WH_R</text>
+  <text x="41.5" y="9.5" class="sub l5" font-size="7">WH_R</text>
 </g>
-<g class="key key lt l5" transform="translate(841 203.5)">
+<g class="key key" transform="translate(841 203.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="54" class="hold l5" font-size="9">BUTTON</text>
   <text x="29" y="27.6" class="tap" font-size="13">/</text>
-  <text x="16.5" y="9.5" class="sub l5" font-size="6">Ctrl+Z</text>
 </g>
 <g class="key none" transform="translate(901 203.5)">
   <use href="#key-58x58"/>
@@ -367,22 +348,19 @@ text { font-family: system-ui, sans-serif; }
   <text x="29" y="84" class="hold l2" font-size="9">SYM</text>
   <use href="#icon-enter" class="icon tap" x="19.2" y="28.2" width="19.5" height="19.5"/>
   <use href="#icon-enter" class="icon sub l4" x="11.2" y="1.8" width="10.5" height="10.5"/>
-  <text x="41.5" y="9.5" class="sub l5" font-size="6">Mouse 2</text>
-  <use href="#icon-enter" class="icon sub l6" x="11.2" y="63.8" width="10.5" height="10.5"/>
+  <use href="#icon-enter" class="icon sub l5" x="36.2" y="1.8" width="10.5" height="10.5"/>
 </g>
 <g class="key key lt l1" transform="rotate(-15 720 546) translate(691 256)">
   <use href="#key-58x58"/>
   <text x="29" y="54" class="hold l1" font-size="9">NUM</text>
   <use href="#icon-backspace" class="icon tap" x="19.2" y="13.2" width="19.5" height="19.5"/>
   <use href="#icon-backspace" class="icon sub l4" x="11.2" y="1.8" width="10.5" height="10.5"/>
-  <text x="41.5" y="9.5" class="sub l5" font-size="6">Mouse 1</text>
-  <text x="16.5" y="41.5" class="sub l6" font-size="6">LSFT(ENTER)</text>
+  <text x="41.5" y="9.5" class="sub l5" font-size="6">LSFT(ENTER)</text>
 </g>
 <g class="key key lt l3" transform="translate(691 256)">
   <use href="#key-58x58"/>
   <text x="29" y="54" class="hold l3" font-size="9">FUN</text>
   <use href="#icon-delete" class="icon tap" x="19.2" y="13.2" width="19.5" height="19.5"/>
   <use href="#icon-delete" class="icon sub l4" x="11.2" y="1.8" width="10.5" height="10.5"/>
-  <text x="41.5" y="9.5" class="sub l5" font-size="6">Mouse 3</text>
 </g>
 </svg>

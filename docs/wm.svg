@@ -152,7 +152,7 @@ text { font-family: system-ui, sans-serif; }
 <g class="key none" transform="translate(331 196)">
   <use href="#key-58x58"/>
 </g>
-<g class="key held l6" transform="translate(241 256)">
+<g class="key held l5" transform="translate(241 256)">
   <use href="#key-58x58"/>
   <text x="29" y="54" class="hold" font-size="9">held</text>
   <text x="29" y="27" class="tap" font-size="12">WM</text>

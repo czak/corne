@@ -49,13 +49,13 @@ swap_rctl_rgui = false
 left = [
   ["ESCAPE", "Q", "W", "E", "R", "T", "VOLU"],
   ["OSM(MOD_LCTL)", "A", "LALT_T(S)", "LCTL_T(D)", "LSFT_T(F)", "G", "VOLD"],
-  ["F14", "LT(BUTTON,Z)", "RALT_T(X)", "C", "V", "B"],
+  ["F14", "Z", "RALT_T(X)", "C", "V", "B"],
   ["LM(WM,MOD_LGUI)", "LT(NAV,SPACE)", "TAB"],
 ]
 right = [
   ["NO", "Y", "U", "I", "O", "P", "NO"],
   ["NO", "H", "LSFT_T(J)", "LCTL_T(K)", "LALT_T(L)", "QUOTE", "NO"],
-  ["N", "M", "COMMA", "RALT_T(DOT)", "LT(BUTTON,SLASH)", "NO"],
+  ["N", "M", "COMMA", "RALT_T(DOT)", "SLASH", "NO"],
   ["LT(SYM,ENTER)", "LT(NUM,BSPACE)", "LT(FUN,DELETE)"],
 ]
 
@@ -90,8 +90,8 @@ right = [
 [layers.FUN]
 left = [
   ["NO", "F12", "F7", "F8", "F9", "PSCREEN", "NO"],
-  ["NO", "F11", "F4", "F5", "F6", "SCROLLLOCK", "NO"],
-  ["NO", "F10", "F1", "F2", "F3", "PAUSE"],
+  ["NO", "F11", "F4", "F5", "F6", "NO", "NO"],
+  ["NO", "F10", "F1", "F2", "F3", "NO"],
   ["APPLICATION", "SPACE", "TAB"],
 ]
 right = [
@@ -115,20 +115,6 @@ right = [
   ["ENTER", "BSPACE", "DELETE"],
 ]
 
-[layers.BUTTON]
-left = [
-  ["NO", "LCTL(Z)", "LCTL(X)", "LCTL(C)", "LCTL(V)", "C_S(Z)", "NO"],
-  ["NO", "LGUI", "LALT", "LCTRL", "LSHIFT", "NO", "NO"],
-  ["NO", "LCTL(Z)", "LCTL(X)", "LCTL(C)", "LCTL(V)", "C_S(Z)"],
-  ["BTN3", "BTN1", "BTN2"],
-]
-right = [
-  ["NO", "C_S(Z)", "LCTL(V)", "LCTL(C)", "LCTL(X)", "LCTL(Z)", "NO"],
-  ["NO", "NO", "LSHIFT", "LCTRL", "LALT", "LGUI", "NO"],
-  ["C_S(Z)", "LCTL(V)", "LCTL(C)", "LCTL(X)", "LCTL(Z)", "NO"],
-  ["BTN2", "BTN1", "BTN3"],
-]
-
 [layers.WM]
 left = [
   ["NO", "LGUI(Q)", "LGUI(W)", "LGUI(E)", "LGUI(R)", "LGUI(T)", "NO"],
@@ -141,6 +127,20 @@ right = [
   ["NO", "LGUI(H)", "LGUI(J)", "LGUI(K)", "LGUI(L)", "NO", "NO"],
   ["WH_L", "WH_D", "WH_U", "WH_R", "NO", "NO"],
   ["ENTER", "LSFT(ENTER)", "NO"],
+]
+
+[layers.L6]
+left = [
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO"],
+]
+right = [
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO"],
 ]
 
 [layers.L7]

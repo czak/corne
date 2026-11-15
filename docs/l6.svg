@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" role="img" width="954" height="326" viewBox="18 48 954 325.5">
-<title>BUTTON layer</title>
+<title>L6 layer</title>
 <style>
 :root { --fg:#222; --muted:#6f6f6b; --cap:#f6f6f3; --skirt:#dcdcd7; --edge:#b9b9b3;
         --none-cap:#f4f4f1; --none-skirt:#e7e7e3; --none-edge:#b9b9b3; --mod-cap:#f1f0ec; --mod-skirt:#d4d3cd;
@@ -77,30 +77,24 @@ text { font-family: system-ui, sans-serif; }
     <rect class="dish" x="4" y="2" width="50" height="72" rx="4"/>
     <rect class="rim" x="4.6" y="2.6" width="48.8" height="70.8" rx="3.4" stroke-width="1.2"/>
   </g>
-  <symbol id="icon-shift" viewBox="0 0 24 24"><path d="M12.46 2.54 21.46 11.54 20.54 12.46 11.54 3.46zM21 12.65 16 12.65 16 11.35 21 11.35zM16.65 12 16.65 20 15.35 20 15.35 12zM16 20.65 8 20.65 8 19.35 16 19.35zM7.35 20 7.35 12 8.65 12 8.65 20zM8 12.65 3 12.65 3 11.35 8 11.35zM2.54 11.54 11.54 2.54 12.46 3.46 3.46 12.46zM2.35 12a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM7.35 12a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM7.35 20a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM11.35 3a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM15.35 12a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM15.35 20a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM20.35 12a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0z"/></symbol>
 </defs>
 <g class="key none" transform="translate(31 83.5)">
   <use href="#key-58x58"/>
 </g>
-<g class="key key" transform="translate(91 83.5)">
+<g class="key none" transform="translate(91 83.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="12.6">Ctrl+Z</text>
 </g>
-<g class="key key" transform="translate(151 68.5)">
+<g class="key none" transform="translate(151 68.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="12.6">Ctrl+X</text>
 </g>
-<g class="key key" transform="translate(211 61)">
+<g class="key none" transform="translate(211 61)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="12.6">Ctrl+C</text>
 </g>
-<g class="key key" transform="translate(271 68.5)">
+<g class="key none" transform="translate(271 68.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="12.6">Ctrl+V</text>
 </g>
-<g class="key key" transform="translate(331 76)">
+<g class="key none" transform="translate(331 76)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="6.3">Ctrl+Shift+Z</text>
 </g>
 <g class="key none" transform="translate(391 106)">
   <use href="#key-58x58"/>
@@ -108,21 +102,17 @@ text { font-family: system-ui, sans-serif; }
 <g class="key none" transform="translate(31 143.5)">
   <use href="#key-58x58"/>
 </g>
-<g class="key mod" transform="translate(91 143.5)">
+<g class="key none" transform="translate(91 143.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">LGui</text>
 </g>
-<g class="key mod" transform="translate(151 128.5)">
+<g class="key none" transform="translate(151 128.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">LAlt</text>
 </g>
-<g class="key mod" transform="translate(211 121)">
+<g class="key none" transform="translate(211 121)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">LCtrl</text>
 </g>
-<g class="key mod" transform="translate(271 128.5)">
+<g class="key none" transform="translate(271 128.5)">
   <use href="#key-58x58"/>
-  <use href="#icon-shift" class="icon tap" x="17.8" y="11.8" width="22.5" height="22.5"/>
 </g>
 <g class="key none" transform="translate(331 136)">
   <use href="#key-58x58"/>
@@ -133,64 +123,47 @@ text { font-family: system-ui, sans-serif; }
 <g class="key none" transform="translate(31 203.5)">
   <use href="#key-58x58"/>
 </g>
-<g class="key held l5" transform="translate(91 203.5)">
+<g class="key none" transform="translate(91 203.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="54" class="hold" font-size="9">held</text>
-  <text x="29" y="27" class="tap" font-size="12">BUTTON</text>
 </g>
-<g class="key key" transform="translate(151 188.5)">
+<g class="key none" transform="translate(151 188.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="12.6">Ctrl+X</text>
 </g>
-<g class="key key" transform="translate(211 181)">
+<g class="key none" transform="translate(211 181)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="12.6">Ctrl+C</text>
 </g>
-<g class="key key" transform="translate(271 188.5)">
+<g class="key none" transform="translate(271 188.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="12.6">Ctrl+V</text>
 </g>
-<g class="key key" transform="translate(331 196)">
+<g class="key none" transform="translate(331 196)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="6.3">Ctrl+Shift+Z</text>
 </g>
-<g class="key key" transform="translate(241 256)">
+<g class="key none" transform="translate(241 256)">
   <use href="#key-58x58"/>
-  <text x="29" y="20.8" class="tap" font-size="11">Mouse</text>
-  <text x="29" y="32.9" class="tap" font-size="11">3</text>
 </g>
-<g class="key key" transform="rotate(15 270 546) translate(241 256)">
+<g class="key none" transform="rotate(15 270 546) translate(241 256)">
   <use href="#key-58x58"/>
-  <text x="29" y="20.8" class="tap" font-size="11">Mouse</text>
-  <text x="29" y="32.9" class="tap" font-size="11">1</text>
 </g>
-<g class="key key" transform="rotate(30 324 558) translate(241 256)">
+<g class="key none" transform="rotate(30 324 558) translate(241 256)">
   <use href="#key-58x88"/>
-  <text x="29" y="35.8" class="tap" font-size="11">Mouse</text>
-  <text x="29" y="47.9" class="tap" font-size="11">2</text>
 </g>
 <g class="key none" transform="translate(541 106)">
   <use href="#key-58x58"/>
 </g>
-<g class="key key" transform="translate(601 76)">
+<g class="key none" transform="translate(601 76)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="6.3">Ctrl+Shift+Z</text>
 </g>
-<g class="key key" transform="translate(661 68.5)">
+<g class="key none" transform="translate(661 68.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="12.6">Ctrl+V</text>
 </g>
-<g class="key key" transform="translate(721 61)">
+<g class="key none" transform="translate(721 61)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="12.6">Ctrl+C</text>
 </g>
-<g class="key key" transform="translate(781 68.5)">
+<g class="key none" transform="translate(781 68.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="12.6">Ctrl+X</text>
 </g>
-<g class="key key" transform="translate(841 83.5)">
+<g class="key none" transform="translate(841 83.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="12.6">Ctrl+Z</text>
 </g>
 <g class="key none" transform="translate(901 83.5)">
   <use href="#key-58x58"/>
@@ -201,62 +174,46 @@ text { font-family: system-ui, sans-serif; }
 <g class="key none" transform="translate(601 136)">
   <use href="#key-58x58"/>
 </g>
-<g class="key mod" transform="translate(661 128.5)">
+<g class="key none" transform="translate(661 128.5)">
   <use href="#key-58x58"/>
-  <use href="#icon-shift" class="icon tap" x="17.8" y="11.8" width="22.5" height="22.5"/>
 </g>
-<g class="key mod" transform="translate(721 121)">
+<g class="key none" transform="translate(721 121)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">LCtrl</text>
 </g>
-<g class="key mod" transform="translate(781 128.5)">
+<g class="key none" transform="translate(781 128.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">LAlt</text>
 </g>
-<g class="key mod" transform="translate(841 143.5)">
+<g class="key none" transform="translate(841 143.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">LGui</text>
 </g>
 <g class="key none" transform="translate(901 143.5)">
   <use href="#key-58x58"/>
 </g>
-<g class="key key" transform="translate(601 196)">
+<g class="key none" transform="translate(601 196)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="6.3">Ctrl+Shift+Z</text>
 </g>
-<g class="key key" transform="translate(661 188.5)">
+<g class="key none" transform="translate(661 188.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="12.6">Ctrl+V</text>
 </g>
-<g class="key key" transform="translate(721 181)">
+<g class="key none" transform="translate(721 181)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="12.6">Ctrl+C</text>
 </g>
-<g class="key key" transform="translate(781 188.5)">
+<g class="key none" transform="translate(781 188.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="12.6">Ctrl+X</text>
 </g>
-<g class="key held l5" transform="translate(841 203.5)">
+<g class="key none" transform="translate(841 203.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="54" class="hold" font-size="9">held</text>
-  <text x="29" y="27" class="tap" font-size="12">BUTTON</text>
 </g>
 <g class="key none" transform="translate(901 203.5)">
   <use href="#key-58x58"/>
 </g>
-<g class="key key" transform="rotate(-30 666 558) translate(691 256)">
+<g class="key none" transform="rotate(-30 666 558) translate(691 256)">
   <use href="#key-58x88"/>
-  <text x="29" y="35.8" class="tap" font-size="11">Mouse</text>
-  <text x="29" y="47.9" class="tap" font-size="11">2</text>
 </g>
-<g class="key key" transform="rotate(-15 720 546) translate(691 256)">
+<g class="key none" transform="rotate(-15 720 546) translate(691 256)">
   <use href="#key-58x58"/>
-  <text x="29" y="20.8" class="tap" font-size="11">Mouse</text>
-  <text x="29" y="32.9" class="tap" font-size="11">1</text>
 </g>
-<g class="key key" transform="translate(691 256)">
+<g class="key none" transform="translate(691 256)">
   <use href="#key-58x58"/>
-  <text x="29" y="20.8" class="tap" font-size="11">Mouse</text>
-  <text x="29" y="32.9" class="tap" font-size="11">3</text>
 </g>
 </svg>

@@ -42,6 +42,13 @@ MOD_LABELS = {"CTL": "Ctrl", "SFT": "Shift", "ALT": "Alt", "GUI": "Gui"}
 # Icons drawn instead of a key's label, as round-capped lines on a 24x24 grid: name -> polylines (a polyline ending
 # at its first point is closed). ICON_KEYS picks the icon per official keycode token; it is drawn wherever the
 # token's label would be, in the same color.
+def _ring(cx: float, cy: float, r: float, n: int = 20) -> list[tuple[float, float]]:
+    """Closed polyline approximating a circle."""
+    pts = [(round(cx + r * math.sin(2 * math.pi * i / n), 2), round(cy - r * math.cos(2 * math.pi * i / n), 2))
+           for i in range(n)]
+    return [*pts, pts[0]]
+
+
 ICONS = {
     "backspace": [[(8, 5), (21, 5), (21, 19), (8, 19), (2, 12), (8, 5)],
                   [(11.5, 9.5), (16.5, 14.5)], [(16.5, 9.5), (11.5, 14.5)]],
@@ -50,9 +57,10 @@ ICONS = {
     "enter": [[(20, 5), (20, 15), (4, 15)], [(8.5, 10.5), (4, 15), (8.5, 19.5)]],
     "tab": [[(3, 12), (18, 12)], [(13, 7), (18, 12), (13, 17)], [(21, 6), (21, 18)]],
     "shift": [[(12, 3), (21, 12), (16, 12), (16, 20), (8, 20), (8, 12), (3, 12), (12, 3)]],
+    "camera": [[(3, 8), (7, 8), (9, 5), (15, 5), (17, 8), (21, 8), (21, 19), (3, 19), (3, 8)], _ring(12, 13, 3.5)],
 }
 ICON_KEYS = {"BSPACE": "backspace", "DELETE": "delete", "ENTER": "enter", "TAB": "tab",
-             "LSHIFT": "shift", "RSHIFT": "shift"}
+             "LSHIFT": "shift", "RSHIFT": "shift", "PSCREEN": "camera"}
 ICON_STROKE = 1.3   # line width in grid units; at the drawn size it matches the text's stroke weight
 
 
@@ -96,6 +104,8 @@ def _basic_lines(v: int, codec: Codec) -> tuple[list[str], str | None]:
     lab = label(v)
     if lab is None:
         return [codec.decode(v)], None
+    if lab in _icon_ids():   # drawn as one icon, even if the label has two lines
+        return [lab], None
     parts = lab.split("\n")
     if len(parts) == 2 and all(len(p) == 1 for p in parts):   # keycap pair: shifted over base
         return [parts[1]], parts[0]

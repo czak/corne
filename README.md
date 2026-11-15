@@ -40,13 +40,13 @@ The keyboard is reached over raw HID through its 2.4G dongle. The `KEYCODES` tab
 
 ![NAV layer](docs/nav.svg)
 
-### BUTTON
-
-![BUTTON layer](docs/button.svg)
-
 ### WM
 
 ![WM layer](docs/wm.svg)
+
+### L6
+
+![L6 layer](docs/l6.svg)
 
 ### L7
 

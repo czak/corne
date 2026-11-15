@@ -146,9 +146,8 @@ text { font-family: system-ui, sans-serif; }
   <use href="#key-58x58"/>
   <text x="29" y="28.2" class="tap" font-size="15">F14</text>
 </g>
-<g class="key key lt l5" transform="translate(91 203.5)">
+<g class="key key" transform="translate(91 203.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="54" class="hold l5" font-size="9">BUTTON</text>
   <text x="29" y="28.2" class="tap" font-size="15">Z</text>
 </g>
 <g class="key key" transform="translate(151 188.5)">
@@ -168,9 +167,9 @@ text { font-family: system-ui, sans-serif; }
   <use href="#key-58x58"/>
   <text x="29" y="28.2" class="tap" font-size="15">B</text>
 </g>
-<g class="key layer lt l6" transform="translate(241 256)">
+<g class="key layer lt l5" transform="translate(241 256)">
   <use href="#key-58x58"/>
-  <text x="29" y="54" class="hold l6" font-size="9">WM+Gui</text>
+  <text x="29" y="54" class="hold l5" font-size="9">WM+Gui</text>
 </g>
 <g class="key key lt l4" transform="rotate(15 270 546) translate(241 256)">
   <use href="#key-58x58"/>
@@ -256,9 +255,8 @@ text { font-family: system-ui, sans-serif; }
   <text x="29" y="11" class="shifted" font-size="8">&gt;</text>
   <text x="29" y="32.2" class="tap" font-size="15">.</text>
 </g>
-<g class="key key lt l5" transform="translate(841 203.5)">
+<g class="key key" transform="translate(841 203.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="54" class="hold l5" font-size="9">BUTTON</text>
   <text x="29" y="11" class="shifted" font-size="8">?</text>
   <text x="29" y="32.2" class="tap" font-size="15">/</text>
 </g>
