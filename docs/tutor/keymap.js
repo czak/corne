@@ -395,6 +395,7 @@ text { font-family: system-ui, sans-serif; }
 </g>
 <g class="key key" data-pos="2,0" transform="translate(31 203.5)">
   <use href="#key-58x58"/>
+  <use href="#icon-shift" class="icon hold" x="22.2" y="44.1" width="13.5" height="13.5"/>
   <text x="29" y="21.2" class="tap" font-size="9">OSM</text>
   <text x="29" y="31.1" class="tap" font-size="9">LSft</text>
 </g>
@@ -635,6 +636,7 @@ text { font-family: system-ui, sans-serif; }
 </g>
 <g class="key key" data-pos="3,11" transform="translate(901 203.5)">
   <use href="#key-58x58"/>
+  <use href="#icon-shift" class="icon hold" x="22.2" y="44.1" width="13.5" height="13.5"/>
   <text x="29" y="21.2" class="tap" font-size="9">OSM</text>
   <text x="29" y="31.1" class="tap" font-size="9">LSft</text>
 </g>

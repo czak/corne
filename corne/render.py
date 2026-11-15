@@ -9,7 +9,7 @@ import math
 from dataclasses import dataclass
 from functools import cache
 
-from .keycodes import (LAYER_FNS, MAX_LAYER, QK_LAYER_MOD, QK_LAYER_TAP, QK_MOD_TAP, QK_MODS,
+from .keycodes import (QK_TAP_DANCE, LAYER_FNS, MAX_LAYER, QK_LAYER_MOD, QK_LAYER_TAP, QK_MOD_TAP, QK_MODS,
                        QK_ONE_SHOT_MOD, Codec, label, mods_to_str, tables)
 from .keyboard import GEOMETRY, POSITIONS
 from .layout import Keymap
@@ -123,7 +123,15 @@ def _mods_label(m: int) -> str:
     return ("R" if right else "") + "+".join(names)
 
 
-def legend(v: int, codec: Codec) -> Legend:
+def legend(v: int, codec: Codec, tap_dance=()) -> Legend:
+    """``tap_dance``: the keymap's tap dance entries, to draw TD(n) as its actions."""
+    if QK_TAP_DANCE <= v < QK_TAP_DANCE + len(tap_dance):
+        on_tap, on_hold, on_double_tap, _, _ = tap_dance[v - QK_TAP_DANCE]
+        tap, hold, double = (legend(x, codec) for x in (on_tap, on_hold, on_double_tap))
+        double_text = " ".join(double.tap) or double.hold
+        return Legend(tap.tap, f"2× {double_text}" if double_text else tap.shifted,
+                      hold=" ".join(hold.tap) or hold.hold or tap.hold,
+                      hold_layer=hold.hold_layer if on_hold else tap.hold_layer, kind=tap.kind)
     if v == 0:
         return Legend([], kind="none")
     if v == 1:
@@ -161,7 +169,7 @@ def activators(km: Keymap) -> dict[int, set[tuple[int, int]]]:
     base = km.raw()[0]
     out: dict[int, set] = {}
     for r, c in POSITIONS:
-        lg = legend(base[r][c], codec)
+        lg = legend(base[r][c], codec, km.tap_dance)
         if lg.hold_layer is not None:
             out.setdefault(lg.hold_layer, set()).add((r, c))
     return out
@@ -317,7 +325,7 @@ def layer_svg(km: Keymap, li: int, svg: Svg, acts) -> str:
 
     def key_fn(g: KeyGeom):
         v = m[g.pos[0]][g.pos[1]]
-        lg = legend(v, codec)
+        lg = legend(v, codec, km.tap_dance)
         if g.pos in held:
             return f"held l{li}", ("held", "hold"), lambda cx, cy, w, h: [
                 _text(cx, cy + 4, km.names[li], 12, "tap", w - 6)]
@@ -337,10 +345,10 @@ def combined_svg(km: Keymap, svg: Svg, pos_attrs: bool = False, layer_labels: bo
 
     def key_fn(g: KeyGeom):
         r, c = g.pos
-        base = legend(layers[0][r][c], codec)
+        base = legend(layers[0][r][c], codec, km.tap_dance)
         extras = []
         for li in range(1, len(layers)):
-            lg = legend(layers[li][r][c], codec)
+            lg = legend(layers[li][r][c], codec, km.tap_dance)
             if lg.kind in ("none", "trns", "mod") or not (lg.tap or lg.hold):
                 continue
             text = " ".join(lg.tap) or lg.hold
@@ -363,7 +371,7 @@ def combined_svg(km: Keymap, svg: Svg, pos_attrs: bool = False, layer_labels: bo
                 out.append(_text(tx, ty, s, 7, f"sub l{li}", w / 2 - 4))
             if layer_labels:   # every layer's full legend, centered; the page shows one layer at a time
                 for li in range(1, len(layers)):
-                    lg = legend(layers[li][r][c], codec)
+                    lg = legend(layers[li][r][c], codec, km.tap_dance)
                     if lg.kind in ("none", "trns", "layer") or not lg.tap:
                         continue
                     size = min(15.0, h * 0.4) if len(lg.tap) == 1 else 10.0

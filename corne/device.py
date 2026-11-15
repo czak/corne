@@ -20,6 +20,13 @@ VIAL = 0xFE
 VIAL_QMK_SETTINGS_QUERY = 0x09
 VIAL_QMK_SETTINGS_GET = 0x0A
 VIAL_QMK_SETTINGS_SET = 0x0B
+VIAL_DYNAMIC_ENTRY_OP = 0x0D
+# Vial dynamic entry sub-commands
+DYNAMIC_VIAL_GET_NUMBER_OF_ENTRIES = 0x00
+DYNAMIC_VIAL_TAP_DANCE_GET = 0x01
+DYNAMIC_VIAL_TAP_DANCE_SET = 0x02
+
+TapDance = tuple[int, int, int, int, int]  # on_tap, on_hold, on_double_tap, on_tap_hold, custom_tapping_term
 
 
 class DeviceError(RuntimeError):
@@ -120,3 +127,18 @@ class Keyboard:
         r = self.xfer(VIAL, VIAL_QMK_SETTINGS_SET, struct.pack("<H", qsid), value.to_bytes(width, "little"))
         if r[0] != 0:
             raise DeviceError(f"setting {qsid}: set failed (status {r[0]})")
+
+    # ---- tap dance (Vial dynamic entries)
+    def tap_dance_count(self) -> int:
+        return self.xfer(VIAL, VIAL_DYNAMIC_ENTRY_OP, DYNAMIC_VIAL_GET_NUMBER_OF_ENTRIES)[0]
+
+    def tap_dance_get(self, i: int) -> TapDance:
+        r = self.xfer(VIAL, VIAL_DYNAMIC_ENTRY_OP, DYNAMIC_VIAL_TAP_DANCE_GET, i)
+        if r[0] != 0:
+            raise DeviceError(f"tap dance {i}: get failed (status {r[0]})")
+        return struct.unpack("<5H", r[1:11])
+
+    def tap_dance_set(self, i: int, td: TapDance):
+        r = self.xfer(VIAL, VIAL_DYNAMIC_ENTRY_OP, DYNAMIC_VIAL_TAP_DANCE_SET, i, struct.pack("<5H", *td))
+        if r[0] != 0:
+            raise DeviceError(f"tap dance {i}: set failed (status {r[0]})")

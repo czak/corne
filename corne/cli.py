@@ -18,7 +18,7 @@ from . import layout, settings
 from .device import DeviceError, Keyboard
 from .keycodes import Codec
 from .keyboard import HALVES, POSITIONS
-from .layout import Keymap, KeymapError
+from .layout import TD_FIELDS, Keymap, KeymapError, trim_tap_dances
 
 ROOT = Path(__file__).resolve().parents[1]
 KEYMAP = ROOT / "keymap.toml"
@@ -44,19 +44,32 @@ DESC = _describe()
 
 
 # ---------------------------------------------------------------- keyboard state
-def read_device(kb: Keyboard, names: list[str]) -> tuple[Keymap, list[settings.Field], dict[int, int]]:
+def read_device(kb: Keyboard, names: list[str]) -> tuple[Keymap, list[settings.Field], dict[int, int], list]:
     raw = kb.read_keymap()
     if len(names) != len(raw):
         names = [f"L{i}" for i in range(len(raw))]
     fields = settings.fields_for(kb.settings_supported())
     w = settings.widths(fields)
     raw_settings = {q: kb.setting_get(q, n) for q, n in sorted(w.items())}
-    km = Keymap(dict(zip(names, raw)), settings.decode(fields, raw_settings))
-    return km, fields, raw_settings
+    tds = [kb.tap_dance_get(i) for i in range(kb.tap_dance_count())]
+    km = Keymap(dict(zip(names, raw)), settings.decode(fields, raw_settings), trim_tap_dances(tds))
+    return km, fields, raw_settings, tds
 
 
 def snapshot(km: Keymap) -> dict:
-    return {"keys": [[m[r][c] for r, c in POSITIONS] for m in km.raw()], "settings": km.settings}
+    return {"keys": [[m[r][c] for r, c in POSITIONS] for m in km.raw()], "settings": km.settings,
+            "tap_dance": [list(t) for t in trim_tap_dances(km.tap_dance)]}
+
+
+def tap_dance_changes(old: Keymap, new: Keymap):
+    """[(index, field, old value, new value)] for differing tap dance fields (missing entries count as empty)."""
+    a, b = trim_tap_dances(old.tap_dance), trim_tap_dances(new.tap_dance)
+    out = []
+    for i in range(max(len(a), len(b))):
+        ea = a[i] if i < len(a) else (0, 0, 0, 0, b[i][4])
+        eb = b[i] if i < len(b) else (0, 0, 0, 0, a[i][4])
+        out += [(i, f, x, y) for f, x, y in zip(TD_FIELDS, ea, eb) if x != y]
+    return out
 
 
 def key_changes(old: Keymap, new: Keymap):
@@ -76,14 +89,18 @@ def setting_changes(old: Keymap, new: Keymap):
 def print_diff(device: Keymap, target: Keymap, codec: Codec, left="keyboard", right="keymap") -> int:
     kc = key_changes(device, target)
     sc = setting_changes(device, target)
+    tc = tap_dance_changes(device, target)
     names = target.names
     for li, pos, a, b in kc:
         print(f"  {names[li]:<8} {DESC[pos]:<16} {codec.decode(a):>18}  ->  {codec.decode(b)}")
     for k, a, b in sc:
         print(f"  setting  {k:<28} {a!s:>8}  ->  {b}")
-    if not kc and not sc:
+    for i, f, a, b in tc:
+        fmt = str if f == "custom_tapping_term" else codec.decode
+        print(f"  {f'TD({i})':<8} {f:<19} {fmt(a):>15}  ->  {fmt(b)}")
+    if not kc and not sc and not tc:
         print(f"  {left} and {right} are identical")
-    return len(kc) + len(sc)
+    return len(kc) + len(sc) + len(tc)
 
 
 def load_keymap(path: Path) -> Keymap:
@@ -96,13 +113,14 @@ def load_keymap(path: Path) -> Keymap:
 # ---------------------------------------------------------------- commands
 def cmd_check(args):
     km = load_keymap(args.file)
-    print(f"{args.file.name}: OK — {len(km.layers)} layers ({', '.join(km.names)}), {len(km.settings)} settings")
+    print(f"{args.file.name}: OK — {len(km.layers)} layers ({', '.join(km.names)}), {len(km.settings)} settings, "
+          f"{len(km.tap_dance)} tap dances")
 
 
 def cmd_pull(args):
     names = args.names.split(",") if args.names else (layout.load(KEYMAP).names if KEYMAP.exists() else [])
     with Keyboard() as kb:
-        device, _, _ = read_device(kb, names)
+        device, *_ = read_device(kb, names)
     codec = Codec(device.names)
     if KEYMAP.exists() and not args.force:
         current = load_keymap(KEYMAP)
@@ -112,28 +130,32 @@ def cmd_pull(args):
             sys.exit("refusing to overwrite keymap.toml (use --force)")
     layout.save(device, KEYMAP)
     STATE.write_text(json.dumps(snapshot(device)))
-    print(f"wrote {KEYMAP.name}: {len(device.layers)} layers, {len(device.settings)} settings")
+    print(f"wrote {KEYMAP.name}: {len(device.layers)} layers, {len(device.settings)} settings, "
+          f"{len(device.tap_dance)} tap dances")
 
 
 def cmd_diff(args):
     target = load_keymap(args.file)
     with Keyboard() as kb:
-        device, _, _ = read_device(kb, target.names)
+        device, *_ = read_device(kb, target.names)
     print_diff(device, target, Codec(target.names))
 
 
 def cmd_push(args):
     target = load_keymap(args.file)
     with Keyboard() as kb:
-        device, fields, raw_settings = read_device(kb, target.names)
+        device, fields, raw_settings, raw_tds = read_device(kb, target.names)
         if len(target.layers) != len(device.layers):
             sys.exit(f"keyboard has {len(device.layers)} layers, {args.file.name} has {len(target.layers)}")
+        if len(target.tap_dance) > len(raw_tds):
+            sys.exit(f"keyboard has {len(raw_tds)} tap dances, {args.file.name} has {len(target.tap_dance)}")
         codec = Codec(target.names)
 
         # Drift: keyboard changed since kb last saw it (e.g. edited in Vial)?
         if STATE.exists() and not args.force:
             last = json.loads(STATE.read_text())
             now = snapshot(device)
+            last.setdefault("tap_dance", now["tap_dance"])   # state written before kb knew tap dances
             if now != last and now != snapshot(target):
                 sys.exit("keyboard was changed outside kb since the last pull/push "
                          "(run `kb diff` / `kb pull`, or push with --force)")
@@ -157,9 +179,13 @@ def cmd_push(args):
         for q, v in new_raw.items():
             if raw_settings[q] != v:
                 kb.setting_set(q, w[q], v)
+        for i, old in enumerate(raw_tds):
+            new = target.tap_dance[i] if i < len(target.tap_dance) else (0, 0, 0, 0, old[4])
+            if tuple(old) != tuple(new):
+                kb.tap_dance_set(i, new)
 
-        after, _, _ = read_device(kb, target.names)
-    expected = Keymap(target.layers, {**device.settings, **target.settings})
+        after, *_ = read_device(kb, target.names)
+    expected = Keymap(target.layers, {**device.settings, **target.settings}, target.tap_dance)
     if snapshot(after) != snapshot(expected):
         print("VERIFY FAILED — keyboard now differs from target:")
         print_diff(after, expected, codec, "keyboard", "target")

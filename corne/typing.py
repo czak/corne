@@ -115,7 +115,7 @@ def _names(km: Keymap) -> dict[str, str]:
     codec = Codec(km.names)
     out = {}
     for r, c in POSITIONS:
-        lg = legend(km.raw()[0][r][c], codec)
+        lg = legend(km.raw()[0][r][c], codec, km.tap_dance)
         out[f"{r},{c}"] = " ".join(lg.tap) or lg.hold or ""
     return out
 

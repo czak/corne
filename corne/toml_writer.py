@@ -4,6 +4,7 @@ Supports exactly what keymap.toml needs:
   - nested dicts -> [tables] / [dotted.tables]
   - str, int, bool scalars
   - list of lists -> one inner list per line
+  - list of dicts -> [[array.of.tables]]
 Comments can be attached to tables via ``comments={"path.to.table": "text"}``.
 """
 from __future__ import annotations
@@ -44,20 +45,31 @@ def dumps(doc: dict, comments: dict[str, str] | None = None) -> str:
     comments = comments or {}
     out: list[str] = []
 
-    def table(path: list[str], d: dict):
-        scalars = {k: v for k, v in d.items() if not isinstance(v, dict)}
-        subtables = {k: v for k, v in d.items() if isinstance(v, dict)}
+    def is_aot(v) -> bool:
+        return isinstance(v, list) and bool(v) and all(isinstance(x, dict) for x in v)
+
+    def header(path: list[str], brackets: str, comment: bool = True):
+        if out:
+            out.append("")
         name = ".".join(path)
-        if path and (scalars or not subtables):
-            if out:
-                out.append("")
-            if name in comments:
-                out.extend("# " + ln for ln in comments[name].splitlines())
-            out.append(f"[{'.'.join(_key(p) for p in path)}]")
+        if comment and name in comments:
+            out.extend("# " + ln for ln in comments[name].splitlines())
+        half = len(brackets) // 2
+        out.append(brackets[:half] + ".".join(_key(p) for p in path) + brackets[half:])
+
+    def table(path: list[str], d: dict, brackets: str | None = "[]", comment: bool = True):
+        scalars = {k: v for k, v in d.items() if not isinstance(v, dict) and not is_aot(v)}
+        subtables = {k: v for k, v in d.items() if isinstance(v, dict) or is_aot(v)}
+        if path and brackets and (scalars or not subtables or brackets == "[[]]"):
+            header(path, brackets, comment)
         for k, v in scalars.items():
             out.append(f"{_key(k)} = {_value(v)}")
         for k, v in subtables.items():
-            table(path + [k], v)
+            if isinstance(v, dict):
+                table(path + [k], v)
+            else:
+                for i, item in enumerate(v):
+                    table(path + [k], item, "[[]]", comment=i == 0)
 
     table([], doc)
     return "\n".join(out) + "\n"
