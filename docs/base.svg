@@ -107,7 +107,8 @@ text { font-family: system-ui, sans-serif; }
 </g>
 <g class="key key" transform="translate(33 145.5)">
   <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="15">F14</text>
+  <text x="27" y="18.8" class="tap" font-size="11">OSM</text>
+  <text x="27" y="30.9" class="tap" font-size="11">LCtl</text>
 </g>
 <g class="key key" transform="translate(93 145.5)">
   <use href="#key-54x54"/>
@@ -136,8 +137,9 @@ text { font-family: system-ui, sans-serif; }
   <use href="#key-54x54"/>
   <text x="27" y="26.2" class="tap" font-size="13.8">Vol -</text>
 </g>
-<g class="key none" transform="translate(33 205.5)">
+<g class="key key" transform="translate(33 205.5)">
   <use href="#key-54x54"/>
+  <text x="27" y="26.2" class="tap" font-size="15">F14</text>
 </g>
 <g class="key key lt l5" transform="translate(93 205.5)">
   <use href="#key-54x54"/>

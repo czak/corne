@@ -126,14 +126,14 @@ const KEYMAP = {
     "0,4": "R",
     "0,5": "T",
     "3,0": "Vol +",
-    "1,0": "F14",
+    "1,0": "OSM LCtl",
     "1,1": "A",
     "1,2": "S",
     "1,3": "D",
     "1,4": "F",
     "1,5": "G",
     "3,1": "Vol -",
-    "2,0": "",
+    "2,0": "F14",
     "2,1": "Z",
     "2,2": "X",
     "2,3": "C",
@@ -324,7 +324,8 @@ text { font-family: system-ui, sans-serif; }
 </g>
 <g class="key key" data-pos="1,0" transform="translate(33 145.5)">
   <use href="#key-54x54"/>
-  <text x="27" y="25.5" class="tap" font-size="12.9">F14</text>
+  <text x="27" y="19.2" class="tap" font-size="9">OSM</text>
+  <text x="27" y="29.1" class="tap" font-size="9">LCtl</text>
 </g>
 <g class="key key" data-pos="1,1" transform="translate(93 145.5)">
   <use href="#key-54x54"/>
@@ -402,8 +403,9 @@ text { font-family: system-ui, sans-serif; }
   <use href="#key-54x54"/>
   <text x="27" y="25.5" class="tap" font-size="11">Vol -</text>
 </g>
-<g class="key none" data-pos="2,0" transform="translate(33 205.5)">
+<g class="key key" data-pos="2,0" transform="translate(33 205.5)">
   <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">F14</text>
 </g>
 <g class="key key lt l5" data-pos="2,1" transform="translate(93 205.5)">
   <use href="#key-54x54"/>

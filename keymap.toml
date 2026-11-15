@@ -48,8 +48,8 @@ swap_rctl_rgui = false
 [layers.BASE]
 left = [
   ["ESCAPE", "Q", "W", "E", "R", "T", "VOLU"],
-  ["F14", "A", "LALT_T(S)", "LCTL_T(D)", "LSFT_T(F)", "G", "VOLD"],
-  ["NO", "LT(BUTTON,Z)", "RALT_T(X)", "C", "V", "B"],
+  ["OSM(MOD_LCTL)", "A", "LALT_T(S)", "LCTL_T(D)", "LSFT_T(F)", "G", "VOLD"],
+  ["F14", "LT(BUTTON,Z)", "RALT_T(X)", "C", "V", "B"],
   ["LM(WM,MOD_LGUI)", "LT(NAV,SPACE)", "LT(APP,TAB)"],
 ]
 right = [
