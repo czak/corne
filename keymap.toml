@@ -50,7 +50,7 @@ left = [
   ["ESCAPE", "Q", "W", "E", "R", "T", "VOLU"],
   ["OSM(MOD_LCTL)", "A", "LALT_T(S)", "LCTL_T(D)", "LSFT_T(F)", "G", "VOLD"],
   ["F14", "LT(BUTTON,Z)", "RALT_T(X)", "C", "V", "B"],
-  ["LM(WM,MOD_LGUI)", "LT(NAV,SPACE)", "LT(APP,TAB)"],
+  ["LM(WM,MOD_LGUI)", "LT(NAV,SPACE)", "TAB"],
 ]
 right = [
   ["NO", "Y", "U", "I", "O", "P", "NO"],
@@ -103,15 +103,15 @@ right = [
 
 [layers.NAV]
 left = [
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "LGUI", "LALT", "LCTRL", "LSHIFT", "NO", "NO"],
-  ["NO", "NO", "RALT", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "LALT(T)", "NO"],
+  ["NO", "LSHIFT", "LALT(4)", "LALT(5)", "LALT(6)", "NO", "NO"],
+  ["NO", "NO", "LALT(1)", "LALT(2)", "LALT(3)", "NO"],
   ["NO", "NO", "NO"],
 ]
 right = [
-  ["NO", "C_S(Z)", "LCTL(V)", "LCTL(C)", "LCTL(X)", "LCTL(Z)", "NO"],
-  ["NO", "LEFT", "DOWN", "UP", "RIGHT", "CAPSLOCK", "NO"],
-  ["HOME", "PGDOWN", "PGUP", "END", "INSERT", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "LEFT", "DOWN", "UP", "RIGHT", "NO", "NO"],
+  ["HOME", "PGDOWN", "PGUP", "END", "NO", "NO"],
   ["ENTER", "BSPACE", "DELETE"],
 ]
 
@@ -143,16 +143,16 @@ right = [
   ["ENTER", "LSFT(ENTER)", "NO"],
 ]
 
-[layers.APP]
+[layers.L7]
 left = [
-  ["NO", "NO", "NO", "LALT(D)", "LSA(D)", "NO", "NO"],
-  ["NO", "LSHIFT", "LALT(4)", "LALT(5)", "NO", "NO", "NO"],
-  ["NO", "NO", "LALT(1)", "LALT(2)", "LALT(3)", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO"],
   ["NO", "NO", "NO"],
 ]
 right = [
-  ["NO", "LALT(6)", "LALT(7)", "LALT(8)", "LALT(9)", "LALT(0)", "NO"],
-  ["NO", "LALT(LEFT)", "LALT(DOWN)", "LALT(UP)", "LALT(RIGHT)", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
   ["NO", "NO", "NO", "NO", "NO", "NO"],
   ["NO", "NO", "NO"],
 ]

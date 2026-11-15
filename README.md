@@ -48,8 +48,8 @@ The keyboard is reached over raw HID through its 2.4G dongle. The `KEYCODES` tab
 
 ![WM layer](docs/wm.svg)
 
-### APP
+### L7
 
-![APP layer](docs/app.svg)
+![L7 layer](docs/l7.svg)
 
 <!-- keymap:end -->

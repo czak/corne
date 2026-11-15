@@ -64,192 +64,192 @@ text { font-family: system-ui, sans-serif; }
     <stop offset="0" class="rim-top"/>
     <stop offset="1" class="rim-bottom"/>
   </linearGradient>
-  <g id="key-54x54">
-    <rect class="skirt" width="54" height="54" rx="6"/>
-    <rect class="cap" x="4" y="2" width="46" height="38" rx="4"/>
-    <rect class="dish" x="4" y="2" width="46" height="38" rx="4"/>
-    <rect class="rim" x="4.6" y="2.6" width="44.8" height="36.8" rx="3.4" stroke-width="1.2"/>
+  <g id="key-58x58">
+    <rect class="skirt" width="58" height="58" rx="6"/>
+    <rect class="cap" x="4" y="2" width="50" height="42" rx="4"/>
+    <rect class="dish" x="4" y="2" width="50" height="42" rx="4"/>
+    <rect class="rim" x="4.6" y="2.6" width="48.8" height="40.8" rx="3.4" stroke-width="1.2"/>
   </g>
-  <g id="key-54x84">
-    <rect class="skirt" width="54" height="84" rx="6"/>
-    <rect class="cap" x="4" y="2" width="46" height="68" rx="4"/>
-    <rect class="dish" x="4" y="2" width="46" height="68" rx="4"/>
-    <rect class="rim" x="4.6" y="2.6" width="44.8" height="66.8" rx="3.4" stroke-width="1.2"/>
+  <g id="key-58x88">
+    <rect class="skirt" width="58" height="88" rx="6"/>
+    <rect class="cap" x="4" y="2" width="50" height="72" rx="4"/>
+    <rect class="dish" x="4" y="2" width="50" height="72" rx="4"/>
+    <rect class="rim" x="4.6" y="2.6" width="48.8" height="70.8" rx="3.4" stroke-width="1.2"/>
   </g>
 </defs>
-<g class="key none" transform="translate(33 85.5)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="translate(31 83.5)">
+  <use href="#key-58x58"/>
 </g>
-<g class="key key" transform="translate(93 85.5)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+Q</text>
+<g class="key key" transform="translate(91 83.5)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+Q</text>
 </g>
-<g class="key key" transform="translate(153 70.5)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+W</text>
+<g class="key key" transform="translate(151 68.5)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+W</text>
 </g>
-<g class="key key" transform="translate(213 63)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+E</text>
+<g class="key key" transform="translate(211 61)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+E</text>
 </g>
-<g class="key key" transform="translate(273 70.5)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+R</text>
+<g class="key key" transform="translate(271 68.5)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+R</text>
 </g>
-<g class="key key" transform="translate(333 78)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+T</text>
+<g class="key key" transform="translate(331 76)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+T</text>
 </g>
-<g class="key none" transform="translate(393 108)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="translate(391 106)">
+  <use href="#key-58x58"/>
 </g>
-<g class="key none" transform="translate(33 145.5)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="translate(31 143.5)">
+  <use href="#key-58x58"/>
 </g>
-<g class="key mod" transform="translate(93 145.5)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="11.5">LShift</text>
+<g class="key mod" transform="translate(91 143.5)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="12.6">LShift</text>
 </g>
-<g class="key key" transform="translate(153 130.5)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+4</text>
+<g class="key key" transform="translate(151 128.5)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+4</text>
 </g>
-<g class="key key" transform="translate(213 123)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+5</text>
+<g class="key key" transform="translate(211 121)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+5</text>
 </g>
-<g class="key key" transform="translate(273 130.5)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+F</text>
+<g class="key key" transform="translate(271 128.5)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+F</text>
 </g>
-<g class="key none" transform="translate(333 138)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="translate(331 136)">
+  <use href="#key-58x58"/>
 </g>
-<g class="key none" transform="translate(393 168)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="translate(391 166)">
+  <use href="#key-58x58"/>
 </g>
-<g class="key none" transform="translate(33 205.5)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="translate(31 203.5)">
+  <use href="#key-58x58"/>
 </g>
-<g class="key none" transform="translate(93 205.5)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="translate(91 203.5)">
+  <use href="#key-58x58"/>
 </g>
-<g class="key key" transform="translate(153 190.5)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+1</text>
+<g class="key key" transform="translate(151 188.5)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+1</text>
 </g>
-<g class="key key" transform="translate(213 183)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+2</text>
+<g class="key key" transform="translate(211 181)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+2</text>
 </g>
-<g class="key key" transform="translate(273 190.5)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+3</text>
+<g class="key key" transform="translate(271 188.5)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+3</text>
 </g>
-<g class="key none" transform="translate(333 198)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="translate(331 196)">
+  <use href="#key-58x58"/>
 </g>
-<g class="key held l6" transform="translate(243 258)">
-  <use href="#key-54x54"/>
-  <text x="27" y="50" class="hold" font-size="9">held</text>
-  <text x="27" y="25" class="tap" font-size="12">WM</text>
+<g class="key held l6" transform="translate(241 256)">
+  <use href="#key-58x58"/>
+  <text x="29" y="54" class="hold" font-size="9">held</text>
+  <text x="29" y="27" class="tap" font-size="12">WM</text>
 </g>
-<g class="key none" transform="rotate(15 270 546) translate(243 258)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="rotate(15 270 546) translate(241 256)">
+  <use href="#key-58x58"/>
 </g>
-<g class="key none" transform="rotate(30 324 558) translate(243 258)">
-  <use href="#key-54x84"/>
+<g class="key none" transform="rotate(30 324 558) translate(241 256)">
+  <use href="#key-58x88"/>
 </g>
-<g class="key none" transform="translate(543 108)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="translate(541 106)">
+  <use href="#key-58x58"/>
 </g>
-<g class="key key" transform="translate(603 78)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+6</text>
+<g class="key key" transform="translate(601 76)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+6</text>
 </g>
-<g class="key key" transform="translate(663 70.5)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+7</text>
+<g class="key key" transform="translate(661 68.5)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+7</text>
 </g>
-<g class="key key" transform="translate(723 63)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+8</text>
+<g class="key key" transform="translate(721 61)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+8</text>
 </g>
-<g class="key key" transform="translate(783 70.5)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+9</text>
+<g class="key key" transform="translate(781 68.5)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+9</text>
 </g>
-<g class="key key" transform="translate(843 85.5)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+0</text>
+<g class="key key" transform="translate(841 83.5)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+0</text>
 </g>
-<g class="key none" transform="translate(903 85.5)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="translate(901 83.5)">
+  <use href="#key-58x58"/>
 </g>
-<g class="key none" transform="translate(543 168)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="translate(541 166)">
+  <use href="#key-58x58"/>
 </g>
-<g class="key key" transform="translate(603 138)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+H</text>
+<g class="key key" transform="translate(601 136)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+H</text>
 </g>
-<g class="key key" transform="translate(663 130.5)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+J</text>
+<g class="key key" transform="translate(661 128.5)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+J</text>
 </g>
-<g class="key key" transform="translate(723 123)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+K</text>
+<g class="key key" transform="translate(721 121)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+K</text>
 </g>
-<g class="key key" transform="translate(783 130.5)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="13.8">Gui+L</text>
+<g class="key key" transform="translate(781 128.5)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="15">Gui+L</text>
 </g>
-<g class="key none" transform="translate(843 145.5)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="translate(841 143.5)">
+  <use href="#key-58x58"/>
 </g>
-<g class="key none" transform="translate(903 145.5)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="translate(901 143.5)">
+  <use href="#key-58x58"/>
 </g>
-<g class="key key" transform="translate(603 198)">
-  <use href="#key-54x54"/>
-  <text x="27" y="12.7" class="tap" font-size="11">Mouse</text>
-  <text x="27" y="24.9" class="tap" font-size="11">Wheel</text>
-  <text x="27" y="37" class="tap" font-size="11">Left</text>
+<g class="key key" transform="translate(601 196)">
+  <use href="#key-58x58"/>
+  <text x="29" y="14.7" class="tap" font-size="11">Mouse</text>
+  <text x="29" y="26.9" class="tap" font-size="11">Wheel</text>
+  <text x="29" y="39" class="tap" font-size="11">Left</text>
 </g>
-<g class="key key" transform="translate(663 190.5)">
-  <use href="#key-54x54"/>
-  <text x="27" y="12.7" class="tap" font-size="11">Mouse</text>
-  <text x="27" y="24.9" class="tap" font-size="11">Wheel</text>
-  <text x="27" y="37" class="tap" font-size="11">Down</text>
+<g class="key key" transform="translate(661 188.5)">
+  <use href="#key-58x58"/>
+  <text x="29" y="14.7" class="tap" font-size="11">Mouse</text>
+  <text x="29" y="26.9" class="tap" font-size="11">Wheel</text>
+  <text x="29" y="39" class="tap" font-size="11">Down</text>
 </g>
-<g class="key key" transform="translate(723 183)">
-  <use href="#key-54x54"/>
-  <text x="27" y="12.7" class="tap" font-size="11">Mouse</text>
-  <text x="27" y="24.9" class="tap" font-size="11">Wheel</text>
-  <text x="27" y="37" class="tap" font-size="11">Up</text>
+<g class="key key" transform="translate(721 181)">
+  <use href="#key-58x58"/>
+  <text x="29" y="14.7" class="tap" font-size="11">Mouse</text>
+  <text x="29" y="26.9" class="tap" font-size="11">Wheel</text>
+  <text x="29" y="39" class="tap" font-size="11">Up</text>
 </g>
-<g class="key key" transform="translate(783 190.5)">
-  <use href="#key-54x54"/>
-  <text x="27" y="12.7" class="tap" font-size="11">Mouse</text>
-  <text x="27" y="24.9" class="tap" font-size="11">Wheel</text>
-  <text x="27" y="37" class="tap" font-size="11">Right</text>
+<g class="key key" transform="translate(781 188.5)">
+  <use href="#key-58x58"/>
+  <text x="29" y="14.7" class="tap" font-size="11">Mouse</text>
+  <text x="29" y="26.9" class="tap" font-size="11">Wheel</text>
+  <text x="29" y="39" class="tap" font-size="11">Right</text>
 </g>
-<g class="key none" transform="translate(843 205.5)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="translate(841 203.5)">
+  <use href="#key-58x58"/>
 </g>
-<g class="key none" transform="translate(903 205.5)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="translate(901 203.5)">
+  <use href="#key-58x58"/>
 </g>
-<g class="key key" transform="rotate(-30 666 558) translate(693 258)">
-  <use href="#key-54x84"/>
-  <text x="27" y="41.2" class="tap" font-size="13.8">Enter</text>
+<g class="key key" transform="rotate(-30 666 558) translate(691 256)">
+  <use href="#key-58x88"/>
+  <text x="29" y="43.2" class="tap" font-size="15">Enter</text>
 </g>
-<g class="key key" transform="rotate(-15 720 546) translate(693 258)">
-  <use href="#key-54x54"/>
-  <text x="27" y="26.2" class="tap" font-size="6.3">Shift+Enter</text>
+<g class="key key" transform="rotate(-15 720 546) translate(691 256)">
+  <use href="#key-58x58"/>
+  <text x="29" y="28.2" class="tap" font-size="6.9">Shift+Enter</text>
 </g>
-<g class="key none" transform="translate(693 258)">
-  <use href="#key-54x54"/>
+<g class="key none" transform="translate(691 256)">
+  <use href="#key-58x58"/>
 </g>
 </svg>

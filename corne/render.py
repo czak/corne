@@ -14,7 +14,7 @@ from .keyboard import GEOMETRY, POSITIONS
 from .layout import Keymap
 
 U = 60          # px per key unit
-PAD = 3         # gap between keys (px, each side)
+PAD = 1         # gap between keys (px, each side)
 MARGIN = 12
 # Keycap top surface inset from the skirt (px); the deeper bottom shade carries the hold label
 CAP_SIDE, CAP_TOP, CAP_BOTTOM = 4, 2, 14
