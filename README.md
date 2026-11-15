@@ -4,6 +4,7 @@ My keymap for a PandaKB W-Corne v4.1 (46 keys, Vial firmware), based on Miryoku 
 
 - `keymap.toml`: the keymap and QMK settings. This is the source of truth.
 - `docs/`: the rendered layers (SVGs, shown below), plus `keymap.html` for viewing them offline.
+- `docs/typing.html`: a typing tutor. Paste a text and type it; the keys to hold and tap for each character light up on the keymap.
 
 ```sh
 python3 kb.py diff     # keyboard vs keymap.toml

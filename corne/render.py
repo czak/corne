@@ -189,12 +189,13 @@ class Svg:
         self.width = (max(xs) - min(xs)) * U + 2 * MARGIN
         self.height = (max(ys) - min(ys)) * U + 2 * MARGIN
 
-    def render(self, key_fn, title: str, css: str) -> str:
+    def render(self, key_fn, title: str, css: str, pos_attrs: bool = False) -> str:
         """Standalone SVG document, one element per line so diffs stay small.
 
         ``key_fn(geom)`` returns ``(cls, skirt, inner)``: the key's CSS classes, an optional ``(text, cls)`` written
         on the skirt's bottom shade below the keycap top (the hold function), and ``inner(cx, cy, w, h)`` giving the text elements
         for the top surface's box. Each key is drawn in its own coordinates (origin at the skirt's top-left corner).
+        ``pos_attrs`` tags each key with ``data-pos="row,col"`` (matrix position) for scripts.
         """
         sizes = dict.fromkeys(((g.w * U - 2 * PAD, g.h * U - 2 * PAD) for g in self.geoms))
         parts = [f'<svg xmlns="http://www.w3.org/2000/svg" role="img" width="{self.width:.0f}" '
@@ -209,7 +210,8 @@ class Svg:
             if g.r:
                 tr = f"rotate({_n(g.r)} {_n(g.rx * U)} {_n(g.ry * U)}) {tr}"
             tw, th = w - 2 * CAP_SIDE, h - CAP_TOP - CAP_BOTTOM
-            parts.append(f'<g class="key {cls}" transform="{tr}">')
+            pa = f' data-pos="{g.pos[0]},{g.pos[1]}"' if pos_attrs else ""
+            parts.append(f'<g class="key {cls}"{pa} transform="{tr}">')
             parts.append(f'  <use href="#{_body_id(w, h)}"/>')
             if skirt:
                 parts.append("  " + _text(w / 2, h - 4, skirt[0], 9, skirt[1], w - 6))
@@ -259,7 +261,8 @@ def layer_svg(km: Keymap, li: int, svg: Svg, acts) -> str:
     return svg.render(key_fn, f"{km.names[li]} layer", svg_css(len(km.layers)))
 
 
-def combined_svg(km: Keymap, svg: Svg) -> str:
+def combined_svg(km: Keymap, svg: Svg, pos_attrs: bool = False, layer_labels: bool = False) -> str:
+    """All layers on one keyboard. ``layer_labels`` adds hidden full-size legends per layer (class ``lay l<i>``)."""
     codec = Codec(km.names)
     layers = km.raw()
     corners = [(-1, -1), (1, -1), (-1, 1), (1, 1)]  # TL TR BL BR
@@ -290,11 +293,20 @@ def combined_svg(km: Keymap, svg: Svg) -> str:
                 tx = cx + sx * (w / 4)
                 ty = cy + sy * (h / 2 - 5) + 2.5
                 out.append(_text(tx, ty, s, 7, f"sub l{li}", w / 2 - 4))
+            if layer_labels:   # every layer's full legend, centered; the page shows one layer at a time
+                for li in range(1, len(layers)):
+                    lg = legend(layers[li][r][c], codec)
+                    if lg.kind in ("none", "trns", "layer") or not lg.tap:
+                        continue
+                    size = min(15.0, h * 0.4) if len(lg.tap) == 1 else 10.0
+                    y0 = cy - (len(lg.tap) - 1) * size * 0.55 + size * 0.35
+                    for i, line in enumerate(lg.tap):
+                        out.append(_text(cx, y0 + i * size * 1.1, line, size, f"lay l{li}", w - 6))
             return out
 
         return cls, _hold_label(base), inner
 
-    return svg.render(key_fn, "All layers", svg_css(len(layers)))
+    return svg.render(key_fn, "All layers", svg_css(len(layers)), pos_attrs)
 
 
 # ---------------------------------------------------------------- styles + output
@@ -367,7 +379,7 @@ def render_svgs(km: Keymap) -> dict[str, str]:
 
 def render_html(km: Keymap) -> str:
     """Local preview page showing the SVG files."""
-    body = ['<h1>Corne keymap</h1>', '<img src="combined.svg" alt="All layers">']
+    body = ['<h1>Corne keymap</h1>', '<p><a href="typing.html">Typing tutor</a></p>', '<img src="combined.svg" alt="All layers">']
     for name in km.names:
         body += [f'<h2>{_esc(name)}</h2>', f'<img src="{svg_name(name)}" alt="{_esc(name)} layer">']
     return ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'

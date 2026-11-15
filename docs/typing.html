@@ -1,0 +1,894 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corne typing tutor</title>
+<style>
+:root { color-scheme: light dark;
+  --pg-bg:#f6f6f4; --pg-fg:#222; --pg-muted:#76766f; --pg-faint:#b4b4ad; --pg-panel:#fff; --pg-line:#e2e2dc;
+  --pg-ok:#2f8f4e; --pg-bad:#d2392f; --pg-bad-bg:#fbe3e0; --pg-cur-bg:#fff4c9; --pg-accent:#3b6fd8;
+  --hl-tap-cap:#ffd23f; --hl-tap-skirt:#e6a900; --hl-tap-edge:#9c7200;
+  --hl-hold-cap:#9cc3ff; --hl-hold-skirt:#5b8fe0; --hl-hold-edge:#2f5fae;
+  --hl-bad-cap:#ff9d93; --hl-bad-skirt:#e0574b; --hl-bad-edge:#a12a20; }
+@media (prefers-color-scheme: dark) { :root {
+  --pg-bg:#17181a; --pg-fg:#e8e8e6; --pg-muted:#9a9a96; --pg-faint:#55575b; --pg-panel:#202226; --pg-line:#303236;
+  --pg-ok:#6fcf8b; --pg-bad:#ff7a6e; --pg-bad-bg:#4a2422; --pg-cur-bg:#4a4020; --pg-accent:#7aa2ff;
+  --hl-tap-cap:#c79a12; --hl-tap-skirt:#8a6a06; --hl-tap-edge:#3f3002;
+  --hl-hold-cap:#3d6bb8; --hl-hold-skirt:#284b85; --hl-hold-edge:#10203d;
+  --hl-bad-cap:#b8433a; --hl-bad-skirt:#7d2620; --hl-bad-edge:#3b100d; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--pg-bg); color: var(--pg-fg); font: 15px/1.45 system-ui, sans-serif; }
+main { max-width: 1100px; margin: 0 auto; padding: 20px 16px 48px; }
+h1 { font-size: 20px; margin: 0 0 12px; }
+button { font: inherit; padding: 7px 16px; border-radius: 8px; border: 1px solid var(--pg-line);
+  background: var(--pg-panel); color: var(--pg-fg); cursor: pointer; }
+button.primary { background: var(--pg-accent); border-color: var(--pg-accent); color: #fff; }
+button:focus-visible { outline: 2px solid var(--pg-accent); outline-offset: 2px; }
+.mono { font-family: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace; }
+.hidden { display: none !important; }
+.muted { color: var(--pg-muted); }
+
+/* setup */
+textarea { width: 100%; min-height: 220px; padding: 12px; border-radius: 10px; border: 1px solid var(--pg-line);
+  background: var(--pg-panel); color: var(--pg-fg); font: 15px/1.5 ui-monospace, Menlo, Consolas, monospace; resize: vertical; }
+.row { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 12px 0; }
+label { display: inline-flex; gap: 6px; align-items: center; }
+#warn { color: var(--pg-bad); }
+
+/* practice */
+.stats { display: flex; gap: 22px; flex-wrap: wrap; align-items: baseline; }
+.stat b { font-size: 22px; font-variant-numeric: tabular-nums; } .stat span { color: var(--pg-muted); margin-left: 4px; }
+.bar { height: 4px; background: var(--pg-line); border-radius: 2px; margin: 10px 0 0; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--pg-accent); transition: width .15s; }
+.stage { display: flex; justify-content: center; align-items: center; height: 170px; overflow: hidden; margin-top: 8px;
+  white-space: pre; user-select: none; }
+.strip { display: flex; align-items: center; font-size: 30px; }
+.strip .past { flex: 1 1 0; display: flex; justify-content: flex-end; overflow: hidden; color: var(--pg-ok); min-width: 0; }
+.strip .next { flex: 1 1 0; display: flex; overflow: hidden; color: var(--pg-muted); min-width: 0; }
+.strip .err { color: var(--pg-bad); text-decoration: underline; }
+.strip .ws { color: var(--pg-faint); }
+.strip .skip { color: var(--pg-faint); text-decoration: line-through; }
+.cur { flex: none; min-width: 1.1em; padding: 0 .12em; margin: 0 .2em; font-size: 108px; line-height: 150px; text-align: center;
+  background: var(--pg-cur-bg); border-radius: 14px; }
+.cur.ws { color: var(--pg-muted); }
+.cur.shake { animation: shake .22s; background: var(--pg-bad-bg); }
+@keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.hint { min-height: 30px; text-align: center; font-size: 15px; }
+.chip { display: inline-block; padding: 2px 10px; margin: 0 3px; border-radius: 999px; font-weight: 600; }
+.chip.hold { background: var(--hl-hold-cap); color: #0d1f3f; }
+.chip.tap { background: var(--hl-tap-cap); color: #3a2a00; }
+@media (prefers-color-scheme: dark) { .chip.hold, .chip.tap { color: #fff; } }
+.kbd { margin-top: 10px; }
+.kbd svg { width: 100%; height: auto; display: block; }
+.toolbar { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-top: 8px; }
+
+/* highlights on the embedded keymap (id selector outranks the per-layer key colors) */
+#kbd .key.hl-hold { --k-cap: var(--hl-hold-cap); --k-skirt: var(--hl-hold-skirt); --k-edge: var(--hl-hold-edge); --k-dash: none; }
+#kbd .key.hl-tap { --k-cap: var(--hl-tap-cap); --k-skirt: var(--hl-tap-skirt); --k-edge: var(--hl-tap-edge); --k-dash: none; }
+#kbd .key.hl-bad { --k-cap: var(--hl-bad-cap); --k-skirt: var(--hl-bad-skirt); --k-edge: var(--hl-bad-edge); }
+#kbd .key.hl-tap .skirt, #kbd .key.hl-hold .skirt { stroke-width: 2; }
+#kbd .key.hl-tap { animation: pulse 1s ease-in-out infinite; transform-box: fill-box; }
+@keyframes pulse { 50% { opacity: .72; } }
+/* focus mode: only the labels of the layer the current character needs */
+#kbd .lay { display: none; fill: var(--fg); font-weight: 600; }
+#kbd.focus .sub { display: none; }
+#kbd.focus:not(.on-l0) .tap, #kbd.focus:not(.on-l0) .hold { display: none; }
+#kbd.focus.on-l1 .lay.l1, #kbd.focus.on-l1 .hold.l1 { display: inline; }
+#kbd.focus.on-l2 .lay.l2, #kbd.focus.on-l2 .hold.l2 { display: inline; }
+#kbd.focus.on-l3 .lay.l3, #kbd.focus.on-l3 .hold.l3 { display: inline; }
+#kbd.focus.on-l4 .lay.l4, #kbd.focus.on-l4 .hold.l4 { display: inline; }
+#kbd.focus.on-l5 .lay.l5, #kbd.focus.on-l5 .hold.l5 { display: inline; }
+#kbd.focus.on-l6 .lay.l6, #kbd.focus.on-l6 .hold.l6 { display: inline; }
+#kbd.focus.on-l7 .lay.l7, #kbd.focus.on-l7 .hold.l7 { display: inline; }
+#kbd.focus .key.off:not(.hl-tap):not(.hl-hold):not(.hl-bad) { opacity: .3; }
+
+/* results */
+.result { text-align: center; padding: 30px 0 10px; }
+.result .big { font-size: 46px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.missed span { display: inline-block; margin: 3px; padding: 2px 8px; border-radius: 6px; background: var(--pg-bad-bg); }
+@media (max-width: 640px) { .cur { font-size: 72px; line-height: 104px; } .stage { height: 120px; } .strip { font-size: 20px; } }
+</style>
+</head>
+<body>
+<main>
+<h1>Corne typing tutor</h1>
+
+<section id="setup">
+  <textarea id="src" spellcheck="false" placeholder="Paste some text here…"></textarea>
+  <div class="row">
+    <label><input type="checkbox" id="opt-newlines" checked> Line breaks as Enter</label>
+    <label><input type="checkbox" id="opt-typo" checked> Plain ASCII punctuation (“ ” – … → " " - ...)</label>
+    <span id="warn"></span>
+  </div>
+  <div class="row"><button class="primary" id="start">Start typing</button>
+    <span class="muted">Esc stops. Mistakes don't advance: type the right key to move on.</span></div>
+</section>
+
+<section id="play" class="hidden">
+  <div class="stats">
+    <div class="stat"><b id="s-wpm">0</b><span>wpm</span></div>
+    <div class="stat"><b id="s-acc">100</b><span>% accuracy</span></div>
+    <div class="stat"><b id="s-err">0</b><span>mistakes</span></div>
+    <div class="stat"><b id="s-pos">0</b><span id="s-len">/ 0</span></div>
+  </div>
+  <div class="bar"><i id="bar"></i></div>
+  <div class="stage mono"><div class="strip" id="strip"></div></div>
+  <div class="hint" id="hint"></div>
+</section>
+
+<section id="done" class="hidden">
+  <div class="result">
+    <div class="big" id="r-wpm"></div>
+    <div class="muted" id="r-line"></div>
+    <p class="missed" id="r-missed"></p>
+    <div class="row" style="justify-content:center">
+      <button class="primary" id="again">Again</button><button id="new">New text</button></div>
+  </div>
+</section>
+
+<div class="kbd" id="kbdwrap">
+<svg xmlns="http://www.w3.org/2000/svg" role="img" width="954" height="326" viewBox="18 48 954 325.5">
+<title>All layers</title>
+<style>
+:root { --fg:#222; --muted:#6f6f6b; --cap:#f6f6f3; --skirt:#dcdcd7; --edge:#b9b9b3;
+        --none-cap:#f4f4f1; --none-skirt:#e7e7e3; --mod-cap:#f1f0ec; --mod-skirt:#d4d3cd;
+        --S:70%; --Lt:36%; --capS:60%; --capL:95%; --skirtL:84%; --edgeL:62%; --heldCapL:86%; --heldSkirtL:72%;
+        --dish-shade:0.07; --dish-light:0.35; --rim-top:0.6; --rim-bottom:0.3; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg:#ececea; --muted:#9a9a98; --cap:#3a3d42; --skirt:#25272b; --edge:#17181a;
+          --none-cap:#24262a; --none-skirt:#1c1d20; --mod-cap:#34363b; --mod-skirt:#222327;
+          --S:55%; --Lt:74%; --capS:32%; --capL:30%; --skirtL:19%; --edgeL:12%; --heldCapL:40%; --heldSkirtL:27%;
+          --dish-shade:0.25; --dish-light:0.05; --rim-top:0.06; --rim-bottom:0.025; } }
+text { font-family: system-ui, sans-serif; }
+.key { --k-cap: var(--cap); --k-skirt: var(--skirt); --k-edge: var(--edge); --k-dash: none; }
+.skirt { fill: var(--k-skirt); stroke: var(--k-edge); stroke-width: 1; stroke-dasharray: var(--k-dash); }
+.cap { fill: var(--k-cap); }
+.dish { fill: url(#dish); }
+.rim { fill: none; stroke: url(#rim); }
+.dish-shade { stop-color: #000; stop-opacity: var(--dish-shade); }
+.dish-light { stop-color: #fff; stop-opacity: var(--dish-light); }
+.dish-clear { stop-opacity: 0; }
+.rim-top { stop-color: #fff; stop-opacity: var(--rim-top); }
+.rim-bottom { stop-color: #fff; stop-opacity: var(--rim-bottom); }
+.key.none { --k-cap: var(--none-cap); --k-skirt: var(--none-skirt); --k-dash: 3 3; }
+.key.trns { --k-cap: var(--none-cap); --k-skirt: var(--none-skirt); }
+.key.mod { --k-cap: var(--mod-cap); --k-skirt: var(--mod-skirt); }
+.key text { text-anchor: middle; fill: var(--fg); }
+.key .shifted, .key.trns text { fill: var(--muted); }
+.key .hold { font-weight: 600; fill: var(--muted); }
+.key .sub { font-weight: 600; }
+.key.lt.l0 { --k-cap: hsl(220 var(--capS) var(--capL)); --k-skirt: hsl(220 35% var(--skirtL)); --k-edge: hsl(220 30% var(--edgeL)); }
+.key.held.l0 { --k-cap: hsl(220 var(--capS) var(--heldCapL)); --k-skirt: hsl(220 45% var(--heldSkirtL)); --k-edge: hsl(220 50% var(--edgeL)); }
+.key text.l0 { fill: hsl(220 var(--S) var(--Lt)); }
+.key.lt.l1 { --k-cap: hsl(15 var(--capS) var(--capL)); --k-skirt: hsl(15 35% var(--skirtL)); --k-edge: hsl(15 30% var(--edgeL)); }
+.key.held.l1 { --k-cap: hsl(15 var(--capS) var(--heldCapL)); --k-skirt: hsl(15 45% var(--heldSkirtL)); --k-edge: hsl(15 50% var(--edgeL)); }
+.key text.l1 { fill: hsl(15 var(--S) var(--Lt)); }
+.key.lt.l2 { --k-cap: hsl(165 var(--capS) var(--capL)); --k-skirt: hsl(165 35% var(--skirtL)); --k-edge: hsl(165 30% var(--edgeL)); }
+.key.held.l2 { --k-cap: hsl(165 var(--capS) var(--heldCapL)); --k-skirt: hsl(165 45% var(--heldSkirtL)); --k-edge: hsl(165 50% var(--edgeL)); }
+.key text.l2 { fill: hsl(165 var(--S) var(--Lt)); }
+.key.lt.l3 { --k-cap: hsl(280 var(--capS) var(--capL)); --k-skirt: hsl(280 35% var(--skirtL)); --k-edge: hsl(280 30% var(--edgeL)); }
+.key.held.l3 { --k-cap: hsl(280 var(--capS) var(--heldCapL)); --k-skirt: hsl(280 45% var(--heldSkirtL)); --k-edge: hsl(280 50% var(--edgeL)); }
+.key text.l3 { fill: hsl(280 var(--S) var(--Lt)); }
+.key.lt.l4 { --k-cap: hsl(45 var(--capS) var(--capL)); --k-skirt: hsl(45 35% var(--skirtL)); --k-edge: hsl(45 30% var(--edgeL)); }
+.key.held.l4 { --k-cap: hsl(45 var(--capS) var(--heldCapL)); --k-skirt: hsl(45 45% var(--heldSkirtL)); --k-edge: hsl(45 50% var(--edgeL)); }
+.key text.l4 { fill: hsl(45 var(--S) var(--Lt)); }
+.key.lt.l5 { --k-cap: hsl(200 var(--capS) var(--capL)); --k-skirt: hsl(200 35% var(--skirtL)); --k-edge: hsl(200 30% var(--edgeL)); }
+.key.held.l5 { --k-cap: hsl(200 var(--capS) var(--heldCapL)); --k-skirt: hsl(200 45% var(--heldSkirtL)); --k-edge: hsl(200 50% var(--edgeL)); }
+.key text.l5 { fill: hsl(200 var(--S) var(--Lt)); }
+.key.lt.l6 { --k-cap: hsl(330 var(--capS) var(--capL)); --k-skirt: hsl(330 35% var(--skirtL)); --k-edge: hsl(330 30% var(--edgeL)); }
+.key.held.l6 { --k-cap: hsl(330 var(--capS) var(--heldCapL)); --k-skirt: hsl(330 45% var(--heldSkirtL)); --k-edge: hsl(330 50% var(--edgeL)); }
+.key text.l6 { fill: hsl(330 var(--S) var(--Lt)); }
+.key.lt.l7 { --k-cap: hsl(100 var(--capS) var(--capL)); --k-skirt: hsl(100 35% var(--skirtL)); --k-edge: hsl(100 30% var(--edgeL)); }
+.key.held.l7 { --k-cap: hsl(100 var(--capS) var(--heldCapL)); --k-skirt: hsl(100 45% var(--heldSkirtL)); --k-edge: hsl(100 50% var(--edgeL)); }
+.key text.l7 { fill: hsl(100 var(--S) var(--Lt)); }
+</style>
+<defs>
+  <linearGradient id="dish" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" class="dish-shade"/>
+    <stop offset="0.5" class="dish-shade dish-clear"/>
+    <stop offset="0.5" class="dish-light dish-clear"/>
+    <stop offset="1" class="dish-light"/>
+  </linearGradient>
+  <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" class="rim-top"/>
+    <stop offset="1" class="rim-bottom"/>
+  </linearGradient>
+  <g id="key-54x54">
+    <rect class="skirt" width="54" height="54" rx="6"/>
+    <rect class="cap" x="4" y="2" width="46" height="38" rx="4"/>
+    <rect class="dish" x="4" y="2" width="46" height="38" rx="4"/>
+    <rect class="rim" x="4.6" y="2.6" width="44.8" height="36.8" rx="3.4" stroke-width="1.2"/>
+  </g>
+  <g id="key-54x84">
+    <rect class="skirt" width="54" height="84" rx="6"/>
+    <rect class="cap" x="4" y="2" width="46" height="68" rx="4"/>
+    <rect class="dish" x="4" y="2" width="46" height="68" rx="4"/>
+    <rect class="rim" x="4.6" y="2.6" width="44.8" height="66.8" rx="3.4" stroke-width="1.2"/>
+  </g>
+</defs>
+<g class="key key" data-pos="0,0" transform="translate(33 85.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">Esc</text>
+</g>
+<g class="key key" data-pos="0,1" transform="translate(93 85.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">Q</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">[</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">{</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="7">F12</text>
+  <text x="38.5" y="37.5" class="sub l5" font-size="6">Ctrl+Z</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">[</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">{</text>
+  <text x="27" y="26.2" class="lay l3" font-size="15">F12</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+Z</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+Q</text>
+</g>
+<g class="key key" data-pos="0,2" transform="translate(153 70.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">W</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">7</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">&amp;</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="7">F7</text>
+  <text x="38.5" y="37.5" class="sub l5" font-size="6">Ctrl+X</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">7</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">&amp;</text>
+  <text x="27" y="26.2" class="lay l3" font-size="15">F7</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+X</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+W</text>
+</g>
+<g class="key key" data-pos="0,3" transform="translate(213 63)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">E</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">8</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">*</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="7">F8</text>
+  <text x="38.5" y="37.5" class="sub l5" font-size="6">Ctrl+C</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">8</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">*</text>
+  <text x="27" y="26.2" class="lay l3" font-size="15">F8</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+C</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+E</text>
+  <text x="27" y="26.2" class="lay l7" font-size="13.8">Alt+D</text>
+</g>
+<g class="key key" data-pos="0,4" transform="translate(273 70.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">R</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">9</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">(</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="7">F9</text>
+  <text x="38.5" y="37.5" class="sub l5" font-size="6">Ctrl+V</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">9</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">(</text>
+  <text x="27" y="26.2" class="lay l3" font-size="15">F9</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+V</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+R</text>
+  <text x="27" y="26.2" class="lay l7" font-size="6.3">Shift+Alt+D</text>
+</g>
+<g class="key key" data-pos="0,5" transform="translate(333 78)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">T</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">]</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">}</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="6">PSCREEN</text>
+  <text x="38.5" y="37.5" class="sub l5" font-size="6">C_S(Z)</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">]</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">}</text>
+  <text x="27" y="19" class="lay l3" font-size="10">Print</text>
+  <text x="27" y="30" class="lay l3" font-size="10">Screen</text>
+  <text x="27" y="26.2" class="lay l5" font-size="6">Ctrl+Shift+Z</text>
+  <text x="27" y="26.2" class="lay l7" font-size="6.3">Shift+Gui+D</text>
+</g>
+<g class="key key" data-pos="3,0" transform="translate(393 108)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="11">Vol +</text>
+</g>
+<g class="key key" data-pos="1,0" transform="translate(33 145.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">F14</text>
+</g>
+<g class="key key" data-pos="1,1" transform="translate(93 145.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">A</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">;</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">:</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="7">F11</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">;</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">:</text>
+  <text x="27" y="26.2" class="lay l3" font-size="15">F11</text>
+  <text x="27" y="26.2" class="lay l4" font-size="15">LGui</text>
+  <text x="27" y="26.2" class="lay l5" font-size="15">LGui</text>
+  <text x="27" y="26.2" class="lay l6" font-size="11.5">LShift</text>
+  <text x="27" y="26.2" class="lay l7" font-size="11.5">LShift</text>
+</g>
+<g class="key key" data-pos="1,2" transform="translate(153 130.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="50" class="hold" font-size="9">Alt</text>
+  <text x="27" y="25.5" class="tap" font-size="12.9">S</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">4</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">$</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="7">F4</text>
+  <text x="38.5" y="37.5" class="sub l6" font-size="6.6">Gui+4</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">4</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">$</text>
+  <text x="27" y="26.2" class="lay l3" font-size="15">F4</text>
+  <text x="27" y="26.2" class="lay l4" font-size="15">LAlt</text>
+  <text x="27" y="26.2" class="lay l5" font-size="15">LAlt</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+4</text>
+  <text x="27" y="26.2" class="lay l7" font-size="13.8">Alt+4</text>
+</g>
+<g class="key key" data-pos="1,3" transform="translate(213 123)">
+  <use href="#key-54x54"/>
+  <text x="27" y="50" class="hold" font-size="9">Ctrl</text>
+  <text x="27" y="25.5" class="tap" font-size="12.9">D</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">5</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">%</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="7">F5</text>
+  <text x="38.5" y="37.5" class="sub l6" font-size="6.6">Gui+5</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">5</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">%</text>
+  <text x="27" y="26.2" class="lay l3" font-size="15">F5</text>
+  <text x="27" y="26.2" class="lay l4" font-size="13.8">LCtrl</text>
+  <text x="27" y="26.2" class="lay l5" font-size="13.8">LCtrl</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+5</text>
+  <text x="27" y="26.2" class="lay l7" font-size="13.8">Alt+5</text>
+</g>
+<g class="key key" data-pos="1,4" transform="translate(273 130.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="50" class="hold" font-size="9">Shift</text>
+  <text x="27" y="25.5" class="tap" font-size="12.9">F</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">6</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">^</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="7">F6</text>
+  <text x="38.5" y="37.5" class="sub l6" font-size="6.6">Gui+F</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">6</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">^</text>
+  <text x="27" y="26.2" class="lay l3" font-size="15">F6</text>
+  <text x="27" y="26.2" class="lay l4" font-size="11.5">LShift</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">LShift</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+F</text>
+</g>
+<g class="key key" data-pos="1,5" transform="translate(333 138)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">G</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">=</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">+</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="6">SCROLLLOCK</text>
+  <text x="38.5" y="37.5" class="sub l7" font-size="6.6">Gui+D</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">=</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">+</text>
+  <text x="27" y="19" class="lay l3" font-size="10">Scroll</text>
+  <text x="27" y="30" class="lay l3" font-size="10">Lock</text>
+  <text x="27" y="26.2" class="lay l7" font-size="13.8">Gui+D</text>
+</g>
+<g class="key key" data-pos="3,1" transform="translate(393 168)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="11">Vol -</text>
+</g>
+<g class="key none" data-pos="2,0" transform="translate(33 205.5)">
+  <use href="#key-54x54"/>
+</g>
+<g class="key key lt l5" data-pos="2,1" transform="translate(93 205.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="50" class="hold l5" font-size="9">BUTTON</text>
+  <text x="27" y="25.5" class="tap" font-size="12.9">Z</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">`</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">~</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="7">F10</text>
+  <text x="38.5" y="37.5" class="sub l5" font-size="6">Ctrl+Z</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">`</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">~</text>
+  <text x="27" y="26.2" class="lay l3" font-size="15">F10</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+Z</text>
+</g>
+<g class="key key" data-pos="2,2" transform="translate(153 190.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="50" class="hold" font-size="9">AltGr</text>
+  <text x="27" y="25.5" class="tap" font-size="12.9">X</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">1</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">!</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="7">F1</text>
+  <text x="38.5" y="37.5" class="sub l5" font-size="6">Ctrl+X</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">1</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">!</text>
+  <text x="27" y="26.2" class="lay l3" font-size="15">F1</text>
+  <text x="27" y="26.2" class="lay l4" font-size="15">RAlt</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+X</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+1</text>
+  <text x="27" y="26.2" class="lay l7" font-size="13.8">Alt+1</text>
+</g>
+<g class="key key" data-pos="2,3" transform="translate(213 183)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">C</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">2</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">@</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="7">F2</text>
+  <text x="38.5" y="37.5" class="sub l5" font-size="6">Ctrl+C</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">2</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">@</text>
+  <text x="27" y="26.2" class="lay l3" font-size="15">F2</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+C</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+2</text>
+  <text x="27" y="26.2" class="lay l7" font-size="13.8">Alt+2</text>
+</g>
+<g class="key key" data-pos="2,4" transform="translate(273 190.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">V</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">3</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">#</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="7">F3</text>
+  <text x="38.5" y="37.5" class="sub l5" font-size="6">Ctrl+V</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">3</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">#</text>
+  <text x="27" y="26.2" class="lay l3" font-size="15">F3</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+V</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+3</text>
+  <text x="27" y="26.2" class="lay l7" font-size="13.8">Alt+3</text>
+</g>
+<g class="key key" data-pos="2,5" transform="translate(333 198)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">B</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">\</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">|</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="6.6">Pause</text>
+  <text x="38.5" y="37.5" class="sub l5" font-size="6">C_S(Z)</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">\</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">|</text>
+  <text x="27" y="26.2" class="lay l3" font-size="13.8">Pause</text>
+  <text x="27" y="26.2" class="lay l5" font-size="6">Ctrl+Shift+Z</text>
+</g>
+<g class="key layer lt l6" data-pos="3,3" transform="translate(243 258)">
+  <use href="#key-54x54"/>
+  <text x="27" y="50" class="hold l6" font-size="9">WM+Gui</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">.</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">(</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="7">Menu</text>
+  <text x="38.5" y="37.5" class="sub l5" font-size="6">Mouse 3</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">.</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">(</text>
+  <text x="27" y="26.2" class="lay l3" font-size="15">Menu</text>
+  <text x="27" y="19" class="lay l5" font-size="10">Mouse</text>
+  <text x="27" y="30" class="lay l5" font-size="10">3</text>
+</g>
+<g class="key key lt l4" data-pos="3,4" transform="rotate(15 270 546) translate(243 258)">
+  <use href="#key-54x54"/>
+  <text x="27" y="50" class="hold l4" font-size="9">NAV</text>
+  <text x="27" y="25.5" class="tap" font-size="11">Space</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">0</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">)</text>
+  <text x="15.5" y="37.5" class="sub l3" font-size="6.6">Space</text>
+  <text x="38.5" y="37.5" class="sub l5" font-size="6">Mouse 1</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">0</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">)</text>
+  <text x="27" y="26.2" class="lay l3" font-size="13.8">Space</text>
+  <text x="27" y="19" class="lay l5" font-size="10">Mouse</text>
+  <text x="27" y="30" class="lay l5" font-size="10">1</text>
+</g>
+<g class="key key lt l7" data-pos="3,5" transform="rotate(30 324 558) translate(243 258)">
+  <use href="#key-54x84"/>
+  <text x="27" y="80" class="hold l7" font-size="9">APP</text>
+  <text x="27" y="40.5" class="tap" font-size="13">Tab</text>
+  <text x="15.5" y="9.5" class="sub l1" font-size="7">-</text>
+  <text x="38.5" y="9.5" class="sub l2" font-size="7">_</text>
+  <text x="15.5" y="67.5" class="sub l3" font-size="7">Tab</text>
+  <text x="38.5" y="67.5" class="sub l5" font-size="6">Mouse 2</text>
+  <text x="27" y="41.2" class="lay l1" font-size="15">-</text>
+  <text x="27" y="41.2" class="lay l2" font-size="15">_</text>
+  <text x="27" y="41.2" class="lay l3" font-size="15">Tab</text>
+  <text x="27" y="34" class="lay l5" font-size="10">Mouse</text>
+  <text x="27" y="45" class="lay l5" font-size="10">2</text>
+</g>
+<g class="key none" data-pos="0,6" transform="translate(543 108)">
+  <use href="#key-54x54"/>
+</g>
+<g class="key key" data-pos="0,7" transform="translate(603 78)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">Y</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="6">C_S(Z)</text>
+  <text x="38.5" y="9.5" class="sub l5" font-size="6">C_S(Z)</text>
+  <text x="15.5" y="37.5" class="sub l6" font-size="6.6">Gui+6</text>
+  <text x="38.5" y="37.5" class="sub l7" font-size="6.6">Alt+6</text>
+  <text x="27" y="26.2" class="lay l4" font-size="6">Ctrl+Shift+Z</text>
+  <text x="27" y="26.2" class="lay l5" font-size="6">Ctrl+Shift+Z</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+6</text>
+  <text x="27" y="26.2" class="lay l7" font-size="13.8">Alt+6</text>
+</g>
+<g class="key key" data-pos="0,8" transform="translate(663 70.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">U</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="6">Ctrl+V</text>
+  <text x="38.5" y="9.5" class="sub l5" font-size="6">Ctrl+V</text>
+  <text x="15.5" y="37.5" class="sub l6" font-size="6.6">Gui+7</text>
+  <text x="38.5" y="37.5" class="sub l7" font-size="6.6">Alt+7</text>
+  <text x="27" y="26.2" class="lay l4" font-size="11.5">Ctrl+V</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+V</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+7</text>
+  <text x="27" y="26.2" class="lay l7" font-size="13.8">Alt+7</text>
+</g>
+<g class="key key" data-pos="0,9" transform="translate(723 63)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">I</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="6">Ctrl+C</text>
+  <text x="38.5" y="9.5" class="sub l5" font-size="6">Ctrl+C</text>
+  <text x="15.5" y="37.5" class="sub l6" font-size="6.6">Gui+8</text>
+  <text x="38.5" y="37.5" class="sub l7" font-size="6.6">Alt+8</text>
+  <text x="27" y="26.2" class="lay l4" font-size="11.5">Ctrl+C</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+C</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+8</text>
+  <text x="27" y="26.2" class="lay l7" font-size="13.8">Alt+8</text>
+</g>
+<g class="key key" data-pos="0,10" transform="translate(783 70.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">O</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="6">Ctrl+X</text>
+  <text x="38.5" y="9.5" class="sub l5" font-size="6">Ctrl+X</text>
+  <text x="15.5" y="37.5" class="sub l6" font-size="6.6">Gui+9</text>
+  <text x="38.5" y="37.5" class="sub l7" font-size="6.6">Alt+9</text>
+  <text x="27" y="26.2" class="lay l4" font-size="11.5">Ctrl+X</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+X</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+9</text>
+  <text x="27" y="26.2" class="lay l7" font-size="13.8">Alt+9</text>
+</g>
+<g class="key key" data-pos="0,11" transform="translate(843 85.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">P</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="6">Ctrl+Z</text>
+  <text x="38.5" y="9.5" class="sub l5" font-size="6">Ctrl+Z</text>
+  <text x="15.5" y="37.5" class="sub l6" font-size="6.6">Gui+0</text>
+  <text x="38.5" y="37.5" class="sub l7" font-size="6.6">Alt+0</text>
+  <text x="27" y="26.2" class="lay l4" font-size="11.5">Ctrl+Z</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+Z</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+0</text>
+  <text x="27" y="26.2" class="lay l7" font-size="13.8">Alt+0</text>
+</g>
+<g class="key none" data-pos="3,9" transform="translate(903 85.5)">
+  <use href="#key-54x54"/>
+</g>
+<g class="key none" data-pos="1,6" transform="translate(543 168)">
+  <use href="#key-54x54"/>
+</g>
+<g class="key key" data-pos="1,7" transform="translate(603 138)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">H</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="7">Left</text>
+  <text x="38.5" y="9.5" class="sub l6" font-size="6.6">Gui+H</text>
+  <text x="15.5" y="37.5" class="sub l7" font-size="6">LALT(LEFT)</text>
+  <text x="27" y="26.2" class="lay l4" font-size="15">Left</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+H</text>
+  <text x="27" y="26.2" class="lay l7" font-size="8.6">Alt+Left</text>
+</g>
+<g class="key key" data-pos="1,8" transform="translate(663 130.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="50" class="hold" font-size="9">Shift</text>
+  <text x="27" y="25.5" class="tap" font-size="12.9">J</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="7">Down</text>
+  <text x="38.5" y="9.5" class="sub l6" font-size="6.6">Gui+J</text>
+  <text x="15.5" y="37.5" class="sub l7" font-size="6">LALT(DOWN)</text>
+  <text x="27" y="26.2" class="lay l1" font-size="11.5">LShift</text>
+  <text x="27" y="26.2" class="lay l2" font-size="11.5">LShift</text>
+  <text x="27" y="26.2" class="lay l3" font-size="11.5">LShift</text>
+  <text x="27" y="26.2" class="lay l4" font-size="15">Down</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">LShift</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+J</text>
+  <text x="27" y="26.2" class="lay l7" font-size="8.6">Alt+Down</text>
+</g>
+<g class="key key" data-pos="1,9" transform="translate(723 123)">
+  <use href="#key-54x54"/>
+  <text x="27" y="50" class="hold" font-size="9">Ctrl</text>
+  <text x="27" y="25.5" class="tap" font-size="12.9">K</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="7">Up</text>
+  <text x="38.5" y="9.5" class="sub l6" font-size="6.6">Gui+K</text>
+  <text x="15.5" y="37.5" class="sub l7" font-size="6">Alt+Up</text>
+  <text x="27" y="26.2" class="lay l1" font-size="13.8">LCtrl</text>
+  <text x="27" y="26.2" class="lay l2" font-size="13.8">LCtrl</text>
+  <text x="27" y="26.2" class="lay l3" font-size="13.8">LCtrl</text>
+  <text x="27" y="26.2" class="lay l4" font-size="15">Up</text>
+  <text x="27" y="26.2" class="lay l5" font-size="13.8">LCtrl</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+K</text>
+  <text x="27" y="26.2" class="lay l7" font-size="11.5">Alt+Up</text>
+</g>
+<g class="key key" data-pos="1,10" transform="translate(783 130.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="50" class="hold" font-size="9">Alt</text>
+  <text x="27" y="25.5" class="tap" font-size="12.9">L</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="6.6">Right</text>
+  <text x="38.5" y="9.5" class="sub l6" font-size="6.6">Gui+L</text>
+  <text x="15.5" y="37.5" class="sub l7" font-size="6">LALT(RIGHT)</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">LAlt</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">LAlt</text>
+  <text x="27" y="26.2" class="lay l3" font-size="15">LAlt</text>
+  <text x="27" y="26.2" class="lay l4" font-size="13.8">Right</text>
+  <text x="27" y="26.2" class="lay l5" font-size="15">LAlt</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+L</text>
+  <text x="27" y="26.2" class="lay l7" font-size="7.7">Alt+Right</text>
+</g>
+<g class="key key" data-pos="1,11" transform="translate(843 145.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">&#x27;</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="6">CAPSLOCK</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">LGui</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">LGui</text>
+  <text x="27" y="26.2" class="lay l3" font-size="15">LGui</text>
+  <text x="27" y="19" class="lay l4" font-size="10">Caps</text>
+  <text x="27" y="30" class="lay l4" font-size="10">Lock</text>
+  <text x="27" y="26.2" class="lay l5" font-size="15">LGui</text>
+</g>
+<g class="key none" data-pos="3,10" transform="translate(903 145.5)">
+  <use href="#key-54x54"/>
+</g>
+<g class="key key" data-pos="2,7" transform="translate(603 198)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">N</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="7">Home</text>
+  <text x="38.5" y="9.5" class="sub l5" font-size="6">C_S(Z)</text>
+  <text x="15.5" y="37.5" class="sub l6" font-size="7">WH_L</text>
+  <text x="27" y="26.2" class="lay l4" font-size="15">Home</text>
+  <text x="27" y="26.2" class="lay l5" font-size="6">Ctrl+Shift+Z</text>
+  <text x="27" y="13.5" class="lay l6" font-size="10">Mouse</text>
+  <text x="27" y="24.5" class="lay l6" font-size="10">Wheel</text>
+  <text x="27" y="35.5" class="lay l6" font-size="10">Left</text>
+</g>
+<g class="key key" data-pos="2,8" transform="translate(663 190.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">M</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="6">PGDOWN</text>
+  <text x="38.5" y="9.5" class="sub l5" font-size="6">Ctrl+V</text>
+  <text x="15.5" y="37.5" class="sub l6" font-size="7">WH_D</text>
+  <text x="27" y="19" class="lay l4" font-size="10">Page</text>
+  <text x="27" y="30" class="lay l4" font-size="10">Down</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+V</text>
+  <text x="27" y="13.5" class="lay l6" font-size="10">Mouse</text>
+  <text x="27" y="24.5" class="lay l6" font-size="10">Wheel</text>
+  <text x="27" y="35.5" class="lay l6" font-size="10">Down</text>
+</g>
+<g class="key key" data-pos="2,9" transform="translate(723 183)">
+  <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">,</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="6">Page Up</text>
+  <text x="38.5" y="9.5" class="sub l5" font-size="6">Ctrl+C</text>
+  <text x="15.5" y="37.5" class="sub l6" font-size="7">WH_U</text>
+  <text x="27" y="19" class="lay l4" font-size="10">Page</text>
+  <text x="27" y="30" class="lay l4" font-size="10">Up</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+C</text>
+  <text x="27" y="13.5" class="lay l6" font-size="10">Mouse</text>
+  <text x="27" y="24.5" class="lay l6" font-size="10">Wheel</text>
+  <text x="27" y="35.5" class="lay l6" font-size="10">Up</text>
+</g>
+<g class="key key" data-pos="2,10" transform="translate(783 190.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="50" class="hold" font-size="9">AltGr</text>
+  <text x="27" y="25.5" class="tap" font-size="12.9">.</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="7">End</text>
+  <text x="38.5" y="9.5" class="sub l5" font-size="6">Ctrl+X</text>
+  <text x="15.5" y="37.5" class="sub l6" font-size="7">WH_R</text>
+  <text x="27" y="26.2" class="lay l1" font-size="15">RAlt</text>
+  <text x="27" y="26.2" class="lay l2" font-size="15">RAlt</text>
+  <text x="27" y="26.2" class="lay l3" font-size="15">RAlt</text>
+  <text x="27" y="26.2" class="lay l4" font-size="15">End</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+X</text>
+  <text x="27" y="13.5" class="lay l6" font-size="10">Mouse</text>
+  <text x="27" y="24.5" class="lay l6" font-size="10">Wheel</text>
+  <text x="27" y="35.5" class="lay l6" font-size="10">Right</text>
+</g>
+<g class="key key lt l5" data-pos="2,11" transform="translate(843 205.5)">
+  <use href="#key-54x54"/>
+  <text x="27" y="50" class="hold l5" font-size="9">BUTTON</text>
+  <text x="27" y="25.5" class="tap" font-size="12.9">/</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="6">Insert</text>
+  <text x="38.5" y="9.5" class="sub l5" font-size="6">Ctrl+Z</text>
+  <text x="27" y="26.2" class="lay l4" font-size="11.5">Insert</text>
+  <text x="27" y="26.2" class="lay l5" font-size="11.5">Ctrl+Z</text>
+</g>
+<g class="key none" data-pos="3,11" transform="translate(903 205.5)">
+  <use href="#key-54x54"/>
+</g>
+<g class="key key lt l2" data-pos="3,6" transform="rotate(-30 666 558) translate(693 258)">
+  <use href="#key-54x84"/>
+  <text x="27" y="80" class="hold l2" font-size="9">SYM</text>
+  <text x="27" y="40.5" class="tap" font-size="11">Enter</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="6.6">Enter</text>
+  <text x="38.5" y="9.5" class="sub l5" font-size="6">Mouse 2</text>
+  <text x="27" y="41.2" class="lay l4" font-size="13.8">Enter</text>
+  <text x="27" y="34" class="lay l5" font-size="10">Mouse</text>
+  <text x="27" y="45" class="lay l5" font-size="10">2</text>
+</g>
+<g class="key key lt l1" data-pos="3,7" transform="rotate(-15 720 546) translate(693 258)">
+  <use href="#key-54x54"/>
+  <text x="27" y="50" class="hold l1" font-size="9">NUM</text>
+  <text x="27" y="25.5" class="tap" font-size="12.9">Bksp</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="7">Bksp</text>
+  <text x="38.5" y="9.5" class="sub l5" font-size="6">Mouse 1</text>
+  <text x="27" y="26.2" class="lay l4" font-size="15">Bksp</text>
+  <text x="27" y="19" class="lay l5" font-size="10">Mouse</text>
+  <text x="27" y="30" class="lay l5" font-size="10">1</text>
+</g>
+<g class="key key lt l3" data-pos="3,8" transform="translate(693 258)">
+  <use href="#key-54x54"/>
+  <text x="27" y="50" class="hold l3" font-size="9">FUN</text>
+  <text x="27" y="25.5" class="tap" font-size="12.9">Del</text>
+  <text x="15.5" y="9.5" class="sub l4" font-size="7">Del</text>
+  <text x="38.5" y="9.5" class="sub l5" font-size="6">Mouse 3</text>
+  <text x="27" y="26.2" class="lay l4" font-size="15">Del</text>
+  <text x="27" y="19" class="lay l5" font-size="10">Mouse</text>
+  <text x="27" y="30" class="lay l5" font-size="10">3</text>
+</g>
+</svg>
+</div>
+<div class="toolbar"><button id="toggle-focus">Show all labels</button><button id="toggle-kbd">Hide keyboard</button></div>
+</main>
+
+<script>
+const DATA = {"chords":{"\t":{"tap":"3,5","hold":[],"layer":null,"shift":false},"\n":{"tap":"3,6","hold":[],"layer":null,"shift":false}," ":{"tap":"3,4","hold":[],"layer":null,"shift":false},"!":{"tap":"2,2","hold":["3,6"],"layer":"SYM","shift":false},"\"":{"tap":"1,11","hold":["1,4"],"layer":null,"shift":true},"#":{"tap":"2,4","hold":["3,6"],"layer":"SYM","shift":false},"$":{"tap":"1,2","hold":["3,6"],"layer":"SYM","shift":false},"%":{"tap":"1,3","hold":["3,6"],"layer":"SYM","shift":false},"&":{"tap":"0,2","hold":["3,6"],"layer":"SYM","shift":false},"'":{"tap":"1,11","hold":[],"layer":null,"shift":false},"(":{"tap":"0,4","hold":["3,6"],"layer":"SYM","shift":false},")":{"tap":"3,4","hold":["3,6"],"layer":"SYM","shift":false},"*":{"tap":"0,3","hold":["3,6"],"layer":"SYM","shift":false},"+":{"tap":"1,5","hold":["3,6"],"layer":"SYM","shift":false},",":{"tap":"2,9","hold":[],"layer":null,"shift":false},"-":{"tap":"3,5","hold":["3,7"],"layer":"NUM","shift":false},".":{"tap":"2,10","hold":[],"layer":null,"shift":false},"/":{"tap":"2,11","hold":[],"layer":null,"shift":false},"0":{"tap":"3,4","hold":["3,7"],"layer":"NUM","shift":false},"1":{"tap":"2,2","hold":["3,7"],"layer":"NUM","shift":false},"2":{"tap":"2,3","hold":["3,7"],"layer":"NUM","shift":false},"3":{"tap":"2,4","hold":["3,7"],"layer":"NUM","shift":false},"4":{"tap":"1,2","hold":["3,7"],"layer":"NUM","shift":false},"5":{"tap":"1,3","hold":["3,7"],"layer":"NUM","shift":false},"6":{"tap":"1,4","hold":["3,7"],"layer":"NUM","shift":false},"7":{"tap":"0,2","hold":["3,7"],"layer":"NUM","shift":false},"8":{"tap":"0,3","hold":["3,7"],"layer":"NUM","shift":false},"9":{"tap":"0,4","hold":["3,7"],"layer":"NUM","shift":false},":":{"tap":"1,1","hold":["3,6"],"layer":"SYM","shift":false},";":{"tap":"1,1","hold":["3,7"],"layer":"NUM","shift":false},"<":{"tap":"2,9","hold":["1,4"],"layer":null,"shift":true},"=":{"tap":"1,5","hold":["3,7"],"layer":"NUM","shift":false},">":{"tap":"2,10","hold":["1,4"],"layer":null,"shift":true},"?":{"tap":"2,11","hold":["1,4"],"layer":null,"shift":true},"@":{"tap":"2,3","hold":["3,6"],"layer":"SYM","shift":false},"A":{"tap":"1,1","hold":["1,8"],"layer":null,"shift":true},"B":{"tap":"2,5","hold":["1,8"],"layer":null,"shift":true},"C":{"tap":"2,3","hold":["1,8"],"layer":null,"shift":true},"D":{"tap":"1,3","hold":["1,8"],"layer":null,"shift":true},"E":{"tap":"0,3","hold":["1,8"],"layer":null,"shift":true},"F":{"tap":"1,4","hold":["1,8"],"layer":null,"shift":true},"G":{"tap":"1,5","hold":["1,8"],"layer":null,"shift":true},"H":{"tap":"1,7","hold":["1,4"],"layer":null,"shift":true},"I":{"tap":"0,9","hold":["1,4"],"layer":null,"shift":true},"J":{"tap":"1,8","hold":["1,4"],"layer":null,"shift":true},"K":{"tap":"1,9","hold":["1,4"],"layer":null,"shift":true},"L":{"tap":"1,10","hold":["1,4"],"layer":null,"shift":true},"M":{"tap":"2,8","hold":["1,4"],"layer":null,"shift":true},"N":{"tap":"2,7","hold":["1,4"],"layer":null,"shift":true},"O":{"tap":"0,10","hold":["1,4"],"layer":null,"shift":true},"P":{"tap":"0,11","hold":["1,4"],"layer":null,"shift":true},"Q":{"tap":"0,1","hold":["1,8"],"layer":null,"shift":true},"R":{"tap":"0,4","hold":["1,8"],"layer":null,"shift":true},"S":{"tap":"1,2","hold":["1,8"],"layer":null,"shift":true},"T":{"tap":"0,5","hold":["1,8"],"layer":null,"shift":true},"U":{"tap":"0,8","hold":["1,4"],"layer":null,"shift":true},"V":{"tap":"2,4","hold":["1,8"],"layer":null,"shift":true},"W":{"tap":"0,2","hold":["1,8"],"layer":null,"shift":true},"X":{"tap":"2,2","hold":["1,8"],"layer":null,"shift":true},"Y":{"tap":"0,7","hold":["1,4"],"layer":null,"shift":true},"Z":{"tap":"2,1","hold":["1,8"],"layer":null,"shift":true},"[":{"tap":"0,1","hold":["3,7"],"layer":"NUM","shift":false},"\\":{"tap":"2,5","hold":["3,7"],"layer":"NUM","shift":false},"]":{"tap":"0,5","hold":["3,7"],"layer":"NUM","shift":false},"^":{"tap":"1,4","hold":["3,6"],"layer":"SYM","shift":false},"_":{"tap":"3,5","hold":["3,6"],"layer":"SYM","shift":false},"`":{"tap":"2,1","hold":["3,7"],"layer":"NUM","shift":false},"a":{"tap":"1,1","hold":[],"layer":null,"shift":false},"b":{"tap":"2,5","hold":[],"layer":null,"shift":false},"c":{"tap":"2,3","hold":[],"layer":null,"shift":false},"d":{"tap":"1,3","hold":[],"layer":null,"shift":false},"e":{"tap":"0,3","hold":[],"layer":null,"shift":false},"f":{"tap":"1,4","hold":[],"layer":null,"shift":false},"g":{"tap":"1,5","hold":[],"layer":null,"shift":false},"h":{"tap":"1,7","hold":[],"layer":null,"shift":false},"i":{"tap":"0,9","hold":[],"layer":null,"shift":false},"j":{"tap":"1,8","hold":[],"layer":null,"shift":false},"k":{"tap":"1,9","hold":[],"layer":null,"shift":false},"l":{"tap":"1,10","hold":[],"layer":null,"shift":false},"m":{"tap":"2,8","hold":[],"layer":null,"shift":false},"n":{"tap":"2,7","hold":[],"layer":null,"shift":false},"o":{"tap":"0,10","hold":[],"layer":null,"shift":false},"p":{"tap":"0,11","hold":[],"layer":null,"shift":false},"q":{"tap":"0,1","hold":[],"layer":null,"shift":false},"r":{"tap":"0,4","hold":[],"layer":null,"shift":false},"s":{"tap":"1,2","hold":[],"layer":null,"shift":false},"t":{"tap":"0,5","hold":[],"layer":null,"shift":false},"u":{"tap":"0,8","hold":[],"layer":null,"shift":false},"v":{"tap":"2,4","hold":[],"layer":null,"shift":false},"w":{"tap":"0,2","hold":[],"layer":null,"shift":false},"x":{"tap":"2,2","hold":[],"layer":null,"shift":false},"y":{"tap":"0,7","hold":[],"layer":null,"shift":false},"z":{"tap":"2,1","hold":[],"layer":null,"shift":false},"{":{"tap":"0,1","hold":["3,6"],"layer":"SYM","shift":false},"|":{"tap":"2,5","hold":["3,6"],"layer":"SYM","shift":false},"}":{"tap":"0,5","hold":["3,6"],"layer":"SYM","shift":false},"~":{"tap":"2,1","hold":["3,6"],"layer":"SYM","shift":false}},"names":{"0,0":"Esc","0,1":"Q","0,2":"W","0,3":"E","0,4":"R","0,5":"T","3,0":"Vol +","1,0":"F14","1,1":"A","1,2":"S","1,3":"D","1,4":"F","1,5":"G","3,1":"Vol -","2,0":"","2,1":"Z","2,2":"X","2,3":"C","2,4":"V","2,5":"B","3,3":"WM+Gui","3,4":"Space","3,5":"Tab","0,6":"","0,7":"Y","0,8":"U","0,9":"I","0,10":"O","0,11":"P","3,9":"","1,6":"","1,7":"H","1,8":"J","1,9":"K","1,10":"L","1,11":"'","3,10":"","2,7":"N","2,8":"M","2,9":",","2,10":".","2,11":"/","3,11":"","3,6":"Enter","3,7":"Bksp","3,8":"Del"},"layers":["BASE","NUM","SYM","FUN","NAV","BUTTON","WM","APP"]};
+const CH = DATA.chords, NAMES = DATA.names;
+const $ = id => document.getElementById(id);
+const kbd = document.querySelector("#kbdwrap svg");
+kbd.id = "kbd";
+const keyEls = {};
+kbd.querySelectorAll(".key[data-pos]").forEach(el => keyEls[el.dataset.pos] = el);
+
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+};
+
+const TYPO = [[/[‘’‚′]/g, "'"], [/[“”„″]/g, '"'], [/[–—−]/g, "-"],
+  [/…/g, "..."], [/[   ]/g, " "], [/•/g, "*"]];
+
+function prepare(raw) {
+  let t = raw.replace(/\r\n?/g, "\n");
+  if ($("opt-typo").checked) for (const [re, s] of TYPO) t = t.replace(re, s);
+  t = t.split("\n").map(l => l.replace(/[ \t]+$/, "")).join("\n").replace(/\n{3,}/g, "\n\n").trim();
+  if (!$("opt-newlines").checked) t = t.replace(/\s*\n\s*/g, " ");
+  return t;
+}
+
+function shown(c) { return c === " " ? "␣" : c === "\n" ? "↵" : c === "\t" ? "⇥" : c; }
+function isWs(c) { return c === " " || c === "\n" || c === "\t"; }
+
+// ---------------------------------------------------------------- highlighting
+function clearKeys(cls) { kbd.querySelectorAll("." + cls).forEach(el => el.classList.remove(cls)); }
+let focusOn = store.get("corne-typing-focus") !== "0";
+function setLayer(li) {   // li: active layer index, or null for the full combined view
+  kbd.classList.forEach(c => c.startsWith("on-l") && kbd.classList.remove(c));
+  kbd.classList.toggle("focus", focusOn && li !== null);
+  clearKeys("off");
+  if (li === null) return;
+  kbd.classList.add("on-l" + li);
+  if (li) for (const el of Object.values(keyEls)) if (!el.querySelector(".lay.l" + li)) el.classList.add("off");
+}
+function highlight(ch) {
+  clearKeys("hl-tap"); clearKeys("hl-hold");
+  const c = CH[ch];
+  setLayer(c ? (c.layer ? DATA.layers.indexOf(c.layer) : 0) : null);
+  if (!c) return;
+  for (const p of c.hold) keyEls[p]?.classList.add("hl-hold");
+  keyEls[c.tap]?.classList.add("hl-tap");
+}
+let badTimer;
+function flashBad(ch) {
+  clearTimeout(badTimer); clearKeys("hl-bad");
+  const c = CH[ch];
+  if (c && !keyEls[c.tap].classList.contains("hl-tap")) keyEls[c.tap].classList.add("hl-bad");
+  badTimer = setTimeout(() => clearKeys("hl-bad"), 350);
+}
+function hintFor(ch) {
+  const c = CH[ch];
+  if (!c) return '<span class="muted">not on the keymap — skipped</span>';
+  const parts = [];
+  if (c.layer) parts.push(`hold <span class="chip hold">${esc(c.layer)}</span> (${esc(NAMES[c.hold[0]])} thumb)`);
+  if (c.shift) parts.push(`hold <span class="chip hold">Shift</span> (${esc(NAMES[c.hold[c.hold.length - 1]])})`);
+  parts.push(`tap <span class="chip tap">${esc(shown(ch))}</span>`);
+  return parts.join(" + ");
+}
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]); }
+
+// ---------------------------------------------------------------- game
+let text = "", pos = 0, marks = [], errors = 0, strokes = 0, t0 = 0, missed = {}, running = false, timer;
+
+function start(t) {
+  text = t; pos = 0; marks = new Array(text.length).fill(0); errors = 0; strokes = 0; t0 = 0; missed = {};
+  running = true;
+  show("play"); skipUntypeable(); draw();
+  clearInterval(timer); timer = setInterval(stats, 500);
+}
+function show(id) { for (const s of ["setup", "play", "done"]) $(s).classList.toggle("hidden", s !== id); }
+function skipUntypeable() { while (pos < text.length && !CH[text[pos]]) { marks[pos] = 2; pos++; } }
+
+function draw() {
+  if (pos >= text.length) return finish();
+  const ch = text[pos];
+  const span = (c, i) => {
+    const cls = [marks[i] === 1 ? "err" : "", marks[i] === 2 ? "skip" : "", isWs(c) ? "ws" : ""].filter(Boolean).join(" ");
+    return `<span${cls ? ` class="${cls}"` : ""}>${esc(shown(c))}</span>`;
+  };
+  let past = "", next = "";
+  for (let i = Math.max(0, pos - 24); i < pos; i++) past += span(text[i], i);
+  for (let i = pos + 1; i < Math.min(text.length, pos + 30); i++) next += span(text[i], i);
+  $("strip").innerHTML = `<div class="past">${past}</div><div class="cur${isWs(ch) ? " ws" : ""}" id="cur">${esc(shown(ch))}</div><div class="next">${next}</div>`;
+  $("hint").innerHTML = hintFor(ch);
+  highlight(ch);
+  stats();
+}
+
+function stats() {
+  const mins = t0 ? (performance.now() - t0) / 60000 : 0;
+  const good = marks.slice(0, pos).filter(m => m !== 2).length;
+  $("s-wpm").textContent = mins > 0.05 ? Math.round(good / 5 / mins) : 0;
+  $("s-acc").textContent = strokes ? Math.round(100 * (strokes - errors) / strokes) : 100;
+  $("s-err").textContent = errors;
+  $("s-pos").textContent = pos; $("s-len").textContent = "/ " + text.length;
+  $("bar").style.width = (text.length ? 100 * pos / text.length : 0) + "%";
+}
+
+function finish() {
+  running = false; clearInterval(timer);
+  clearKeys("hl-tap"); clearKeys("hl-hold"); setLayer(null);
+  const mins = t0 ? (performance.now() - t0) / 60000 : 0;
+  const good = marks.filter(m => m !== 2).length;
+  const wpm = mins ? Math.round(good / 5 / mins) : 0;
+  const acc = strokes ? Math.round(100 * (strokes - errors) / strokes) : 100;
+  $("r-wpm").textContent = `${wpm} wpm`;
+  const secs = Math.round(mins * 60);
+  $("r-line").textContent = `${acc}% accuracy · ${errors} mistake${errors === 1 ? "" : "s"} · ${good} characters in ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
+  const top = Object.entries(missed).sort((a, b) => b[1] - a[1]).slice(0, 12);
+  $("r-missed").innerHTML = top.length ? "Most missed: " + top.map(([c, n]) => `<span class="mono">${esc(shown(c))} ×${n}</span>`).join("") : "No mistakes!";
+  show("done");
+  $("again").focus();
+}
+
+function stop() { running = false; clearInterval(timer); clearKeys("hl-tap"); clearKeys("hl-hold"); setLayer(null); show("setup"); $("src").focus(); }
+
+document.addEventListener("keydown", e => {
+  if (!running) return;
+  if (e.key === "Escape") { e.preventDefault(); return stop(); }
+  if (e.ctrlKey || e.metaKey || (e.altKey && !e.getModifierState("AltGraph"))) return;
+  let k = e.key;
+  if (k === "Enter") k = "\n"; else if (k === "Tab") k = "\t";
+  if (k.length !== 1) return;                 // Shift, CapsLock, arrows, dead keys…
+  e.preventDefault();
+  if (!t0) t0 = performance.now();
+  strokes++;
+  const want = text[pos];
+  if (k === want) {
+    pos++; skipUntypeable(); draw();
+  } else {
+    errors++; marks[pos] = 1; missed[want] = (missed[want] || 0) + 1;
+    flashBad(k);
+    const cur = $("cur"); cur.classList.remove("shake"); void cur.offsetWidth; cur.classList.add("shake");
+    draw();
+  }
+});
+
+$("start").onclick = () => {
+  const t = prepare($("src").value);
+  if (!t) { $("warn").textContent = "Paste some text first."; return; }
+  store.set("corne-typing-text", $("src").value);
+  start(t);
+};
+$("again").onclick = () => start(text);
+$("new").onclick = () => { show("setup"); $("src").focus(); };
+$("src").addEventListener("input", checkText);
+for (const id of ["opt-newlines", "opt-typo"]) $(id).addEventListener("change", checkText);
+function checkText() {
+  const bad = [...new Set([...prepare($("src").value)].filter(c => !CH[c]))];
+  $("warn").textContent = bad.length ? `Not on the keymap (will be skipped): ${bad.slice(0, 20).map(shown).join(" ")}` : "";
+}
+$("toggle-kbd").onclick = () => {
+  const h = $("kbdwrap").classList.toggle("hidden");
+  $("toggle-kbd").textContent = h ? "Show keyboard" : "Hide keyboard";
+  store.set("corne-typing-kbd", h ? "0" : "1");
+};
+if (store.get("corne-typing-kbd") === "0") $("toggle-kbd").click();
+function focusLabel() { $("toggle-focus").textContent = focusOn ? "Show all labels" : "Show current layer only"; }
+$("toggle-focus").onclick = () => {
+  focusOn = !focusOn; focusLabel(); store.set("corne-typing-focus", focusOn ? "1" : "0");
+  if (running) highlight(text[pos]);
+};
+focusLabel();
+$("src").value = store.get("corne-typing-text") ||
+  "The quick brown fox jumps over the lazy dog.\nif (x[0] == 42) { return \"ok\"; } // 100% sure: a+b=c & d|e ~ f^g!";
+checkText();
+$("src").focus();
+</script>
+</body>
+</html>

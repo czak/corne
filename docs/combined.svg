@@ -77,8 +77,9 @@ text { font-family: system-ui, sans-serif; }
     <rect class="rim" x="4.6" y="2.6" width="44.8" height="66.8" rx="3.4" stroke-width="1.2"/>
   </g>
 </defs>
-<g class="key none" transform="translate(33 85.5)">
+<g class="key key" transform="translate(33 85.5)">
   <use href="#key-54x54"/>
+  <text x="27" y="25.5" class="tap" font-size="12.9">Esc</text>
 </g>
 <g class="key key" transform="translate(93 85.5)">
   <use href="#key-54x54"/>
@@ -130,7 +131,6 @@ text { font-family: system-ui, sans-serif; }
 </g>
 <g class="key key" transform="translate(93 145.5)">
   <use href="#key-54x54"/>
-  <text x="27" y="50" class="hold" font-size="9">Gui</text>
   <text x="27" y="25.5" class="tap" font-size="12.9">A</text>
   <text x="15.5" y="9.5" class="sub l1" font-size="7">;</text>
   <text x="38.5" y="9.5" class="sub l2" font-size="7">:</text>
@@ -220,10 +220,9 @@ text { font-family: system-ui, sans-serif; }
   <text x="15.5" y="37.5" class="sub l3" font-size="6.6">Pause</text>
   <text x="38.5" y="37.5" class="sub l5" font-size="6">C_S(Z)</text>
 </g>
-<g class="key key lt l6" transform="translate(243 258)">
+<g class="key layer lt l6" transform="translate(243 258)">
   <use href="#key-54x54"/>
-  <text x="27" y="50" class="hold l6" font-size="9">WM</text>
-  <text x="27" y="25.5" class="tap" font-size="12.9">Esc</text>
+  <text x="27" y="50" class="hold l6" font-size="9">WM+Gui</text>
   <text x="15.5" y="9.5" class="sub l1" font-size="7">.</text>
   <text x="38.5" y="9.5" class="sub l2" font-size="7">(</text>
   <text x="15.5" y="37.5" class="sub l3" font-size="7">Menu</text>
@@ -329,7 +328,6 @@ text { font-family: system-ui, sans-serif; }
 </g>
 <g class="key key" transform="translate(843 145.5)">
   <use href="#key-54x54"/>
-  <text x="27" y="50" class="hold" font-size="9">Gui</text>
   <text x="27" y="25.5" class="tap" font-size="12.9">&#x27;</text>
   <text x="15.5" y="9.5" class="sub l4" font-size="6">CAPSLOCK</text>
 </g>

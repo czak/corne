@@ -47,14 +47,14 @@ swap_rctl_rgui = false
 # The firmware has a fixed 8 layers and push needs all of them: keep unused ones as all-NO layers.
 [layers.BASE]
 left = [
-  ["NO", "Q", "W", "E", "R", "T", "VOLU"],
-  ["F14", "LGUI_T(A)", "LALT_T(S)", "LCTL_T(D)", "LSFT_T(F)", "G", "VOLD"],
+  ["ESCAPE", "Q", "W", "E", "R", "T", "VOLU"],
+  ["F14", "A", "LALT_T(S)", "LCTL_T(D)", "LSFT_T(F)", "G", "VOLD"],
   ["NO", "LT(BUTTON,Z)", "RALT_T(X)", "C", "V", "B"],
-  ["LT(WM,ESCAPE)", "LT(NAV,SPACE)", "LT(APP,TAB)"],
+  ["LM(WM,MOD_LGUI)", "LT(NAV,SPACE)", "LT(APP,TAB)"],
 ]
 right = [
   ["NO", "Y", "U", "I", "O", "P", "NO"],
-  ["NO", "H", "LSFT_T(J)", "LCTL_T(K)", "LALT_T(L)", "LGUI_T(QUOTE)", "NO"],
+  ["NO", "H", "LSFT_T(J)", "LCTL_T(K)", "LALT_T(L)", "QUOTE", "NO"],
   ["N", "M", "COMMA", "RALT_T(DOT)", "LT(BUTTON,SLASH)", "NO"],
   ["LT(SYM,ENTER)", "LT(NUM,BSPACE)", "LT(FUN,DELETE)"],
 ]
