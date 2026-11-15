@@ -1,6 +1,6 @@
-# Corne keymap
+# Corne Corner
 
-My keymap for a PandaKB W-Corne v4.1 (46 keys, Vial firmware), based on Miryoku QWERTY.
+My [keymap](https://czak.github.io/corne/) and [practice ground](https://czak.github.io/corne/tutor/) for a PandaKB W-Corne v4.1 (46 keys, Vial firmware), based on [Miryoku](https://github.com/manna-harbour/miryoku) QWERTY.
 
 - `keymap.toml`: the keymap and QMK settings. This is the source of truth.
 - `docs/`: the rendered layers (SVGs, shown below) and an HTML page of them.

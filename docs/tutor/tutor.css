@@ -12,7 +12,7 @@
   --hl-bad-cap:#b8433a; --hl-bad-skirt:#7d2620; --hl-bad-edge:#3b100d; } }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--pg-bg); color: var(--pg-fg); font: 15px/1.45 system-ui, sans-serif; }
-main { max-width: 1100px; margin: 0 auto; padding: 20px 16px 48px; }
+main { position: relative; max-width: 1100px; margin: 0 auto; padding: 20px 16px 48px; }
 button { font: inherit; padding: 7px 16px; border-radius: 8px; border: 1px solid var(--pg-line);
   background: var(--pg-panel); color: var(--pg-fg); cursor: pointer; }
 button.primary { background: var(--pg-accent); border-color: var(--pg-accent); color: #fff; }
@@ -90,3 +90,4 @@ select { font: inherit; padding: 6px 10px; border-radius: 8px; border: 1px solid
 .result .big { font-size: 46px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .missed span { display: inline-block; margin: 3px; padding: 2px 8px; border-radius: 6px; background: var(--pg-bad-bg); }
 @media (max-width: 640px) { .cur { font-size: 72px; line-height: 104px; } .stage { height: 120px; } .strip { font-size: 20px; } }
+.gh { position: absolute; top: 20px; right: 16px; color: inherit; opacity: .6; display: block; line-height: 0; } .gh:hover { opacity: 1; }
