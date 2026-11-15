@@ -1,4 +1,4 @@
-"""Keymap data for the typing tutor (tutor/keymap.js, see ``render_data``). The tutor itself is static: paste a text,
+"""Keymap data for the typing tutor (docs/tutor/keymap.js, see ``render_data``). The tutor itself is static: paste a text,
 then type it with the chord for each character highlighted on the combined keymap.
 
 For every character the keymap can produce, ``chords`` finds the cheapest way to type it: a key to tap, plus the
@@ -121,7 +121,7 @@ def _names(km: Keymap) -> dict[str, str]:
 
 
 def render_data(km: Keymap) -> str:
-    """tutor/keymap.js: everything the static tutor page needs from the keymap, one entry per line for small diffs."""
+    """docs/tutor/keymap.js: everything the static tutor page needs from the keymap, one entry per line for small diffs."""
     svg = combined_svg(km, Svg(load_geometry()), pos_attrs=True, layer_labels=True)
     svg = (svg.split("\n", 1)[1] if svg.startswith("<?xml") else svg).strip()
     svg = svg.replace("\\", "\\\\").replace("`", "\\`").replace("${", "\\${")   # template-literal escapes
