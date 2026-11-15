@@ -49,13 +49,13 @@ swap_rctl_rgui = false
 left = [
   ["ESCAPE", "Q", "W", "E", "R", "T", "VOLU"],
   ["OSM(MOD_LCTL)", "A", "LALT_T(S)", "LCTL_T(D)", "LSFT_T(F)", "G", "VOLD"],
-  ["F14", "Z", "RALT_T(X)", "C", "V", "B"],
+  ["OSM(MOD_LSFT)", "Z", "RALT_T(X)", "C", "V", "B"],
   ["LM(WM,MOD_LGUI)", "LT(NAV,SPACE)", "TAB"],
 ]
 right = [
-  ["NO", "Y", "U", "I", "O", "P", "NO"],
-  ["NO", "H", "LSFT_T(J)", "LCTL_T(K)", "LALT_T(L)", "QUOTE", "NO"],
-  ["N", "M", "COMMA", "RALT_T(DOT)", "SLASH", "NO"],
+  ["F14", "Y", "U", "I", "O", "P", "NO"],
+  ["NO", "H", "LSFT_T(J)", "LCTL_T(K)", "LALT_T(L)", "QUOTE", "OSM(MOD_LCTL)"],
+  ["N", "M", "COMMA", "RALT_T(DOT)", "SLASH", "OSM(MOD_LSFT)"],
   ["LT(SYM,ENTER)", "LT(NUM,BSPACE)", "LT(FUN,DELETE)"],
 ]
 

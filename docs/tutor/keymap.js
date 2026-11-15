@@ -133,7 +133,7 @@ const KEYMAP = {
     "1,4": "F",
     "1,5": "G",
     "3,1": "Vol -",
-    "2,0": "F14",
+    "2,0": "OSM LSft",
     "2,1": "Z",
     "2,2": "X",
     "2,3": "C",
@@ -142,7 +142,7 @@ const KEYMAP = {
     "3,3": "WM+Gui",
     "3,4": "Space",
     "3,5": "Tab",
-    "0,6": "",
+    "0,6": "F14",
     "0,7": "Y",
     "0,8": "U",
     "0,9": "I",
@@ -155,13 +155,13 @@ const KEYMAP = {
     "1,9": "K",
     "1,10": "L",
     "1,11": "'",
-    "3,10": "",
+    "3,10": "OSM LCtl",
     "2,7": "N",
     "2,8": "M",
     "2,9": ",",
     "2,10": ".",
     "2,11": "/",
-    "3,11": "",
+    "3,11": "OSM LSft",
     "3,6": "Enter",
     "3,7": "Bksp",
     "3,8": "Del",
@@ -395,7 +395,8 @@ text { font-family: system-ui, sans-serif; }
 </g>
 <g class="key key" data-pos="2,0" transform="translate(31 203.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="27.6" class="tap" font-size="13">F14</text>
+  <text x="29" y="21.2" class="tap" font-size="9">OSM</text>
+  <text x="29" y="31.1" class="tap" font-size="9">LSft</text>
 </g>
 <g class="key key" data-pos="2,1" transform="translate(91 203.5)">
   <use href="#key-58x58"/>
@@ -486,8 +487,9 @@ text { font-family: system-ui, sans-serif; }
   <text x="29" y="43.2" class="lay l2" font-size="15">_</text>
   <use href="#icon-tab" class="icon lay l3" x="17.8" y="26.8" width="22.5" height="22.5"/>
 </g>
-<g class="key none" data-pos="0,6" transform="translate(541 106)">
+<g class="key key" data-pos="0,6" transform="translate(541 106)">
   <use href="#key-58x58"/>
+  <text x="29" y="27.6" class="tap" font-size="13">F14</text>
 </g>
 <g class="key key" data-pos="0,7" transform="translate(601 76)">
   <use href="#key-58x58"/>
@@ -576,8 +578,10 @@ text { font-family: system-ui, sans-serif; }
   <text x="29" y="28.2" class="lay l2" font-size="15">LGui</text>
   <text x="29" y="28.2" class="lay l3" font-size="15">LGui</text>
 </g>
-<g class="key none" data-pos="3,10" transform="translate(901 143.5)">
+<g class="key key" data-pos="3,10" transform="translate(901 143.5)">
   <use href="#key-58x58"/>
+  <text x="29" y="21.2" class="tap" font-size="9">OSM</text>
+  <text x="29" y="31.1" class="tap" font-size="9">LCtl</text>
 </g>
 <g class="key key" data-pos="2,7" transform="translate(601 196)">
   <use href="#key-58x58"/>
@@ -629,8 +633,10 @@ text { font-family: system-ui, sans-serif; }
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">/</text>
 </g>
-<g class="key none" data-pos="3,11" transform="translate(901 203.5)">
+<g class="key key" data-pos="3,11" transform="translate(901 203.5)">
   <use href="#key-58x58"/>
+  <text x="29" y="21.2" class="tap" font-size="9">OSM</text>
+  <text x="29" y="31.1" class="tap" font-size="9">LSft</text>
 </g>
 <g class="key key lt l2" data-pos="3,6" transform="rotate(-30 666 558) translate(691 256)">
   <use href="#key-58x88"/>

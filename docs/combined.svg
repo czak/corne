@@ -181,7 +181,8 @@ text { font-family: system-ui, sans-serif; }
 </g>
 <g class="key key" transform="translate(31 203.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="27.6" class="tap" font-size="13">F14</text>
+  <text x="29" y="21.2" class="tap" font-size="9">OSM</text>
+  <text x="29" y="31.1" class="tap" font-size="9">LSft</text>
 </g>
 <g class="key key" transform="translate(91 203.5)">
   <use href="#key-58x58"/>
@@ -243,8 +244,9 @@ text { font-family: system-ui, sans-serif; }
   <text x="41.5" y="9.5" class="sub l2" font-size="7">_</text>
   <use href="#icon-tab" class="icon sub l3" x="11.2" y="63.8" width="10.5" height="10.5"/>
 </g>
-<g class="key none" transform="translate(541 106)">
+<g class="key key" transform="translate(541 106)">
   <use href="#key-58x58"/>
+  <text x="29" y="27.6" class="tap" font-size="13">F14</text>
 </g>
 <g class="key key" transform="translate(601 76)">
   <use href="#key-58x58"/>
@@ -308,8 +310,10 @@ text { font-family: system-ui, sans-serif; }
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">&#x27;</text>
 </g>
-<g class="key none" transform="translate(901 143.5)">
+<g class="key key" transform="translate(901 143.5)">
   <use href="#key-58x58"/>
+  <text x="29" y="21.2" class="tap" font-size="9">OSM</text>
+  <text x="29" y="31.1" class="tap" font-size="9">LCtl</text>
 </g>
 <g class="key key" transform="translate(601 196)">
   <use href="#key-58x58"/>
@@ -340,8 +344,10 @@ text { font-family: system-ui, sans-serif; }
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">/</text>
 </g>
-<g class="key none" transform="translate(901 203.5)">
+<g class="key key" transform="translate(901 203.5)">
   <use href="#key-58x58"/>
+  <text x="29" y="21.2" class="tap" font-size="9">OSM</text>
+  <text x="29" y="31.1" class="tap" font-size="9">LSft</text>
 </g>
 <g class="key key lt l2" transform="rotate(-30 666 558) translate(691 256)">
   <use href="#key-58x88"/>
