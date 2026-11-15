@@ -316,7 +316,7 @@ text { font-family: system-ui, sans-serif; }
   <text x="27" y="19" class="lay l3" font-size="10">Print</text>
   <text x="27" y="30" class="lay l3" font-size="10">Screen</text>
   <text x="27" y="26.2" class="lay l5" font-size="6">Ctrl+Shift+Z</text>
-  <text x="27" y="26.2" class="lay l7" font-size="6.3">Shift+Gui+D</text>
+  <text x="27" y="26.2" class="lay l6" font-size="13.8">Gui+T</text>
 </g>
 <g class="key key" data-pos="3,0" transform="translate(393 108)">
   <use href="#key-54x54"/>
@@ -393,12 +393,10 @@ text { font-family: system-ui, sans-serif; }
   <text x="15.5" y="9.5" class="sub l1" font-size="7">=</text>
   <text x="38.5" y="9.5" class="sub l2" font-size="7">+</text>
   <text x="15.5" y="37.5" class="sub l3" font-size="6">SCROLLLOCK</text>
-  <text x="38.5" y="37.5" class="sub l7" font-size="6.6">Gui+D</text>
   <text x="27" y="26.2" class="lay l1" font-size="15">=</text>
   <text x="27" y="26.2" class="lay l2" font-size="15">+</text>
   <text x="27" y="19" class="lay l3" font-size="10">Scroll</text>
   <text x="27" y="30" class="lay l3" font-size="10">Lock</text>
-  <text x="27" y="26.2" class="lay l7" font-size="13.8">Gui+D</text>
 </g>
 <g class="key key" data-pos="3,1" transform="translate(393 168)">
   <use href="#key-54x54"/>
@@ -727,9 +725,11 @@ text { font-family: system-ui, sans-serif; }
   <text x="27" y="40.5" class="tap" font-size="11">Enter</text>
   <text x="15.5" y="9.5" class="sub l4" font-size="6.6">Enter</text>
   <text x="38.5" y="9.5" class="sub l5" font-size="6">Mouse 2</text>
+  <text x="15.5" y="67.5" class="sub l6" font-size="6.6">Enter</text>
   <text x="27" y="41.2" class="lay l4" font-size="13.8">Enter</text>
   <text x="27" y="34" class="lay l5" font-size="10">Mouse</text>
   <text x="27" y="45" class="lay l5" font-size="10">2</text>
+  <text x="27" y="41.2" class="lay l6" font-size="13.8">Enter</text>
 </g>
 <g class="key key lt l1" data-pos="3,7" transform="rotate(-15 720 546) translate(693 258)">
   <use href="#key-54x54"/>
@@ -737,9 +737,11 @@ text { font-family: system-ui, sans-serif; }
   <text x="27" y="25.5" class="tap" font-size="12.9">Bksp</text>
   <text x="15.5" y="9.5" class="sub l4" font-size="7">Bksp</text>
   <text x="38.5" y="9.5" class="sub l5" font-size="6">Mouse 1</text>
+  <text x="15.5" y="37.5" class="sub l6" font-size="6">LSFT(ENTER)</text>
   <text x="27" y="26.2" class="lay l4" font-size="15">Bksp</text>
   <text x="27" y="19" class="lay l5" font-size="10">Mouse</text>
   <text x="27" y="30" class="lay l5" font-size="10">1</text>
+  <text x="27" y="26.2" class="lay l6" font-size="6.3">Shift+Enter</text>
 </g>
 <g class="key key lt l3" data-pos="3,8" transform="translate(693 258)">
   <use href="#key-54x54"/>

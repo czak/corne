@@ -131,7 +131,7 @@ right = [
 
 [layers.WM]
 left = [
-  ["NO", "LGUI(Q)", "LGUI(W)", "LGUI(E)", "LGUI(R)", "NO", "NO"],
+  ["NO", "LGUI(Q)", "LGUI(W)", "LGUI(E)", "LGUI(R)", "LGUI(T)", "NO"],
   ["NO", "LSHIFT", "LGUI(4)", "LGUI(5)", "LGUI(F)", "NO", "NO"],
   ["NO", "NO", "LGUI(1)", "LGUI(2)", "LGUI(3)", "NO"],
   ["NO", "NO", "NO"],
@@ -140,13 +140,13 @@ right = [
   ["NO", "LGUI(6)", "LGUI(7)", "LGUI(8)", "LGUI(9)", "LGUI(0)", "NO"],
   ["NO", "LGUI(H)", "LGUI(J)", "LGUI(K)", "LGUI(L)", "NO", "NO"],
   ["WH_L", "WH_D", "WH_U", "WH_R", "NO", "NO"],
-  ["NO", "NO", "NO"],
+  ["ENTER", "LSFT(ENTER)", "NO"],
 ]
 
 [layers.APP]
 left = [
-  ["NO", "NO", "NO", "LALT(D)", "LSA(D)", "SGUI(D)", "NO"],
-  ["NO", "LSHIFT", "LALT(4)", "LALT(5)", "NO", "LGUI(D)", "NO"],
+  ["NO", "NO", "NO", "LALT(D)", "LSA(D)", "NO", "NO"],
+  ["NO", "LSHIFT", "LALT(4)", "LALT(5)", "NO", "NO", "NO"],
   ["NO", "NO", "LALT(1)", "LALT(2)", "LALT(3)", "NO"],
   ["NO", "NO", "NO"],
 ]
