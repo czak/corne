@@ -2,12 +2,12 @@
 <title>All layers</title>
 <style>
 :root { --fg:#222; --muted:#6f6f6b; --cap:#f6f6f3; --skirt:#dcdcd7; --edge:#b9b9b3;
-        --none-cap:#f4f4f1; --none-skirt:#e7e7e3; --mod-cap:#f1f0ec; --mod-skirt:#d4d3cd;
+        --none-cap:#f4f4f1; --none-skirt:#e7e7e3; --none-edge:#b9b9b3; --mod-cap:#f1f0ec; --mod-skirt:#d4d3cd;
         --S:70%; --Lt:36%; --capS:60%; --capL:95%; --skirtL:84%; --edgeL:62%; --heldCapL:86%; --heldSkirtL:72%;
         --dish-shade:0.07; --dish-light:0.35; --rim-top:0.6; --rim-bottom:0.3; }
 @media (prefers-color-scheme: dark) {
   :root { --fg:#ececea; --muted:#9a9a98; --cap:#3a3d42; --skirt:#25272b; --edge:#17181a;
-          --none-cap:#24262a; --none-skirt:#1c1d20; --mod-cap:#34363b; --mod-skirt:#222327;
+          --none-cap:#24262a; --none-skirt:#1c1d20; --none-edge:#3f4247; --mod-cap:#34363b; --mod-skirt:#222327;
           --S:55%; --Lt:74%; --capS:32%; --capL:30%; --skirtL:19%; --edgeL:12%; --heldCapL:40%; --heldSkirtL:27%;
           --dish-shade:0.25; --dish-light:0.05; --rim-top:0.06; --rim-bottom:0.025; } }
 text { font-family: system-ui, sans-serif; }
@@ -21,37 +21,38 @@ text { font-family: system-ui, sans-serif; }
 .dish-clear { stop-opacity: 0; }
 .rim-top { stop-color: #fff; stop-opacity: var(--rim-top); }
 .rim-bottom { stop-color: #fff; stop-opacity: var(--rim-bottom); }
-.key.none { --k-cap: var(--none-cap); --k-skirt: var(--none-skirt); --k-dash: 3 3; }
+.key.none { --k-cap: var(--none-cap); --k-skirt: var(--none-skirt); --k-edge: var(--none-edge); --k-dash: 3 3; }
 .key.trns { --k-cap: var(--none-cap); --k-skirt: var(--none-skirt); }
 .key.mod { --k-cap: var(--mod-cap); --k-skirt: var(--mod-skirt); }
-.key text { text-anchor: middle; fill: var(--fg); }
+.key text { text-anchor: middle; }
+.key text, .key .icon { fill: var(--fg); }
 .key .shifted, .key.trns text { fill: var(--muted); }
 .key .hold { font-weight: 600; fill: var(--muted); }
 .key .sub { font-weight: 600; }
 .key.lt.l0 { --k-cap: hsl(220 var(--capS) var(--capL)); --k-skirt: hsl(220 35% var(--skirtL)); --k-edge: hsl(220 30% var(--edgeL)); }
 .key.held.l0 { --k-cap: hsl(220 var(--capS) var(--heldCapL)); --k-skirt: hsl(220 45% var(--heldSkirtL)); --k-edge: hsl(220 50% var(--edgeL)); }
-.key text.l0 { fill: hsl(220 var(--S) var(--Lt)); }
+.key text.l0, .key .icon.l0 { fill: hsl(220 var(--S) var(--Lt)); }
 .key.lt.l1 { --k-cap: hsl(15 var(--capS) var(--capL)); --k-skirt: hsl(15 35% var(--skirtL)); --k-edge: hsl(15 30% var(--edgeL)); }
 .key.held.l1 { --k-cap: hsl(15 var(--capS) var(--heldCapL)); --k-skirt: hsl(15 45% var(--heldSkirtL)); --k-edge: hsl(15 50% var(--edgeL)); }
-.key text.l1 { fill: hsl(15 var(--S) var(--Lt)); }
+.key text.l1, .key .icon.l1 { fill: hsl(15 var(--S) var(--Lt)); }
 .key.lt.l2 { --k-cap: hsl(165 var(--capS) var(--capL)); --k-skirt: hsl(165 35% var(--skirtL)); --k-edge: hsl(165 30% var(--edgeL)); }
 .key.held.l2 { --k-cap: hsl(165 var(--capS) var(--heldCapL)); --k-skirt: hsl(165 45% var(--heldSkirtL)); --k-edge: hsl(165 50% var(--edgeL)); }
-.key text.l2 { fill: hsl(165 var(--S) var(--Lt)); }
+.key text.l2, .key .icon.l2 { fill: hsl(165 var(--S) var(--Lt)); }
 .key.lt.l3 { --k-cap: hsl(280 var(--capS) var(--capL)); --k-skirt: hsl(280 35% var(--skirtL)); --k-edge: hsl(280 30% var(--edgeL)); }
 .key.held.l3 { --k-cap: hsl(280 var(--capS) var(--heldCapL)); --k-skirt: hsl(280 45% var(--heldSkirtL)); --k-edge: hsl(280 50% var(--edgeL)); }
-.key text.l3 { fill: hsl(280 var(--S) var(--Lt)); }
+.key text.l3, .key .icon.l3 { fill: hsl(280 var(--S) var(--Lt)); }
 .key.lt.l4 { --k-cap: hsl(45 var(--capS) var(--capL)); --k-skirt: hsl(45 35% var(--skirtL)); --k-edge: hsl(45 30% var(--edgeL)); }
 .key.held.l4 { --k-cap: hsl(45 var(--capS) var(--heldCapL)); --k-skirt: hsl(45 45% var(--heldSkirtL)); --k-edge: hsl(45 50% var(--edgeL)); }
-.key text.l4 { fill: hsl(45 var(--S) var(--Lt)); }
+.key text.l4, .key .icon.l4 { fill: hsl(45 var(--S) var(--Lt)); }
 .key.lt.l5 { --k-cap: hsl(200 var(--capS) var(--capL)); --k-skirt: hsl(200 35% var(--skirtL)); --k-edge: hsl(200 30% var(--edgeL)); }
 .key.held.l5 { --k-cap: hsl(200 var(--capS) var(--heldCapL)); --k-skirt: hsl(200 45% var(--heldSkirtL)); --k-edge: hsl(200 50% var(--edgeL)); }
-.key text.l5 { fill: hsl(200 var(--S) var(--Lt)); }
+.key text.l5, .key .icon.l5 { fill: hsl(200 var(--S) var(--Lt)); }
 .key.lt.l6 { --k-cap: hsl(330 var(--capS) var(--capL)); --k-skirt: hsl(330 35% var(--skirtL)); --k-edge: hsl(330 30% var(--edgeL)); }
 .key.held.l6 { --k-cap: hsl(330 var(--capS) var(--heldCapL)); --k-skirt: hsl(330 45% var(--heldSkirtL)); --k-edge: hsl(330 50% var(--edgeL)); }
-.key text.l6 { fill: hsl(330 var(--S) var(--Lt)); }
+.key text.l6, .key .icon.l6 { fill: hsl(330 var(--S) var(--Lt)); }
 .key.lt.l7 { --k-cap: hsl(100 var(--capS) var(--capL)); --k-skirt: hsl(100 35% var(--skirtL)); --k-edge: hsl(100 30% var(--edgeL)); }
 .key.held.l7 { --k-cap: hsl(100 var(--capS) var(--heldCapL)); --k-skirt: hsl(100 45% var(--heldSkirtL)); --k-edge: hsl(100 50% var(--edgeL)); }
-.key text.l7 { fill: hsl(100 var(--S) var(--Lt)); }
+.key text.l7, .key .icon.l7 { fill: hsl(100 var(--S) var(--Lt)); }
 </style>
 <defs>
   <linearGradient id="dish" x1="0" y1="0" x2="0" y2="1">
@@ -76,6 +77,10 @@ text { font-family: system-ui, sans-serif; }
     <rect class="dish" x="4" y="2" width="50" height="72" rx="4"/>
     <rect class="rim" x="4.6" y="2.6" width="48.8" height="70.8" rx="3.4" stroke-width="1.2"/>
   </g>
+  <symbol id="icon-backspace" viewBox="0 0 24 24"><path d="M8 4.35 21 4.35 21 5.65 8 5.65zM21.65 5 21.65 19 20.35 19 20.35 5zM21 19.65 8 19.65 8 18.35 21 18.35zM7.51 19.42 1.51 12.42 2.49 11.58 8.49 18.58zM1.51 11.58 7.51 4.58 8.49 5.42 2.49 12.42zM12.96 9.04 17.96 14.04 17.04 14.96 12.04 9.96zM17.96 9.96 12.96 14.96 12.04 14.04 17.04 9.04zM1.35 12a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM7.35 5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM7.35 19a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM11.85 9.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM11.85 14.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM16.85 9.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM16.85 14.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM20.35 5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM20.35 19a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0z"/></symbol>
+  <symbol id="icon-delete" viewBox="0 0 24 24"><path d="M3 4.35 16 4.35 16 5.65 3 5.65zM16.49 4.58 22.49 11.58 21.51 12.42 15.51 5.42zM22.49 12.42 16.49 19.42 15.51 18.58 21.51 11.58zM16 19.65 3 19.65 3 18.35 16 18.35zM2.35 19 2.35 5 3.65 5 3.65 19zM6.96 9.04 11.96 14.04 11.04 14.96 6.04 9.96zM11.96 9.96 6.96 14.96 6.04 14.04 11.04 9.04zM2.35 5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM2.35 19a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM5.85 9.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM5.85 14.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM10.85 9.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM10.85 14.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM15.35 5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM15.35 19a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM21.35 12a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0z"/></symbol>
+  <symbol id="icon-enter" viewBox="0 0 24 24"><path d="M20.65 5 20.65 15 19.35 15 19.35 5zM20 15.65 4 15.65 4 14.35 20 14.35zM8.96 10.96 4.46 15.46 3.54 14.54 8.04 10.04zM4.46 14.54 8.96 19.04 8.04 19.96 3.54 15.46zM3.35 15a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM7.85 10.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM7.85 19.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM19.35 5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM19.35 15a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0z"/></symbol>
+  <symbol id="icon-tab" viewBox="0 0 24 24"><path d="M3 11.35 18 11.35 18 12.65 3 12.65zM13.46 6.54 18.46 11.54 17.54 12.46 12.54 7.46zM18.46 12.46 13.46 17.46 12.54 16.54 17.54 11.54zM21.65 6 21.65 18 20.35 18 20.35 6zM2.35 12a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM12.35 7a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM12.35 17a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM17.35 12a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM20.35 6a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM20.35 18a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0z"/></symbol>
 </defs>
 <g class="key key" transform="translate(31 83.5)">
   <use href="#key-58x58"/>
@@ -240,10 +245,10 @@ text { font-family: system-ui, sans-serif; }
 </g>
 <g class="key key" transform="rotate(30 324 558) translate(241 256)">
   <use href="#key-58x88"/>
-  <text x="29" y="42.5" class="tap" font-size="13">Tab</text>
+  <use href="#icon-tab" class="icon tap" x="19.2" y="28.2" width="19.5" height="19.5"/>
   <text x="16.5" y="9.5" class="sub l1" font-size="7">-</text>
   <text x="41.5" y="9.5" class="sub l2" font-size="7">_</text>
-  <text x="16.5" y="71.5" class="sub l3" font-size="7">Tab</text>
+  <use href="#icon-tab" class="icon sub l3" x="11.2" y="63.8" width="10.5" height="10.5"/>
   <text x="41.5" y="71.5" class="sub l5" font-size="6">Mouse 2</text>
 </g>
 <g class="key none" transform="translate(541 106)">
@@ -360,24 +365,24 @@ text { font-family: system-ui, sans-serif; }
 <g class="key key lt l2" transform="rotate(-30 666 558) translate(691 256)">
   <use href="#key-58x88"/>
   <text x="29" y="84" class="hold l2" font-size="9">SYM</text>
-  <text x="29" y="42.5" class="tap" font-size="12.4">Enter</text>
-  <text x="16.5" y="9.5" class="sub l4" font-size="7">Enter</text>
+  <use href="#icon-enter" class="icon tap" x="19.2" y="28.2" width="19.5" height="19.5"/>
+  <use href="#icon-enter" class="icon sub l4" x="11.2" y="1.8" width="10.5" height="10.5"/>
   <text x="41.5" y="9.5" class="sub l5" font-size="6">Mouse 2</text>
-  <text x="16.5" y="71.5" class="sub l6" font-size="7">Enter</text>
+  <use href="#icon-enter" class="icon sub l6" x="11.2" y="63.8" width="10.5" height="10.5"/>
 </g>
 <g class="key key lt l1" transform="rotate(-15 720 546) translate(691 256)">
   <use href="#key-58x58"/>
   <text x="29" y="54" class="hold l1" font-size="9">NUM</text>
-  <text x="29" y="27.6" class="tap" font-size="13">Bksp</text>
-  <text x="16.5" y="9.5" class="sub l4" font-size="7">Bksp</text>
+  <use href="#icon-backspace" class="icon tap" x="19.2" y="13.2" width="19.5" height="19.5"/>
+  <use href="#icon-backspace" class="icon sub l4" x="11.2" y="1.8" width="10.5" height="10.5"/>
   <text x="41.5" y="9.5" class="sub l5" font-size="6">Mouse 1</text>
   <text x="16.5" y="41.5" class="sub l6" font-size="6">LSFT(ENTER)</text>
 </g>
 <g class="key key lt l3" transform="translate(691 256)">
   <use href="#key-58x58"/>
   <text x="29" y="54" class="hold l3" font-size="9">FUN</text>
-  <text x="29" y="27.6" class="tap" font-size="13">Del</text>
-  <text x="16.5" y="9.5" class="sub l4" font-size="7">Del</text>
+  <use href="#icon-delete" class="icon tap" x="19.2" y="13.2" width="19.5" height="19.5"/>
+  <use href="#icon-delete" class="icon sub l4" x="11.2" y="1.8" width="10.5" height="10.5"/>
   <text x="41.5" y="9.5" class="sub l5" font-size="6">Mouse 3</text>
 </g>
 </svg>

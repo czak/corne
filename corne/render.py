@@ -7,9 +7,10 @@ from __future__ import annotations
 import html
 import math
 from dataclasses import dataclass
+from functools import cache
 
 from .keycodes import (LAYER_FNS, MAX_LAYER, QK_LAYER_MOD, QK_LAYER_TAP, QK_MOD_TAP, QK_MODS,
-                       QK_ONE_SHOT_MOD, Codec, label, mods_to_str)
+                       QK_ONE_SHOT_MOD, Codec, label, mods_to_str, tables)
 from .keyboard import GEOMETRY, POSITIONS
 from .layout import Keymap
 
@@ -37,6 +38,22 @@ RIM = 1.2   # rim highlight stroke width (px), drawn just inside the cap edge
 HUES = [220, 15, 165, 280, 45, 200, 330, 100, 0, 250, 130, 60, 300, 185, 35, 260]
 
 MOD_LABELS = {"CTL": "Ctrl", "SFT": "Shift", "ALT": "Alt", "GUI": "Gui"}
+
+# Icons drawn instead of a key's label, as round-capped lines on a 24x24 grid: name -> polylines (a polyline ending
+# at its first point is closed). ICON_KEYS picks the icon per official keycode token; it is drawn wherever the
+# token's label would be, in the same color.
+ICONS = {
+    "backspace": [[(8, 5), (21, 5), (21, 19), (8, 19), (2, 12), (8, 5)],
+                  [(12.5, 9.5), (17.5, 14.5)], [(17.5, 9.5), (12.5, 14.5)]],
+    "delete": [[(3, 5), (16, 5), (22, 12), (16, 19), (3, 19), (3, 5)],
+               [(6.5, 9.5), (11.5, 14.5)], [(11.5, 9.5), (6.5, 14.5)]],
+    "enter": [[(20, 5), (20, 15), (4, 15)], [(8.5, 10.5), (4, 15), (8.5, 19.5)]],
+    "tab": [[(3, 12), (18, 12)], [(13, 7), (18, 12), (13, 17)], [(21, 6), (21, 18)]],
+    "shift": [[(12, 3), (21, 12), (16, 12), (16, 20), (8, 20), (8, 12), (3, 12), (12, 3)]],
+}
+ICON_KEYS = {"BSPACE": "backspace", "DELETE": "delete", "ENTER": "enter", "TAB": "tab",
+             "LSHIFT": "shift", "RSHIFT": "shift"}
+ICON_STROKE = 1.3   # line width in grid units; at the drawn size it matches the text's stroke weight
 
 
 # ---------------------------------------------------------------- geometry
@@ -156,7 +173,46 @@ def _n(v: float) -> str:
     return f"{v:.1f}".removesuffix(".0").replace("-0", "0") if v else "0"
 
 
+@cache
+def _icon_ids() -> dict[str, str]:
+    """Display label -> icon id, for labels drawn as an icon."""
+    by_name = tables().by_name
+    return {label(by_name[tok]): f"icon-{name}" for tok, name in ICON_KEYS.items()}
+
+
+def _icon_path(lines: list[list[tuple[float, float]]]) -> str:
+    """Filled outline of round-capped, round-joined ``lines``: a clockwise rectangle per segment and circle per
+    point, which the nonzero fill rule unites."""
+    r = ICON_STROKE / 2
+    out, dots = [], {p for line in lines for p in line}
+    for line in lines:
+        for (x0, y0), (x1, y1) in zip(line, line[1:]):
+            d = math.hypot(x1 - x0, y1 - y0)
+            nx, ny = (y0 - y1) / d * r, (x1 - x0) / d * r   # left normal: clockwise on screen
+            pts = [(x0 - nx, y0 - ny), (x1 - nx, y1 - ny), (x1 + nx, y1 + ny), (x0 + nx, y0 + ny)]
+            out.append("M" + " ".join(f"{_n2(x)} {_n2(y)}" for x, y in pts) + "z")
+    for x, y in sorted(dots):
+        out.append(f"M{_n2(x - r)} {_n2(y)}a{_n2(r)} {_n2(r)} 0 1 1 {_n2(2 * r)} 0a{_n2(r)} {_n2(r)} 0 1 1 "
+                   f"{_n2(-2 * r)} 0z")
+    return "".join(out)
+
+
+def _n2(v: float) -> str:
+    return f"{v:.2f}".rstrip("0").rstrip(".") or "0"
+
+
+def _icon_defs(body: str) -> list[str]:
+    """``<symbol>`` defs for the icons ``body`` uses."""
+    return [f'  <symbol id="icon-{name}" viewBox="0 0 24 24"><path d="{_icon_path(lines)}"/></symbol>'
+            for name, lines in ICONS.items() if f'href="#icon-{name}"' in body]
+
+
 def _text(x, y, s, size, cls, width) -> str:
+    """Text with baseline at ``y``, or an icon of about the text's size if ``s`` is a label with an icon."""
+    if icon := _icon_ids().get(s):
+        h = min(size * 1.5, width)
+        return (f'<use href="#{icon}" class="icon {cls}" x="{_n(x - h / 2)}" y="{_n(y - size * 0.35 - h / 2)}" '
+                f'width="{_n(h)}" height="{_n(h)}"/>')
     fs = _fit(s, size, width)
     return f'<text x="{_n(x)}" y="{_n(y)}" class="{cls}" font-size="{_n(fs)}">{_esc(s)}</text>'
 
@@ -202,7 +258,8 @@ class Svg:
                  f'height="{self.height:.0f}" viewBox="{_n(self.ox)} {_n(self.oy)} {_n(self.width)} {_n(self.height)}">',
                  f'<title>{_esc(title)}</title>',
                  f'<style>{css.rstrip()}\n</style>',
-                 '<defs>', GRADIENT_DEFS, *(_body(w, h) for w, h in sizes), '</defs>']
+                 '<defs>', GRADIENT_DEFS, *(_body(w, h) for w, h in sizes)]
+        defs_end = len(parts)
         for g in self.geoms:
             cls, skirt, inner = key_fn(g)
             x, y, w, h = g.x * U + PAD, g.y * U + PAD, g.w * U - 2 * PAD, g.h * U - 2 * PAD
@@ -217,6 +274,7 @@ class Svg:
                 parts.append("  " + _text(w / 2, h - 4, skirt[0], 9, skirt[1], w - 6))
             parts.extend("  " + t for t in inner(CAP_SIDE + tw / 2, CAP_TOP + th / 2, tw, th))
             parts.append("</g>")
+        parts[defs_end:defs_end] = [*_icon_defs("\n".join(parts[defs_end:])), '</defs>']
         parts.append("</svg>\n")
         return "\n".join(parts)
 
@@ -312,12 +370,12 @@ def combined_svg(km: Keymap, svg: Svg, pos_attrs: bool = False, layer_labels: bo
 # ---------------------------------------------------------------- styles + output
 SVG_CSS = """
 :root { --fg:#222; --muted:#6f6f6b; --cap:#f6f6f3; --skirt:#dcdcd7; --edge:#b9b9b3;
-        --none-cap:#f4f4f1; --none-skirt:#e7e7e3; --mod-cap:#f1f0ec; --mod-skirt:#d4d3cd;
+        --none-cap:#f4f4f1; --none-skirt:#e7e7e3; --none-edge:#b9b9b3; --mod-cap:#f1f0ec; --mod-skirt:#d4d3cd;
         --S:70%; --Lt:36%; --capS:60%; --capL:95%; --skirtL:84%; --edgeL:62%; --heldCapL:86%; --heldSkirtL:72%;
         --dish-shade:0.07; --dish-light:0.35; --rim-top:0.6; --rim-bottom:0.3; }
 @media (prefers-color-scheme: dark) {
   :root { --fg:#ececea; --muted:#9a9a98; --cap:#3a3d42; --skirt:#25272b; --edge:#17181a;
-          --none-cap:#24262a; --none-skirt:#1c1d20; --mod-cap:#34363b; --mod-skirt:#222327;
+          --none-cap:#24262a; --none-skirt:#1c1d20; --none-edge:#3f4247; --mod-cap:#34363b; --mod-skirt:#222327;
           --S:55%; --Lt:74%; --capS:32%; --capL:30%; --skirtL:19%; --edgeL:12%; --heldCapL:40%; --heldSkirtL:27%;
           --dish-shade:0.25; --dish-light:0.05; --rim-top:0.06; --rim-bottom:0.025; } }
 text { font-family: system-ui, sans-serif; }
@@ -331,10 +389,11 @@ text { font-family: system-ui, sans-serif; }
 .dish-clear { stop-opacity: 0; }
 .rim-top { stop-color: #fff; stop-opacity: var(--rim-top); }
 .rim-bottom { stop-color: #fff; stop-opacity: var(--rim-bottom); }
-.key.none { --k-cap: var(--none-cap); --k-skirt: var(--none-skirt); --k-dash: 3 3; }
+.key.none { --k-cap: var(--none-cap); --k-skirt: var(--none-skirt); --k-edge: var(--none-edge); --k-dash: 3 3; }
 .key.trns { --k-cap: var(--none-cap); --k-skirt: var(--none-skirt); }
 .key.mod { --k-cap: var(--mod-cap); --k-skirt: var(--mod-skirt); }
-.key text { text-anchor: middle; fill: var(--fg); }
+.key text { text-anchor: middle; }
+.key text, .key .icon { fill: var(--fg); }
 .key .shifted, .key.trns text { fill: var(--muted); }
 .key .hold { font-weight: 600; fill: var(--muted); }
 .key .sub { font-weight: 600; }
@@ -349,7 +408,7 @@ def svg_css(n: int) -> str:
                 f"--k-skirt: hsl({h} 35% var(--skirtL)); --k-edge: hsl({h} 30% var(--edgeL)); }}",
                 f".key.held.l{i} {{ --k-cap: hsl({h} var(--capS) var(--heldCapL)); "
                 f"--k-skirt: hsl({h} 45% var(--heldSkirtL)); --k-edge: hsl({h} 50% var(--edgeL)); }}",
-                f".key text.l{i} {{ fill: hsl({h} var(--S) var(--Lt)); }}"]
+                f".key text.l{i}, .key .icon.l{i} {{ fill: hsl({h} var(--S) var(--Lt)); }}"]
     return "\n" + "\n".join(out)
 
 
