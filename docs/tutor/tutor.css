@@ -35,18 +35,16 @@ select { font: inherit; padding: 6px 10px; border-radius: 8px; border: 1px solid
 .stat b { font-size: 22px; font-variant-numeric: tabular-nums; } .stat span { color: var(--pg-muted); margin-left: 4px; }
 .bar { height: 4px; background: var(--pg-line); border-radius: 2px; margin: 10px 0 0; overflow: hidden; }
 .bar i { display: block; height: 100%; width: 0; background: var(--pg-accent); transition: width .15s; }
-.stage { display: flex; justify-content: center; align-items: center; height: 170px; overflow: hidden; margin-top: 8px;
-  white-space: pre; user-select: none; }
-.strip { display: flex; align-items: center; width: 100%; font-size: 30px; }
-.strip .past { flex: 1 1 0; display: flex; justify-content: flex-end; overflow: hidden; color: var(--pg-ok); min-width: 0; }
-.strip .next { flex: 3 1 0; display: flex; overflow: hidden; color: var(--pg-muted); min-width: 0; }
+.stage { position: relative; height: calc(6 * 1.7em); font-size: 24px; line-height: 1.7; overflow: hidden; margin-top: 8px;
+  padding: 0 16px; border: 1px solid var(--pg-line); border-radius: 10px; background: var(--pg-panel);
+  white-space: pre-wrap; overflow-wrap: anywhere; user-select: none; scroll-behavior: smooth; }
+.strip { color: var(--pg-muted); }
+.strip .done { color: var(--pg-ok); }
 .strip .err { color: var(--pg-bad); text-decoration: underline; }
 .strip .ws { color: var(--pg-faint); }
-.cur { flex: none; min-width: 1.1em; padding: 0 .12em; margin: 0 .2em; font-size: 108px; line-height: 150px; text-align: center;
-  background: var(--pg-cur-bg); border-radius: 14px; }
-.cur.ws { color: var(--pg-muted); }
-.cur.shake { animation: shake .22s; background: var(--pg-bad-bg); }
-@keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.strip .cur { color: var(--pg-fg); background: var(--pg-cur-bg); border-radius: 4px; box-shadow: 0 2px 0 var(--pg-accent); }
+.strip .cur.shake { animation: flash .25s; }
+@keyframes flash { 0%, 60% { background: var(--pg-bad-bg); } }
 .hint { min-height: 30px; text-align: center; font-size: 15px; }
 .chip { display: inline-block; padding: 2px 10px; margin: 0 3px; border-radius: 999px; font-weight: 600; }
 .chip.hold { background: var(--hl-hold-cap); color: #0d1f3f; }
@@ -89,5 +87,5 @@ select { font: inherit; padding: 6px 10px; border-radius: 8px; border: 1px solid
 .result { text-align: center; padding: 30px 0 10px; }
 .result .big { font-size: 46px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .missed span { display: inline-block; margin: 3px; padding: 2px 8px; border-radius: 6px; background: var(--pg-bad-bg); }
-@media (max-width: 640px) { .cur { font-size: 72px; line-height: 104px; } .stage { height: 120px; } .strip { font-size: 20px; } }
+@media (max-width: 640px) { .stage { font-size: 18px; } }
 .gh { position: absolute; top: 20px; right: 16px; color: inherit; opacity: .6; display: block; line-height: 0; } .gh:hover { opacity: 1; }

@@ -17,10 +17,9 @@ function isWs(c) { return c === " " || c === "\n" || c === "\t"; }
 
 // ---------------------------------------------------------------- highlighting
 function clearKeys(cls) { kbd.querySelectorAll("." + cls).forEach(el => el.classList.remove(cls)); }
-let focusOn = store.get("corne-typing-focus") !== "0";
 function setLayer(li) {   // li: active layer index, or null for the full combined view
   kbd.classList.forEach(c => c.startsWith("on-l") && kbd.classList.remove(c));
-  kbd.classList.toggle("focus", focusOn && li !== null);
+  kbd.classList.toggle("focus", li !== null);
   clearKeys("off");
   if (li === null) return;
   kbd.classList.add("on-l" + li);
@@ -60,22 +59,39 @@ let text = "", pos = 0, marks = [], errors = 0, strokes = 0, t0 = 0, missed = {}
 function start(t) {
   text = t; pos = 0; marks = new Array(text.length).fill(0); errors = 0; strokes = 0; t0 = 0; missed = {};
   running = true;
-  show("play"); draw();
+  show("play"); build(); for (let i = 0; i < text.length; i++) paint(i); draw();
   clearInterval(timer); timer = setInterval(stats, 500);
 }
-function show(id) { for (const s of ["setup", "play", "done"]) $(s).classList.toggle("hidden", s !== id); }
+function show(id) { for (const s of ["setup", "play", "done"]) $(s).classList.toggle("hidden", s !== id);
+  $("stop").classList.toggle("hidden", id !== "play");
+}
 
+let cells = [];
+function build() {
+  cells = [];
+  let html = "";
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    html += `<span class="${isWs(c) ? "ws" : ""}">${esc(shown(c))}</span>${c === "\n" ? "\n" : c === " " ? "<wbr>" : ""}`;
+  }
+  $("strip").innerHTML = html;
+  cells = [...$("strip").querySelectorAll(":scope > span")];
+  $("stage").scrollTop = 0;
+}
+function paint(i) {
+  const el = cells[i];
+  if (!el) return;
+  el.classList.toggle("done", i < pos);
+  el.classList.toggle("err", marks[i] === 1);
+  el.classList.toggle("cur", i === pos);
+}
 function draw() {
-  if (pos >= text.length) return finish();
+  if (pos >= text.length) { paint(pos - 1); return finish(); }
   const ch = text[pos];
-  const span = (c, i) => {
-    const cls = [marks[i] === 1 ? "err" : "", isWs(c) ? "ws" : ""].filter(Boolean).join(" ");
-    return `<span${cls ? ` class="${cls}"` : ""}>${esc(shown(c))}</span>`;
-  };
-  let past = "", next = "";
-  for (let i = Math.max(0, pos - 24); i < pos; i++) past += span(text[i], i);
-  for (let i = pos + 1; i < Math.min(text.length, pos + 60); i++) next += span(text[i], i);
-  $("strip").innerHTML = `<div class="past">${past}</div><div class="cur${isWs(ch) ? " ws" : ""}" id="cur">${esc(shown(ch))}</div><div class="next">${next}</div>`;
+  paint(pos - 1); paint(pos);
+  const cur = cells[pos], stage = $("stage");
+  const lh = parseFloat(getComputedStyle(cur).lineHeight);
+  stage.scrollTop = Math.max(0, cur.offsetTop - lh * 1.2);   // keep ~1 line of context above the cursor
   $("hint").innerHTML = hintFor(ch);
   highlight(ch);
   stats();
@@ -114,7 +130,6 @@ document.addEventListener("keydown", e => {
     if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && !$("setup").classList.contains("hidden")) { e.preventDefault(); $("start").click(); }
     return;
   }
-  if (e.key === "Escape") { e.preventDefault(); return stop(); }
   if (e.ctrlKey || e.metaKey || (e.altKey && !e.getModifierState("AltGraph"))) return;
   let k = e.key;
   if (k === "Enter") k = "\n"; else if (k === "Tab") k = "\t";
@@ -128,8 +143,8 @@ document.addEventListener("keydown", e => {
   } else {
     errors++; marks[pos] = 1; missed[want] = (missed[want] || 0) + 1;
     flashBad(k);
-    const cur = $("cur"); cur.classList.remove("shake"); void cur.offsetWidth; cur.classList.add("shake");
     draw();
+    const cur = cells[pos]; cur.classList.remove("shake"); void cur.offsetWidth; cur.classList.add("shake");
   }
 });
 
@@ -139,6 +154,7 @@ $("start").onclick = () => {
   store.set("corne-typing-text", $("src").value);
   start(t);
 };
+$("stop").onclick = stop;
 $("again").onclick = () => start(text);
 $("new").onclick = () => { show("setup"); $("src").focus(); };
 $("src").addEventListener("input", () => { $("sample").value = ""; $("warn").textContent = ""; });
@@ -161,12 +177,6 @@ $("toggle-kbd").onclick = () => {
   store.set("corne-typing-kbd", h ? "0" : "1");
 };
 if (store.get("corne-typing-kbd") === "0") $("toggle-kbd").click();
-function focusLabel() { $("toggle-focus").textContent = focusOn ? "Show all labels" : "Show current layer only"; }
-$("toggle-focus").onclick = () => {
-  focusOn = !focusOn; focusLabel(); store.set("corne-typing-focus", focusOn ? "1" : "0");
-  if (running) highlight(text[pos]);
-};
-focusLabel();
 $("src").value = store.get("corne-typing-text") ||
   "The quick brown fox jumps over the lazy dog.\nif (x[0] == 42) { return \"ok\"; } // 100% sure: a+b=c & d|e ~ f^g!";
 $("src").focus();

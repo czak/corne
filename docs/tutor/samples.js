@@ -8,12 +8,14 @@ How vexingly quick daft zebras jump!
 Sphinx of black quartz, judge my vow.
 The five boxing wizards jump quickly.` },
   { group: "English", title: "Morning routine", text: `Every morning I make a pot of coffee, open the window, and spend ten minutes doing nothing at all. It's the only part of the day that doesn't belong to anyone else. By the time the kettle clicks off, the street below has started to wake up: a bus sighs at the stop, someone drags a bin to the curb, and the bakery on the corner props its door open with a brick.` },
-  { group: "English", title: "A short email", text: `Hi Marta,
+  { group: "English", title: "Slack message", text: `Heads up: #4821 broke staging again. \`main\` is red because \`test_retry_backoff\` is flaky (passes locally, fails in CI ~1 in 3 runs)
 
-Thanks for sending the draft over. I've read it twice and left a few comments in the margins - mostly small things, like the dates in section 3 and the chart that's missing a legend. Could we talk on Thursday at 2:30? If that doesn't work, any time on Friday morning is fine.
+What I found so far:
+- \`retry()\` sleeps for \`2 ** attempt\` ms but the mock clock never advances
+- the fixture in \`conftest.py\` is shared between workers, so order matters
+- reverting #4807 "fixes" it, but I don't think that's the real cause
 
-Best,
-Łukasz` },
+Can someone take a look before standup? I'll push a \`skip\` marker as a stopgap in #4822` },
   { group: "English", title: "Keyboards", text: `A split keyboard lets each hand rest at its own natural angle. With fewer keys, every key has to work harder: a single thumb key might be Space when tapped and a whole layer of numbers when held. It feels strange for a week or two. Then one day you reach for a symbol without thinking, and the old keyboard starts to look enormous.` },
   { group: "English", title: "Numbers and dates", text: `The meeting moved from 9:15 to 10:45 on 3 March 2027. Tickets cost $24.50 each, or $89 for a pack of four (save 9%). Flight LO 281 departs at 06:40 from gate B12; boarding closes 20 minutes earlier. Call +48 600 123 456 or write to orders@example.com before 31/12.` },
   { group: "English", title: "Recipe", text: `Pancakes (makes 8)
@@ -31,12 +33,14 @@ Pchnąć w tę łódź jeża lub ośm skrzyń fig.
 Jeżu klątw, spłódź Finom część gry hańb!
 Stróż pchnął kość w quiz gędźb vel fax myjń.` },
   { group: "Polski", title: "Poranek", text: `Rano zawsze zaczynam od kawy. Siadam przy oknie, patrzę na podwórko i przez kilka minut nie robię nic. Sąsiad wyprowadza psa, ktoś trzaska drzwiami od klatki, a na parapecie gołębie kłócą się o okruchy. Dopiero kiedy kubek jest pusty, otwieram laptopa i sprawdzam, co przyniósł nowy dzień.` },
-  { group: "Polski", title: "Wiadomość", text: `Cześć Kasia,
+  { group: "Polski", title: "Wiadomość na Slacku", text: `Uwaga: #4821 znowu wywaliło staging. \`main\` jest czerwony, bo \`test_retry_backoff\` jest flaky (lokalnie przechodzi, w CI pada co trzeci raz)
 
-dzięki za wczorajsze spotkanie! Przesyłam poprawioną wersję prezentacji - zmieniłem slajdy 4-7 i dodałem wykres z wynikami za październik. Daj znać, czy wszystko się zgadza. Jeśli masz chwilę w piątek po 15:00, możemy jeszcze raz przejść przez budżet.
+Co udało mi się ustalić:
+- \`retry()\` czeka \`2 ** attempt\` ms, ale zegar w mocku nigdy się nie przesuwa
+- fixture w \`conftest.py\` jest współdzielony między workerami, więc kolejność ma znaczenie
+- revert #4807 "naprawia" problem, ale to chyba nie jest prawdziwa przyczyna
 
-Pozdrawiam,
-Łukasz` },
+Może ktoś zerknąć przed dailym? w #4822 wrzucę tymczasowo \`skip\`` },
   { group: "Polski", title: "Klawiatura", text: `Dzielona klawiatura pozwala trzymać dłonie szerzej i bardziej naturalnie. Ma mniej klawiszy, więc każdy z nich pełni kilka funkcji: krótkie wciśnięcie daje spację, a przytrzymanie przełącza na warstwę z cyframi. Pierwsze dni są trudne, ale po tygodniu palce same zaczynają pamiętać, gdzie szukać nawiasów.` },
   { group: "Polski", title: "Przepis", text: `Placki ziemniaczane
 
