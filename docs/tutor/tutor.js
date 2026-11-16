@@ -110,7 +110,10 @@ function finish() {
 function stop() { running = false; clearInterval(timer); clearKeys("hl-tap"); clearKeys("hl-hold"); setLayer(null); show("setup"); $("src").focus(); }
 
 document.addEventListener("keydown", e => {
-  if (!running) return;
+  if (!running) {
+    if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && !$("setup").classList.contains("hidden")) { e.preventDefault(); $("start").click(); }
+    return;
+  }
   if (e.key === "Escape") { e.preventDefault(); return stop(); }
   if (e.ctrlKey || e.metaKey || (e.altKey && !e.getModifierState("AltGraph"))) return;
   let k = e.key;
