@@ -15,20 +15,20 @@ AUTO_SHIFT_NO_AUTO_REPEAT = false
 AUTO_SHIFT_TIMEOUT = 175
 ONESHOT_TAP_TOGGLE = 5
 ONESHOT_TIMEOUT = 5000
-TAPPING_TERM = 150
-PERMISSIVE_HOLD = true
-IGNORE_MOD_TAP_INTERRUPT = true
+TAPPING_TERM = 200
+PERMISSIVE_HOLD = false
+IGNORE_MOD_TAP_INTERRUPT = false
 TAPPING_FORCE_HOLD = false
 RETRO_TAPPING = false
-MOUSEKEY_DELAY = 0
-MOUSEKEY_INTERVAL = 16
+MOUSEKEY_DELAY = 10
+MOUSEKEY_INTERVAL = 20
 MOUSEKEY_MOVE_DELTA = 8
-MOUSEKEY_MAX_SPEED = 6
-MOUSEKEY_TIME_TO_MAX = 64
-MOUSEKEY_WHEEL_DELAY = 0
+MOUSEKEY_MAX_SPEED = 10
+MOUSEKEY_TIME_TO_MAX = 30
+MOUSEKEY_WHEEL_DELAY = 10
 MOUSEKEY_WHEEL_INTERVAL = 80
 MOUSEKEY_WHEEL_MAX_SPEED = 8
-TAP_CODE_DELAY = 0
+TAP_CODE_DELAY = 50
 TAP_HOLD_CAPS_DELAY = 80
 TAPPING_TOGGLE = 5
 swap_control_capslock = false
@@ -47,121 +47,112 @@ swap_rctl_rgui = false
 # The firmware has a fixed 8 layers and push needs all of them: keep unused ones as all-NO layers.
 [layers.BASE]
 left = [
-  ["ESCAPE", "Q", "W", "E", "R", "T", "VOLU"],
-  ["OSM(MOD_LCTL)", "A", "LALT_T(S)", "LCTL_T(D)", "LSFT_T(F)", "G", "VOLD"],
-  ["TD(0)", "Z", "RALT_T(X)", "C", "V", "B"],
-  ["LM(WM,MOD_LGUI)", "LT(NAV,SPACE)", "TAB"],
+  ["ESCAPE", "Q", "W", "E", "R", "T", "LALT"],
+  ["OSM(MOD_LCTL)", "A", "S", "D", "F", "G", "TAB"],
+  ["LSHIFT", "Z", "X", "C", "V", "B"],
+  ["LGUI", "MO(NUM)", "SPACE"],
 ]
 right = [
-  ["F14", "Y", "U", "I", "O", "P", "NO"],
-  ["NO", "H", "LSFT_T(J)", "LCTL_T(K)", "LALT_T(L)", "QUOTE", "OSM(MOD_LCTL)"],
-  ["N", "M", "COMMA", "RALT_T(DOT)", "SLASH", "TD(0)"],
-  ["LT(SYM,ENTER)", "LT(NUM,BSPACE)", "LT(FUN,DELETE)"],
+  ["F14", "Y", "U", "I", "O", "P", "BSPACE"],
+  ["RSHIFT", "H", "J", "K", "L", "SCOLON", "QUOTE"],
+  ["N", "M", "COMMA", "DOT", "SLASH", "DELETE"],
+  ["ENTER", "MO(SYM)", "RGUI"],
 ]
 
 [layers.NUM]
 left = [
-  ["NO", "LBRACKET", "7", "8", "9", "RBRACKET", "NO"],
-  ["NO", "SCOLON", "4", "5", "6", "EQUAL", "NO"],
-  ["NO", "GRAVE", "1", "2", "3", "BSLASH"],
-  ["DOT", "0", "MINUS"],
+  ["TAB", "1", "2", "3", "4", "5", "LCTRL"],
+  ["LCTRL", "A", "S", "D", "F", "G", "LALT"],
+  ["LSHIFT", "Z", "X", "C", "V", "B"],
+  ["LGUI", "MO(NUM)", "SPACE"],
 ]
 right = [
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "NO", "LSHIFT", "LCTRL", "LALT", "LGUI", "NO"],
-  ["NO", "NO", "NO", "RALT", "NO", "NO"],
-  ["NO", "NO", "NO"],
+  ["RCTRL", "6", "7", "8", "9", "0", "BSPACE"],
+  ["RALT", "LEFT", "DOWN", "UP", "RIGHT", "SCOLON", "QUOTE"],
+  ["N", "M", "COMMA", "DOT", "SLASH", "ESCAPE"],
+  ["ENTER", "MO(SYM)", "RGUI"],
 ]
 
 [layers.SYM]
 left = [
-  ["NO", "LCBR", "AMPR", "ASTR", "LPRN", "RCBR", "NO"],
-  ["NO", "COLN", "DLR", "PERC", "CIRC", "PLUS", "NO"],
-  ["NO", "TILD", "EXLM", "AT", "HASH", "PIPE"],
-  ["LPRN", "RPRN", "UNDS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS"],
 ]
 right = [
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "NO", "LSHIFT", "LCTRL", "LALT", "LGUI", "NO"],
-  ["NO", "NO", "NO", "RALT", "NO", "NO"],
-  ["NO", "NO", "NO"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS"],
 ]
 
 [layers.FUN]
 left = [
-  ["NO", "F12", "F7", "F8", "F9", "PSCREEN", "NO"],
-  ["NO", "F11", "F4", "F5", "F6", "NO", "NO"],
-  ["NO", "F10", "F1", "F2", "F3", "NO"],
-  ["APPLICATION", "SPACE", "TAB"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS"],
 ]
 right = [
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "NO", "LSHIFT", "LCTRL", "LALT", "LGUI", "NO"],
-  ["NO", "NO", "NO", "RALT", "NO", "NO"],
-  ["NO", "NO", "NO"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS"],
 ]
 
 [layers.NAV]
 left = [
-  ["NO", "NO", "NO", "NO", "NO", "LALT(T)", "NO"],
-  ["NO", "LSHIFT", "LALT(4)", "LALT(5)", "LALT(6)", "NO", "NO"],
-  ["NO", "NO", "LALT(1)", "LALT(2)", "LALT(3)", "NO"],
-  ["NO", "NO", "NO"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS"],
 ]
 right = [
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "LEFT", "DOWN", "UP", "RIGHT", "NO", "NO"],
-  ["HOME", "PGDOWN", "PGUP", "END", "NO", "NO"],
-  ["ENTER", "BSPACE", "DELETE"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS"],
 ]
 
 [layers.WM]
 left = [
-  ["NO", "LGUI(Q)", "LGUI(W)", "LGUI(E)", "LGUI(R)", "LGUI(T)", "NO"],
-  ["NO", "LSHIFT", "LGUI(4)", "LGUI(5)", "LGUI(F)", "LGUI(TAB)", "NO"],
-  ["NO", "NO", "LGUI(1)", "LGUI(2)", "LGUI(3)", "NO"],
-  ["NO", "NO", "NO"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS"],
 ]
 right = [
-  ["NO", "LGUI(6)", "LGUI(7)", "LGUI(8)", "LGUI(9)", "LGUI(0)", "NO"],
-  ["NO", "LGUI(H)", "LGUI(J)", "LGUI(K)", "LGUI(L)", "NO", "NO"],
-  ["WH_L", "WH_D", "WH_U", "WH_R", "NO", "NO"],
-  ["ENTER", "LSFT(ENTER)", "NO"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS"],
 ]
 
 [layers.L6]
 left = [
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "NO", "NO"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS"],
 ]
 right = [
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "NO", "NO"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS"],
 ]
 
 [layers.L7]
 left = [
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "NO", "NO"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS"],
 ]
 right = [
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "NO", "NO", "NO", "NO", "NO"],
-  ["NO", "NO", "NO"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS"],
 ]
-
-# Tap dances: the n-th [[tap_dance]] is TD(n). Fields of Vial's tap dance entry;
-# custom_tapping_term (ms) is also the double-tap window.
-[[tap_dance]]
-on_tap = "OSM(MOD_LSFT)"
-on_hold = "LSHIFT"
-on_double_tap = "QK_CAPS_WORD_TOGGLE"
-on_tap_hold = "NO"
-custom_tapping_term = 200
