@@ -386,8 +386,10 @@ text { font-family: system-ui, sans-serif; }
   <text x="29" y="27.6" class="tap" font-size="13">G</text>
   <text x="16.5" y="9.5" class="sub l1" font-size="7">=</text>
   <text x="41.5" y="9.5" class="sub l2" font-size="7">+</text>
+  <text x="16.5" y="41.5" class="sub l5" font-size="6">Gui+Tab</text>
   <text x="29" y="28.2" class="lay l1" font-size="15">=</text>
   <text x="29" y="28.2" class="lay l2" font-size="15">+</text>
+  <text x="29" y="28.2" class="lay l5" font-size="10.8">Gui+Tab</text>
 </g>
 <g class="key key" data-pos="3,1" transform="translate(391 166)">
   <use href="#key-58x58"/>

@@ -118,7 +118,7 @@ right = [
 [layers.WM]
 left = [
   ["NO", "LGUI(Q)", "LGUI(W)", "LGUI(E)", "LGUI(R)", "LGUI(T)", "NO"],
-  ["NO", "LSHIFT", "LGUI(4)", "LGUI(5)", "LGUI(F)", "NO", "NO"],
+  ["NO", "LSHIFT", "LGUI(4)", "LGUI(5)", "LGUI(F)", "LGUI(TAB)", "NO"],
   ["NO", "NO", "LGUI(1)", "LGUI(2)", "LGUI(3)", "NO"],
   ["NO", "NO", "NO"],
 ]
