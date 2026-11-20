@@ -16,8 +16,8 @@ AUTO_SHIFT_TIMEOUT = 175
 ONESHOT_TAP_TOGGLE = 5
 ONESHOT_TIMEOUT = 5000
 TAPPING_TERM = 200
-PERMISSIVE_HOLD = false
-IGNORE_MOD_TAP_INTERRUPT = false
+PERMISSIVE_HOLD = true
+IGNORE_MOD_TAP_INTERRUPT = true
 TAPPING_FORCE_HOLD = false
 RETRO_TAPPING = false
 MOUSEKEY_DELAY = 10
@@ -42,117 +42,196 @@ nkro = false
 swap_lctl_lgui = false
 swap_rctl_rgui = false
 
-# Layer order = layer index. Each half: top (7), home (7), bottom (6), thumbs (3);
-# left-to-right as seen from above. Keycodes: vial-gui names without KC_.
+# Layers: the n-th [[layer]] is layer n (MO(n), LT(n,kc)). Each half: top (7), home (7), bottom (6),
+# thumbs (3); left-to-right as seen from above. Keycodes: vial-gui names without KC_.
 # The firmware has a fixed 8 layers and push needs all of them: keep unused ones as all-NO layers.
-[layers.BASE]
+[[layer]]
 left = [
-  ["ESCAPE", "Q", "W", "E", "R", "T", "LALT"],
-  ["OSM(MOD_LCTL)", "A", "S", "D", "F", "G", "TAB"],
-  ["LSHIFT", "Z", "X", "C", "V", "B"],
-  ["LGUI", "MO(NUM)", "SPACE"],
+  ["ESCAPE", "Q", "W", "E", "R", "T", "PSCREEN"],
+  ["OSM(MOD_LCTL)", "A", "S", "D", "F", "G", "LSFT(PSCREEN)"],
+  ["OSM(MOD_LSFT)", "LALT_T(Z)", "X", "C", "V", "B"],
+  ["LM(3,MOD_LGUI)", "LT(2,SPACE)", "TAB"],
 ]
 right = [
-  ["F14", "Y", "U", "I", "O", "P", "BSPACE"],
-  ["RSHIFT", "H", "J", "K", "L", "SCOLON", "QUOTE"],
-  ["N", "M", "COMMA", "DOT", "SLASH", "DELETE"],
-  ["ENTER", "MO(SYM)", "RGUI"],
+  ["F14", "Y", "U", "I", "O", "P", "SCOLON"],
+  ["NO", "H", "J", "K", "L", "QUOTE", "OSM(MOD_RCTL)"],
+  ["N", "M", "COMMA", "DOT", "RALT_T(SLASH)", "TD(10)"],
+  ["ENTER", "LT(1,BSPACE)", "LT(4,DELETE)"],
 ]
 
-[layers.NUM]
+[[layer]]
 left = [
-  ["TAB", "1", "2", "3", "4", "5", "LCTRL"],
-  ["LCTRL", "A", "S", "D", "F", "G", "LALT"],
-  ["LSHIFT", "Z", "X", "C", "V", "B"],
-  ["LGUI", "MO(NUM)", "SPACE"],
+  ["TRNS", "UNDS", "TD(7)", "TD(8)", "TD(9)", "PLUS", "TRNS"],
+  ["NO", "MINUS", "TD(4)", "TD(5)", "TD(6)", "EQUAL", "TRNS"],
+  ["TRNS", "NO", "TD(1)", "TD(2)", "TD(3)", "DOT"],
+  ["TD(0)", "TRNS", "TRNS"],
 ]
 right = [
-  ["RCTRL", "6", "7", "8", "9", "0", "BSPACE"],
-  ["RALT", "LEFT", "DOWN", "UP", "RIGHT", "SCOLON", "QUOTE"],
-  ["N", "M", "COMMA", "DOT", "SLASH", "ESCAPE"],
-  ["ENTER", "MO(SYM)", "RGUI"],
-]
-
-[layers.SYM]
-left = [
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS"],
-]
-right = [
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "NO", "NO", "NO", "NO", "NO", "TRNS"],
+  ["TRNS", "LEFT", "DOWN", "UP", "RIGHT", "NO", "TRNS"],
+  ["HOME", "PGDOWN", "PGUP", "END", "NO", "TRNS"],
   ["TRNS", "TRNS", "TRNS"],
 ]
 
-[layers.FUN]
+[[layer]]
 left = [
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "TRNS", "LCTL(PGUP)", "LCTL(PGDOWN)", "LALT(T)", "C_S(EQUAL)"],
+  ["TRNS", "TRNS", "TRNS", "LALT(D)", "LCTL(F)", "LCTL(G)", "LCTL(MINUS)"],
+  ["TRNS", "F11", "TRNS", "C_S(LBRACKET)", "C_S(RBRACKET)", "C_S(B)"],
   ["TRNS", "TRNS", "TRNS"],
 ]
 right = [
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "LCBR", "RCBR", "PIPE", "TILD", "TRNS"],
+  ["TRNS", "AMPR", "LPRN", "RPRN", "BSLASH", "GRAVE", "TRNS"],
+  ["TRNS", "LBRACKET", "RBRACKET", "TRNS", "TRNS", "TRNS"],
   ["TRNS", "TRNS", "TRNS"],
 ]
 
-[layers.NAV]
+[[layer]]
 left = [
   ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "TRNS", "4", "5", "6", "TRNS", "TRNS"],
+  ["TRNS", "F", "1", "2", "3", "TRNS"],
   ["TRNS", "TRNS", "TRNS"],
 ]
 right = [
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS"],
+  ["TRNS", "NO", "7", "8", "9", "0", "TRNS"],
+  ["TRNS", "LEFT", "DOWN", "UP", "RIGHT", "TRNS", "TRNS"],
+  ["SGUI(C)", "NO", "NO", "NO", "NO", "TRNS"],
+  ["ENTER", "LSFT(ENTER)", "TRNS"],
 ]
 
-[layers.WM]
+[[layer]]
 left = [
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO"],
 ]
 right = [
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS"],
+  ["NO", "NO", "F7", "F8", "F9", "F10", "NO"],
+  ["NO", "NO", "F4", "F5", "F6", "F11", "NO"],
+  ["NO", "F1", "F2", "F3", "F12", "NO"],
+  ["NO", "NO", "TRNS"],
 ]
 
-[layers.L6]
+[[layer]]
 left = [
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO"],
 ]
 right = [
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO"],
 ]
 
-[layers.L7]
+[[layer]]
 left = [
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO"],
 ]
 right = [
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS", "TRNS", "TRNS", "TRNS"],
-  ["TRNS", "TRNS", "TRNS"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO"],
 ]
+
+[[layer]]
+left = [
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO"],
+]
+right = [
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO", "NO", "NO", "NO"],
+  ["NO", "NO", "NO"],
+]
+
+# Tap dances: the n-th [[tap_dance]] is TD(n). Fields of Vial's tap dance entry;
+# custom_tapping_term (ms) is also the double-tap window.
+[[tap_dance]]
+on_tap = "0"
+on_hold = "RPRN"
+on_double_tap = "NO"
+on_tap_hold = "NO"
+custom_tapping_term = 200
+
+[[tap_dance]]
+on_tap = "1"
+on_hold = "EXLM"
+on_double_tap = "NO"
+on_tap_hold = "NO"
+custom_tapping_term = 200
+
+[[tap_dance]]
+on_tap = "2"
+on_hold = "AT"
+on_double_tap = "NO"
+on_tap_hold = "NO"
+custom_tapping_term = 200
+
+[[tap_dance]]
+on_tap = "3"
+on_hold = "HASH"
+on_double_tap = "NO"
+on_tap_hold = "NO"
+custom_tapping_term = 200
+
+[[tap_dance]]
+on_tap = "4"
+on_hold = "DLR"
+on_double_tap = "NO"
+on_tap_hold = "NO"
+custom_tapping_term = 200
+
+[[tap_dance]]
+on_tap = "5"
+on_hold = "PERC"
+on_double_tap = "NO"
+on_tap_hold = "NO"
+custom_tapping_term = 200
+
+[[tap_dance]]
+on_tap = "6"
+on_hold = "CIRC"
+on_double_tap = "NO"
+on_tap_hold = "NO"
+custom_tapping_term = 200
+
+[[tap_dance]]
+on_tap = "7"
+on_hold = "AMPR"
+on_double_tap = "NO"
+on_tap_hold = "NO"
+custom_tapping_term = 200
+
+[[tap_dance]]
+on_tap = "8"
+on_hold = "ASTR"
+on_double_tap = "NO"
+on_tap_hold = "NO"
+custom_tapping_term = 200
+
+[[tap_dance]]
+on_tap = "9"
+on_hold = "LPRN"
+on_double_tap = "NO"
+on_tap_hold = "NO"
+custom_tapping_term = 200
+
+[[tap_dance]]
+on_tap = "OSM(MOD_LSFT)"
+on_hold = "LSHIFT"
+on_double_tap = "QK_CAPS_WORD_TOGGLE"
+on_tap_hold = "NO"
+custom_tapping_term = 200

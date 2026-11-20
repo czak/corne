@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" role="img" width="954" height="326" viewBox="18 48 954 325.5">
-<title>SYM layer</title>
+<title>Layer 6</title>
 <style>
 :root { --fg:#222; --muted:#6f6f6b; --cap:#f6f6f3; --skirt:#dcdcd7; --edge:#b9b9b3;
         --none-cap:#f4f4f1; --none-skirt:#e7e7e3; --none-edge:#b9b9b3; --mod-cap:#f1f0ec; --mod-skirt:#d4d3cd;
@@ -78,189 +78,142 @@ text { font-family: system-ui, sans-serif; }
     <rect class="rim" x="4.6" y="2.6" width="48.8" height="70.8" rx="3.4" stroke-width="1.2"/>
   </g>
 </defs>
-<g class="key trns" transform="translate(31 83.5)">
+<g class="key none" transform="translate(31 83.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(91 83.5)">
+<g class="key none" transform="translate(91 83.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(151 68.5)">
+<g class="key none" transform="translate(151 68.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(211 61)">
+<g class="key none" transform="translate(211 61)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(271 68.5)">
+<g class="key none" transform="translate(271 68.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(331 76)">
+<g class="key none" transform="translate(331 76)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(391 106)">
+<g class="key none" transform="translate(391 106)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(31 143.5)">
+<g class="key none" transform="translate(31 143.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(91 143.5)">
+<g class="key none" transform="translate(91 143.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(151 128.5)">
+<g class="key none" transform="translate(151 128.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(211 121)">
+<g class="key none" transform="translate(211 121)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(271 128.5)">
+<g class="key none" transform="translate(271 128.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(331 136)">
+<g class="key none" transform="translate(331 136)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(391 166)">
+<g class="key none" transform="translate(391 166)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(31 203.5)">
+<g class="key none" transform="translate(31 203.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(91 203.5)">
+<g class="key none" transform="translate(91 203.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(151 188.5)">
+<g class="key none" transform="translate(151 188.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(211 181)">
+<g class="key none" transform="translate(211 181)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(271 188.5)">
+<g class="key none" transform="translate(271 188.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(331 196)">
+<g class="key none" transform="translate(331 196)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(241 256)">
+<g class="key none" transform="translate(241 256)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="rotate(15 270 546) translate(241 256)">
+<g class="key none" transform="rotate(15 270 546) translate(241 256)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="rotate(30 324 558) translate(241 256)">
+<g class="key none" transform="rotate(30 324 558) translate(241 256)">
   <use href="#key-58x88"/>
-  <text x="29" y="43.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(541 106)">
+<g class="key none" transform="translate(541 106)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(601 76)">
+<g class="key none" transform="translate(601 76)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(661 68.5)">
+<g class="key none" transform="translate(661 68.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(721 61)">
+<g class="key none" transform="translate(721 61)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(781 68.5)">
+<g class="key none" transform="translate(781 68.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(841 83.5)">
+<g class="key none" transform="translate(841 83.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(901 83.5)">
+<g class="key none" transform="translate(901 83.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(541 166)">
+<g class="key none" transform="translate(541 166)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(601 136)">
+<g class="key none" transform="translate(601 136)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(661 128.5)">
+<g class="key none" transform="translate(661 128.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(721 121)">
+<g class="key none" transform="translate(721 121)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(781 128.5)">
+<g class="key none" transform="translate(781 128.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(841 143.5)">
+<g class="key none" transform="translate(841 143.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(901 143.5)">
+<g class="key none" transform="translate(901 143.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(601 196)">
+<g class="key none" transform="translate(601 196)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(661 188.5)">
+<g class="key none" transform="translate(661 188.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(721 181)">
+<g class="key none" transform="translate(721 181)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(781 188.5)">
+<g class="key none" transform="translate(781 188.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(841 203.5)">
+<g class="key none" transform="translate(841 203.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="translate(901 203.5)">
+<g class="key none" transform="translate(901 203.5)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key trns" transform="rotate(-30 666 558) translate(691 256)">
+<g class="key none" transform="rotate(-30 666 558) translate(691 256)">
   <use href="#key-58x88"/>
-  <text x="29" y="43.2" class="tap" font-size="15">▽</text>
 </g>
-<g class="key held l2" transform="rotate(-15 720 546) translate(691 256)">
+<g class="key none" transform="rotate(-15 720 546) translate(691 256)">
   <use href="#key-58x58"/>
-  <text x="29" y="54" class="hold" font-size="9">held</text>
-  <text x="29" y="27" class="tap" font-size="12">SYM</text>
 </g>
-<g class="key trns" transform="translate(691 256)">
+<g class="key none" transform="translate(691 256)">
   <use href="#key-58x58"/>
-  <text x="29" y="28.2" class="tap" font-size="15">▽</text>
 </g>
 </svg>

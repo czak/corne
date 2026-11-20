@@ -9,9 +9,9 @@ Tokens are vial-gui's primary keycode names without the ``KC_`` prefix (``BSPACE
     LCTL(Z)  C_S(Z)     modifiers + key
     LGUI_T(A)           mod-tap
     MT(MOD_LCTL|MOD_LALT,A)   mod-tap without a named shorthand
-    LT(NAV,SPACE)       layer-tap (layer by name or number)
-    LM(NUM,MOD_LGUI|MOD_LSFT) layer + mods
-    MO(NAV) TG(NAV) TO(NAV) DF(NAV) TT(NAV) OSL(NAV) PDF(NAV)
+    LT(3,SPACE)         layer-tap (layers are numbers)
+    LM(1,MOD_LGUI|MOD_LSFT)   layer + mods
+    MO(3) TG(3) TO(3) DF(3) TT(3) OSL(3) PDF(3)
     OSM(MOD_LSFT)       one-shot mod
     TD(0) M0 USER00     tap dance / macro / user keycodes
     0x7C77              anything unknown, as hex
@@ -156,19 +156,18 @@ def parse_mods(s: str) -> int:
 
 # ----------------------------------------------------------------- codec
 class Codec:
-    def __init__(self, layer_names: list[str] | None = None):
+    def __init__(self):
         self.t = tables()
-        self.layer_names = list(layer_names or [])
 
-    def layer_str(self, n: int) -> str:
-        return self.layer_names[n] if n < len(self.layer_names) else str(n)
+    @staticmethod
+    def layer_str(n: int) -> str:
+        return str(n)
 
-    def parse_layer(self, s: str) -> int:
-        if s in self.layer_names:
-            return self.layer_names.index(s)
+    @staticmethod
+    def parse_layer(s: str) -> int:
         if s.isdigit():
             return int(s)
-        raise KeycodeError(f"unknown layer {s!r} (known: {', '.join(self.layer_names)})")
+        raise KeycodeError(f"unknown layer {s!r} (layers are numbers: 0, 1, ...)")
 
     def decode(self, v: int) -> str:
         t = self.t
@@ -252,7 +251,7 @@ class Codec:
 
 # ----------------------------------------------------------------- fixed keycodes
 # All named keycodes: (value, name, aliases, label).
-#   name    - the spelling keymap.toml uses (vial-gui's primary name without KC_)
+#   name    - the spelling the TOML files use (vial-gui's primary name without KC_)
 #   aliases - other accepted spellings; a KC_ prefix is accepted on any name
 #   label   - vial-gui's display label, used by the visualization
 KEYCODES = [

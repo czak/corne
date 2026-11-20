@@ -11,7 +11,7 @@ Pos = tuple[int, int]  # (matrix row, matrix col)
 _ = None
 
 # Physical rows of each half, as seen from above, left to right: top, home, bottom, thumbs.
-# This defines the shape of the row arrays in keymap.toml. None = no key in that slot.
+# This defines the shape of the row arrays in the TOML files (backups, kb dump). None = no key in that slot.
 LEFT: list[list[Pos | None]] = [
     [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (3, 0)],
     [(1, 0), (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (3, 1)],

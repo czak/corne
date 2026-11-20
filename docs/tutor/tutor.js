@@ -28,7 +28,7 @@ function setLayer(li) {   // li: active layer index, or null for the full combin
 function highlight(ch) {
   clearKeys("hl-tap"); clearKeys("hl-hold");
   const c = CH[ch];
-  setLayer(c ? (c.layer ? KEYMAP.layers.indexOf(c.layer) : 0) : null);
+  setLayer(c ? (c.layer || 0) : null);
   if (!c) return;
   for (const p of c.hold) keyEls[p]?.classList.add("hl-hold");
   keyEls[c.tap]?.classList.add("hl-tap");
@@ -45,10 +45,10 @@ function hintFor(ch) {
   if (!c) return "";
   const parts = [];
   let i = 0;
-  if (c.layer) parts.push(`hold <span class="chip hold">${esc(c.layer)}</span> (${esc(NAMES[c.hold[i++]])} thumb)`);
+  if (c.layer) parts.push(`hold <span class="chip hold">layer ${esc(c.layer)}</span> (${esc(NAMES[c.hold[i++]])} thumb)`);
   if (c.altgr) parts.push(`hold <span class="chip hold">AltGr</span> (${esc(NAMES[c.hold[i++]])})`);
   if (c.shift) parts.push(`hold <span class="chip hold">Shift</span> (${esc(NAMES[c.hold[i++]])})`);
-  parts.push(`tap <span class="chip tap">${esc(shown(ch))}</span>`);
+  parts.push(`${c.held ? "hold" : "tap"} <span class="chip ${c.held ? "hold" : "tap"}">${esc(shown(ch))}</span>`);
   return parts.join(" + ");
 }
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]); }
@@ -72,7 +72,7 @@ function build() {
   let html = "";
   for (let i = 0; i < text.length; i++) {
     const c = text[i];
-    html += `<span class="${isWs(c) ? "ws" : ""}">${esc(shown(c))}</span>${c === "\n" ? "\n" : c === " " ? "<wbr>" : ""}`;
+    html += `<span class="${isWs(c) ? (c === "\t" ? "ws tab" : "ws") : ""}">${esc(shown(c))}</span>${c === "\n" ? "\n" : c === " " ? "<wbr>" : ""}`;
   }
   $("strip").innerHTML = html;
   cells = [...$("strip").querySelectorAll(":scope > span")];

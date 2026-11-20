@@ -1,4 +1,4 @@
-"""Render keymap.toml to standalone SVGs (combined + one per layer), a local preview page, and the README section.
+"""Render a keymap (read from the keyboard) to standalone SVGs (combined + one per layer), a local preview page, and the README section.
 
 Key geometry comes from corne/keyboard.py.
 """
@@ -165,7 +165,7 @@ def legend(v: int, codec: Codec, tap_dance=()) -> Legend:
 
 def activators(km: Keymap) -> dict[int, set[tuple[int, int]]]:
     """layer -> base-layer positions whose hold/press activates it."""
-    codec = Codec(km.names)
+    codec = Codec()
     base = km.raw()[0]
     out: dict[int, set] = {}
     for r, c in POSITIONS:
@@ -319,7 +319,7 @@ def _tap_texts(lg: Legend, cx, cy, w, h, big=15.0) -> list[str]:
 
 
 def layer_svg(km: Keymap, li: int, svg: Svg, acts) -> str:
-    codec = Codec(km.names)
+    codec = Codec()
     m = km.raw()[li]
     held = acts.get(li, set()) if li else set()
 
@@ -328,18 +328,18 @@ def layer_svg(km: Keymap, li: int, svg: Svg, acts) -> str:
         lg = legend(v, codec, km.tap_dance)
         if g.pos in held:
             return f"held l{li}", ("held", "hold"), lambda cx, cy, w, h: [
-                _text(cx, cy + 4, km.names[li], 12, "tap", w - 6)]
+                _text(cx, cy + 4, str(li), 12, "tap", w - 6)]
         cls = lg.kind
         if lg.hold_layer is not None:
             cls += f" lt l{lg.hold_layer}"
         return cls, _hold_label(lg), lambda cx, cy, w, h: _tap_texts(lg, cx, cy, w, h)
 
-    return svg.render(key_fn, f"{km.names[li]} layer", svg_css(len(km.layers)))
+    return svg.render(key_fn, f"Layer {li}", svg_css(len(km.layers)))
 
 
 def combined_svg(km: Keymap, svg: Svg, pos_attrs: bool = False, layer_labels: bool = False) -> str:
     """All layers on one keyboard. ``layer_labels`` adds hidden full-size legends per layer (class ``lay l<i>``)."""
-    codec = Codec(km.names)
+    codec = Codec()
     layers = km.raw()
     corners = [(-1, -1), (1, -1), (-1, 1), (1, 1)]  # TL TR BL BR
 
@@ -442,8 +442,8 @@ img { width: 100%; height: auto; display: block; }
 """
 
 
-def svg_name(layer: str) -> str:
-    return f"{layer.lower()}.svg"
+def svg_name(li: int) -> str:
+    return f"layer{li}.svg"
 
 
 def render_svgs(km: Keymap) -> dict[str, str]:
@@ -451,16 +451,16 @@ def render_svgs(km: Keymap) -> dict[str, str]:
     svg = Svg(load_geometry())
     acts = activators(km)
     out = {"combined.svg": combined_svg(km, svg)}
-    for i, name in enumerate(km.names):
-        out[svg_name(name)] = layer_svg(km, i, svg, acts)
+    for li in range(len(km.layers)):
+        out[svg_name(li)] = layer_svg(km, li, svg, acts)
     return out
 
 
 def render_html(km: Keymap) -> str:
     """Local preview page showing the SVG files."""
     body = ['<header><h1>Corne keymap</h1><a class="gh" href="https://github.com/czak/corne" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 16 16" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a></header>', '<img src="combined.svg" alt="All layers">']
-    for name in km.names:
-        body += [f'<h2>{_esc(name)}</h2>', f'<img src="{svg_name(name)}" alt="{_esc(name)} layer">']
+    for li in range(len(km.layers)):
+        body += [f'<h2>Layer {li}</h2>', f'<img src="{svg_name(li)}" alt="Layer {li}">']
     return ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
             f'<title>Corne keymap</title>\n<style>{PAGE_CSS}</style>\n</head>\n'
@@ -472,8 +472,8 @@ README_START, README_END = "<!-- keymap:start -->", "<!-- keymap:end -->"
 
 def readme_section(km: Keymap, docs: str = "docs") -> str:
     lines = [README_START, "", f"![All layers]({docs}/combined.svg)"]
-    for name in km.names:
-        lines += ["", f"### {name}", "", f"![{name} layer]({docs}/{svg_name(name)})"]
+    for li in range(len(km.layers)):
+        lines += ["", f"### Layer {li}", "", f"![Layer {li}]({docs}/{svg_name(li)})"]
     return "\n".join(lines + ["", README_END])
 
 

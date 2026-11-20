@@ -51,24 +51,24 @@ from pathlib import Path
 
 
 def top_words(path: Path, n: int = 10) -> list[tuple[str, int]]:
-    words = Path(path).read_text().lower().split()
-    counts = Counter(w.strip(".,!?;:\\"'()") for w in words)
-    return counts.most_common(n)
+	words = Path(path).read_text().lower().split()
+	counts = Counter(w.strip(".,!?;:\\"'()") for w in words)
+	return counts.most_common(n)
 
 
 if __name__ == "__main__":
-    for word, count in top_words("notes.txt"):
-        print(f"{word:>12} {count}")` },
+	for word, count in top_words("notes.txt"):
+		print(f"{word:>12} {count}")` },
   { group: "Code", title: "Python: dataclass", text: `@dataclass(frozen=True)
 class Point:
-    x: float
-    y: float
+	x: float
+	y: float
 
-    def __add__(self, other: "Point") -> "Point":
-        return Point(self.x + other.x, self.y + other.y)
+	def __add__(self, other: "Point") -> "Point":
+		return Point(self.x + other.x, self.y + other.y)
 
-    def dist(self, other: "Point") -> float:
-        return ((self.x - other.x) ** 2 + (self.y - other.y) ** 2) ** 0.5` },
+	def dist(self, other: "Point") -> float:
+		return ((self.x - other.x) ** 2 + (self.y - other.y) ** 2) ** 0.5` },
   { group: "Code", title: "JavaScript: fetch", text: `async function loadUsers(page = 1) {
   const res = await fetch(\`/api/users?page=\${page}&limit=20\`);
   if (!res.ok) throw new Error(\`HTTP \${res.status}\`);

@@ -42,6 +42,7 @@ select { font: inherit; padding: 6px 10px; border-radius: 8px; border: 1px solid
 .strip .done { color: var(--pg-ok); }
 .strip .err { color: var(--pg-bad); text-decoration: underline; }
 .strip .ws { color: var(--pg-faint); }
+.strip .tab { display: inline-block; width: 4ch; text-align: left; }
 .strip .cur { color: var(--pg-fg); background: var(--pg-cur-bg); border-radius: 4px; box-shadow: 0 2px 0 var(--pg-accent); }
 .strip .cur.shake { animation: flash .25s; }
 @keyframes flash { 0%, 60% { background: var(--pg-bad-bg); } }

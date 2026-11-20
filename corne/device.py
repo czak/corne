@@ -25,8 +25,11 @@ VIAL_DYNAMIC_ENTRY_OP = 0x0D
 DYNAMIC_VIAL_GET_NUMBER_OF_ENTRIES = 0x00
 DYNAMIC_VIAL_TAP_DANCE_GET = 0x01
 DYNAMIC_VIAL_TAP_DANCE_SET = 0x02
+DYNAMIC_VIAL_COMBO_GET = 0x03
+DYNAMIC_VIAL_COMBO_SET = 0x04
 
 TapDance = tuple[int, int, int, int, int]  # on_tap, on_hold, on_double_tap, on_tap_hold, custom_tapping_term
+Combo = tuple[int, int, int, int, int]     # 4 trigger keys (unused ones KC_NO), output
 
 
 class DeviceError(RuntimeError):
@@ -142,3 +145,18 @@ class Keyboard:
         r = self.xfer(VIAL, VIAL_DYNAMIC_ENTRY_OP, DYNAMIC_VIAL_TAP_DANCE_SET, i, struct.pack("<5H", *td))
         if r[0] != 0:
             raise DeviceError(f"tap dance {i}: set failed (status {r[0]})")
+
+    # ---- combos (Vial dynamic entries)
+    def combo_count(self) -> int:
+        return self.xfer(VIAL, VIAL_DYNAMIC_ENTRY_OP, DYNAMIC_VIAL_GET_NUMBER_OF_ENTRIES)[1]
+
+    def combo_get(self, i: int) -> Combo:
+        r = self.xfer(VIAL, VIAL_DYNAMIC_ENTRY_OP, DYNAMIC_VIAL_COMBO_GET, i)
+        if r[0] != 0:
+            raise DeviceError(f"combo {i}: get failed (status {r[0]})")
+        return struct.unpack("<5H", r[1:11])
+
+    def combo_set(self, i: int, combo: Combo):
+        r = self.xfer(VIAL, VIAL_DYNAMIC_ENTRY_OP, DYNAMIC_VIAL_COMBO_SET, i, struct.pack("<5H", *combo))
+        if r[0] != 0:
+            raise DeviceError(f"combo {i}: set failed (status {r[0]})")
