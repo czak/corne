@@ -33,11 +33,12 @@ an app has no such action the chord is bound by hand. The Kitty lines go in `~/.
 | Key | Sends | Chrome / Firefox | Kitty |
 | --- | --- | --- | --- |
 | E / R | Ctrl+PgUp / Ctrl+PgDn | previous / next tab | `map ctrl+page_up previous_tab`, `map ctrl+page_down next_tab` |
-| T | Alt+T | | `map alt+t new_tab_with_cwd` |
+| T | Ctrl+T | new tab | `map ctrl+t new_tab_with_cwd` |
 | D | Alt+D | | `map alt+d launch --location=split --cwd=current` |
 | F | Ctrl+F | find in page | `map ctrl+f show_scrollback` (scrollback in `less`; search with `/`) |
 | G | Ctrl+G | find next | not bound |
 | Z | F11 | fullscreen | `map f11 toggle_layout stack` (zoom the current pane) |
+| C / V | Alt+Left / Alt+Right | back / forward in history | `map alt+left previous_window`, `map alt+right next_window` (cycle panes) |
 | B | Ctrl+Shift+B | toggle bookmarks bar | `map ctrl+shift+b set_tab_title` (rename tab) |
 
 On layer 3 (window manager, Super held) the same Z key sends F, so Super+F is fullscreen in sway.

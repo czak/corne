@@ -4,16 +4,16 @@ const KEYMAP = {
     "\t": {"tap": "3,5", "hold": [], "layer": null, "altgr": false, "shift": false, "held": false},
     "\n": {"tap": "3,6", "hold": [], "layer": null, "altgr": false, "shift": false, "held": false},
     " ": {"tap": "3,4", "hold": [], "layer": null, "altgr": false, "shift": false, "held": false},
-    "!": {"tap": "2,2", "hold": ["3,7"], "layer": 1, "altgr": false, "shift": false, "held": true},
+    "!": {"tap": "0,7", "hold": ["3,4"], "layer": 2, "altgr": false, "shift": false, "held": false},
     "\"": {"tap": "1,11", "hold": ["2,0"], "layer": null, "altgr": false, "shift": true, "held": false},
     "#": {"tap": "2,4", "hold": ["3,7"], "layer": 1, "altgr": false, "shift": false, "held": true},
     "$": {"tap": "1,2", "hold": ["3,7"], "layer": 1, "altgr": false, "shift": false, "held": true},
-    "%": {"tap": "1,3", "hold": ["3,7"], "layer": 1, "altgr": false, "shift": false, "held": true},
+    "%": {"tap": "0,11", "hold": ["3,4"], "layer": 2, "altgr": false, "shift": false, "held": false},
     "&": {"tap": "1,7", "hold": ["3,4"], "layer": 2, "altgr": false, "shift": false, "held": false},
     "'": {"tap": "1,11", "hold": [], "layer": null, "altgr": false, "shift": false, "held": false},
     "(": {"tap": "1,8", "hold": ["3,4"], "layer": 2, "altgr": false, "shift": false, "held": false},
     ")": {"tap": "1,9", "hold": ["3,4"], "layer": 2, "altgr": false, "shift": false, "held": false},
-    "*": {"tap": "0,3", "hold": ["3,7"], "layer": 1, "altgr": false, "shift": false, "held": true},
+    "*": {"tap": "0,10", "hold": ["3,4"], "layer": 2, "altgr": false, "shift": false, "held": false},
     "+": {"tap": "0,5", "hold": ["3,7"], "layer": 1, "altgr": false, "shift": false, "held": false},
     ",": {"tap": "2,9", "hold": [], "layer": null, "altgr": false, "shift": false, "held": false},
     "-": {"tap": "1,1", "hold": ["3,7"], "layer": 1, "altgr": false, "shift": false, "held": false},
@@ -63,7 +63,7 @@ const KEYMAP = {
     "Y": {"tap": "0,7", "hold": ["2,0"], "layer": null, "altgr": false, "shift": true, "held": false},
     "Z": {"tap": "2,1", "hold": ["3,11"], "layer": null, "altgr": false, "shift": true, "held": false},
     "[": {"tap": "2,8", "hold": ["3,4"], "layer": 2, "altgr": false, "shift": false, "held": false},
-    "\\": {"tap": "1,10", "hold": ["3,4"], "layer": 2, "altgr": false, "shift": false, "held": false},
+    "\\": {"tap": "3,10", "hold": ["3,4"], "layer": 2, "altgr": false, "shift": false, "held": false},
     "]": {"tap": "2,9", "hold": ["3,4"], "layer": 2, "altgr": false, "shift": false, "held": false},
     "^": {"tap": "1,4", "hold": ["3,7"], "layer": 1, "altgr": false, "shift": false, "held": true},
     "_": {"tap": "0,1", "hold": ["3,7"], "layer": 1, "altgr": false, "shift": false, "held": false},
@@ -95,9 +95,9 @@ const KEYMAP = {
     "y": {"tap": "0,7", "hold": [], "layer": null, "altgr": false, "shift": false, "held": false},
     "z": {"tap": "2,1", "hold": [], "layer": null, "altgr": false, "shift": false, "held": false},
     "{": {"tap": "0,8", "hold": ["3,4"], "layer": 2, "altgr": false, "shift": false, "held": false},
-    "|": {"tap": "0,10", "hold": ["3,4"], "layer": 2, "altgr": false, "shift": false, "held": false},
+    "|": {"tap": "1,10", "hold": ["3,4"], "layer": 2, "altgr": false, "shift": false, "held": false},
     "}": {"tap": "0,9", "hold": ["3,4"], "layer": 2, "altgr": false, "shift": false, "held": false},
-    "~": {"tap": "0,11", "hold": ["3,4"], "layer": 2, "altgr": false, "shift": false, "held": false},
+    "~": {"tap": "3,9", "hold": ["3,4"], "layer": 2, "altgr": false, "shift": false, "held": false},
     "Ó": {"tap": "0,10", "hold": ["2,11", "2,0"], "layer": null, "altgr": true, "shift": true, "held": false},
     "ó": {"tap": "0,10", "hold": ["2,11"], "layer": null, "altgr": true, "shift": false, "held": false},
     "Ą": {"tap": "1,1", "hold": ["2,11", "3,11"], "layer": null, "altgr": true, "shift": true, "held": false},
@@ -124,14 +124,14 @@ const KEYMAP = {
     "0,3": "E",
     "0,4": "R",
     "0,5": "T",
-    "3,0": "Print\nScreen",
+    "3,0": "Vol +",
     "1,0": "OSM LCtl",
     "1,1": "A",
     "1,2": "S",
     "1,3": "D",
     "1,4": "F",
     "1,5": "G",
-    "3,1": "Shift+Print\nScreen",
+    "3,1": "Vol -",
     "2,0": "OSM LSft",
     "2,1": "Z",
     "2,2": "X",
@@ -148,7 +148,7 @@ const KEYMAP = {
     "0,10": "O",
     "0,11": "P",
     "3,9": ";",
-    "1,6": "",
+    "1,6": "Print\nScreen",
     "1,7": "H",
     "1,8": "J",
     "1,9": "K",
@@ -249,7 +249,6 @@ text { font-family: system-ui, sans-serif; }
   <symbol id="icon-delete" viewBox="0 0 24 24"><path d="M3 4.35 16 4.35 16 5.65 3 5.65zM16.49 4.58 22.49 11.58 21.51 12.42 15.51 5.42zM22.49 12.42 16.49 19.42 15.51 18.58 21.51 11.58zM16 19.65 3 19.65 3 18.35 16 18.35zM2.35 19 2.35 5 3.65 5 3.65 19zM7.96 9.04 12.96 14.04 12.04 14.96 7.04 9.96zM12.96 9.96 7.96 14.96 7.04 14.04 12.04 9.04zM2.35 5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM2.35 19a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM6.85 9.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM6.85 14.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM11.85 9.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM11.85 14.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM15.35 5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM15.35 19a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM21.35 12a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0z"/></symbol>
   <symbol id="icon-enter" viewBox="0 0 24 24"><path d="M20.65 5 20.65 15 19.35 15 19.35 5zM20 15.65 4 15.65 4 14.35 20 14.35zM8.96 10.96 4.46 15.46 3.54 14.54 8.04 10.04zM4.46 14.54 8.96 19.04 8.04 19.96 3.54 15.46zM3.35 15a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM7.85 10.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM7.85 19.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM19.35 5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM19.35 15a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0z"/></symbol>
   <symbol id="icon-tab" viewBox="0 0 24 24"><path d="M3 11.35 18 11.35 18 12.65 3 12.65zM13.46 6.54 18.46 11.54 17.54 12.46 12.54 7.46zM18.46 12.46 13.46 17.46 12.54 16.54 17.54 11.54zM21.65 6 21.65 18 20.35 18 20.35 6zM2.35 12a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM12.35 7a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM12.35 17a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM17.35 12a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM20.35 6a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM20.35 18a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0z"/></symbol>
-  <symbol id="icon-shift" viewBox="0 0 24 24"><path d="M12.46 2.54 21.46 11.54 20.54 12.46 11.54 3.46zM21 12.65 16 12.65 16 11.35 21 11.35zM16.65 12 16.65 20 15.35 20 15.35 12zM16 20.65 8 20.65 8 19.35 16 19.35zM7.35 20 7.35 12 8.65 12 8.65 20zM8 12.65 3 12.65 3 11.35 8 11.35zM2.54 11.54 11.54 2.54 12.46 3.46 3.46 12.46zM2.35 12a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM7.35 12a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM7.35 20a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM11.35 3a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM15.35 12a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM15.35 20a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM20.35 12a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0z"/></symbol>
   <symbol id="icon-camera" viewBox="0 0 24 24"><path d="M3 7.35 7 7.35 7 8.65 3 8.65zM6.46 7.64 8.46 4.64 9.54 5.36 7.54 8.36zM9 4.35 15 4.35 15 5.65 9 5.65zM15.54 4.64 17.54 7.64 16.46 8.36 14.46 5.36zM17 7.35 21 7.35 21 8.65 17 8.65zM21.65 8 21.65 19 20.35 19 20.35 8zM21 19.65 3 19.65 3 18.35 21 18.35zM2.35 19 2.35 8 3.65 8 3.65 19zM12.1 8.86 13.18 9.03 12.98 10.31 11.9 10.14zM13.38 9.09 14.36 9.59 13.76 10.75 12.78 10.25zM14.52 9.71 15.29 10.48 14.37 11.4 13.6 10.63zM15.41 10.64 15.91 11.62 14.75 12.22 14.25 11.24zM15.97 11.82 16.14 12.9 14.86 13.1 14.69 12.02zM16.14 13.1 15.97 14.18 14.69 13.98 14.86 12.9zM15.91 14.38 15.41 15.36 14.25 14.76 14.75 13.78zM15.29 15.52 14.52 16.29 13.6 15.37 14.37 14.6zM14.36 16.41 13.38 16.91 12.78 15.75 13.76 15.25zM13.18 16.97 12.1 17.14 11.9 15.86 12.98 15.69zM11.9 17.14 10.82 16.97 11.02 15.69 12.1 15.86zM10.62 16.91 9.64 16.41 10.24 15.25 11.22 15.75zM9.48 16.29 8.71 15.52 9.63 14.6 10.4 15.37zM8.59 15.36 8.09 14.38 9.25 13.78 9.75 14.76zM8.03 14.18 7.86 13.1 9.14 12.9 9.31 13.98zM7.86 12.9 8.03 11.82 9.31 12.02 9.14 13.1zM8.09 11.62 8.59 10.64 9.75 11.24 9.25 12.22zM8.71 10.48 9.48 9.71 10.4 10.63 9.63 11.4zM9.64 9.59 10.62 9.09 11.22 10.25 10.24 10.75zM10.82 9.03 11.9 8.86 12.1 10.14 11.02 10.31zM2.35 8a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM2.35 19a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM6.35 8a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM7.85 13a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM8.02 11.92a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM8.02 14.08a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM8.35 5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM8.52 10.94a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM8.52 15.06a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM9.29 10.17a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM9.29 15.83a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM10.27 9.67a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM10.27 16.33a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM11.35 9.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM11.35 16.5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM12.43 9.67a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM12.43 16.33a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM13.41 10.17a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM13.41 15.83a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM14.18 10.94a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM14.18 15.06a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM14.35 5a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM14.68 11.92a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM14.68 14.08a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM14.85 13a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM16.35 8a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM20.35 8a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0zM20.35 19a0.65 0.65 0 1 1 1.3 0a0.65 0.65 0 1 1 -1.3 0z"/></symbol>
 </defs>
 <g class="key key" data-pos="0,0" transform="translate(31 83.5)">
@@ -288,13 +287,13 @@ text { font-family: system-ui, sans-serif; }
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">T</text>
   <text x="16.5" y="9.5" class="sub l1" font-size="7">+</text>
-  <text x="41.5" y="9.5" class="sub l2" font-size="7">Alt+T</text>
+  <text x="41.5" y="9.5" class="sub l2" font-size="6">Ctrl+T</text>
   <text x="29" y="28.2" class="lay l1" font-size="15">+</text>
-  <text x="29" y="28.2" class="lay l2" font-size="15">Alt+T</text>
+  <text x="29" y="28.2" class="lay l2" font-size="12.6">Ctrl+T</text>
 </g>
 <g class="key key" data-pos="3,0" transform="translate(391 106)">
   <use href="#key-58x58"/>
-  <use href="#icon-camera" class="icon tap" x="19.2" y="13.2" width="19.5" height="19.5"/>
+  <text x="29" y="27.6" class="tap" font-size="12.4">Vol +</text>
   <text x="16.5" y="9.5" class="sub l2" font-size="6">C_S(EQUAL)</text>
   <text x="29" y="28.2" class="lay l2" font-size="6.3">Ctrl+Shift+=</text>
 </g>
@@ -347,8 +346,7 @@ text { font-family: system-ui, sans-serif; }
 </g>
 <g class="key key" data-pos="3,1" transform="translate(391 166)">
   <use href="#key-58x58"/>
-  <text x="29" y="27.6" class="tap" font-size="6">Shift+Print
-Screen</text>
+  <text x="29" y="27.6" class="tap" font-size="12.4">Vol -</text>
   <text x="16.5" y="9.5" class="sub l2" font-size="6">Ctrl+-</text>
   <text x="29" y="28.2" class="lay l2" font-size="12.6">Ctrl+-</text>
 </g>
@@ -378,20 +376,20 @@ Screen</text>
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">C</text>
   <text x="16.5" y="9.5" class="sub l1" font-size="7">2</text>
-  <text x="41.5" y="9.5" class="sub l2" font-size="6">C_S(LBRACKET)</text>
+  <text x="41.5" y="9.5" class="sub l2" font-size="6">LALT(LEFT)</text>
   <text x="16.5" y="41.5" class="sub l3" font-size="7">2</text>
   <text x="29" y="28.2" class="lay l1" font-size="15">2</text>
-  <text x="29" y="28.2" class="lay l2" font-size="6.3">Ctrl+Shift+[</text>
+  <text x="29" y="28.2" class="lay l2" font-size="9.5">Alt+Left</text>
   <text x="29" y="28.2" class="lay l3" font-size="15">2</text>
 </g>
 <g class="key key" data-pos="2,4" transform="translate(271 188.5)">
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">V</text>
   <text x="16.5" y="9.5" class="sub l1" font-size="7">3</text>
-  <text x="41.5" y="9.5" class="sub l2" font-size="6">C_S(RBRACKET)</text>
+  <text x="41.5" y="9.5" class="sub l2" font-size="6">LALT(RIGHT)</text>
   <text x="16.5" y="41.5" class="sub l3" font-size="7">3</text>
   <text x="29" y="28.2" class="lay l1" font-size="15">3</text>
-  <text x="29" y="28.2" class="lay l2" font-size="6.3">Ctrl+Shift+]</text>
+  <text x="29" y="28.2" class="lay l2" font-size="8.4">Alt+Right</text>
   <text x="29" y="28.2" class="lay l3" font-size="15">3</text>
 </g>
 <g class="key key" data-pos="2,5" transform="translate(331 196)">
@@ -424,6 +422,8 @@ Screen</text>
 <g class="key key" data-pos="0,7" transform="translate(601 76)">
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">Y</text>
+  <text x="16.5" y="9.5" class="sub l2" font-size="7">!</text>
+  <text x="29" y="28.2" class="lay l2" font-size="15">!</text>
 </g>
 <g class="key key" data-pos="0,8" transform="translate(661 68.5)">
   <use href="#key-58x58"/>
@@ -448,29 +448,32 @@ Screen</text>
 <g class="key key" data-pos="0,10" transform="translate(781 68.5)">
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">O</text>
-  <text x="16.5" y="9.5" class="sub l2" font-size="7">|</text>
+  <text x="16.5" y="9.5" class="sub l2" font-size="7">*</text>
   <text x="41.5" y="9.5" class="sub l3" font-size="7">9</text>
   <text x="16.5" y="41.5" class="sub l4" font-size="7">F9</text>
-  <text x="29" y="28.2" class="lay l2" font-size="15">|</text>
+  <text x="29" y="28.2" class="lay l2" font-size="15">*</text>
   <text x="29" y="28.2" class="lay l3" font-size="15">9</text>
   <text x="29" y="28.2" class="lay l4" font-size="15">F9</text>
 </g>
 <g class="key key" data-pos="0,11" transform="translate(841 83.5)">
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">P</text>
-  <text x="16.5" y="9.5" class="sub l2" font-size="7">~</text>
+  <text x="16.5" y="9.5" class="sub l2" font-size="7">%</text>
   <text x="41.5" y="9.5" class="sub l3" font-size="7">0</text>
   <text x="16.5" y="41.5" class="sub l4" font-size="7">F10</text>
-  <text x="29" y="28.2" class="lay l2" font-size="15">~</text>
+  <text x="29" y="28.2" class="lay l2" font-size="15">%</text>
   <text x="29" y="28.2" class="lay l3" font-size="15">0</text>
   <text x="29" y="28.2" class="lay l4" font-size="15">F10</text>
 </g>
 <g class="key key" data-pos="3,9" transform="translate(901 83.5)">
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">;</text>
+  <text x="16.5" y="9.5" class="sub l2" font-size="7">~</text>
+  <text x="29" y="28.2" class="lay l2" font-size="15">~</text>
 </g>
-<g class="key none" data-pos="1,6" transform="translate(541 166)">
+<g class="key key" data-pos="1,6" transform="translate(541 166)">
   <use href="#key-58x58"/>
+  <use href="#icon-camera" class="icon tap" x="19.2" y="13.2" width="19.5" height="19.5"/>
 </g>
 <g class="key key" data-pos="1,7" transform="translate(601 136)">
   <use href="#key-58x58"/>
@@ -510,11 +513,11 @@ Screen</text>
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">L</text>
   <text x="16.5" y="9.5" class="sub l1" font-size="7">Right</text>
-  <text x="41.5" y="9.5" class="sub l2" font-size="7">\\</text>
+  <text x="41.5" y="9.5" class="sub l2" font-size="7">|</text>
   <text x="16.5" y="41.5" class="sub l3" font-size="7">Right</text>
   <text x="41.5" y="41.5" class="sub l4" font-size="7">F6</text>
   <text x="29" y="28.2" class="lay l1" font-size="15">Right</text>
-  <text x="29" y="28.2" class="lay l2" font-size="15">\\</text>
+  <text x="29" y="28.2" class="lay l2" font-size="15">|</text>
   <text x="29" y="28.2" class="lay l3" font-size="15">Right</text>
   <text x="29" y="28.2" class="lay l4" font-size="15">F6</text>
 </g>
@@ -530,6 +533,8 @@ Screen</text>
   <use href="#key-58x58"/>
   <text x="29" y="21.2" class="tap" font-size="9">OSM</text>
   <text x="29" y="31.1" class="tap" font-size="9">RCtl</text>
+  <text x="16.5" y="9.5" class="sub l2" font-size="7">\\</text>
+  <text x="29" y="28.2" class="lay l2" font-size="15">\\</text>
 </g>
 <g class="key key" data-pos="2,7" transform="translate(601 196)">
   <use href="#key-58x58"/>
@@ -565,20 +570,23 @@ Screen</text>
   <use href="#key-58x58"/>
   <text x="29" y="27.6" class="tap" font-size="13">.</text>
   <text x="16.5" y="9.5" class="sub l1" font-size="7">End</text>
-  <text x="41.5" y="9.5" class="sub l4" font-size="7">F3</text>
+  <text x="41.5" y="9.5" class="sub l2" font-size="7">&lt;</text>
+  <text x="16.5" y="41.5" class="sub l4" font-size="7">F3</text>
   <text x="29" y="28.2" class="lay l1" font-size="15">End</text>
+  <text x="29" y="28.2" class="lay l2" font-size="15">&lt;</text>
   <text x="29" y="28.2" class="lay l4" font-size="15">F3</text>
 </g>
 <g class="key key" data-pos="2,11" transform="translate(841 203.5)">
   <use href="#key-58x58"/>
   <text x="29" y="54" class="hold" font-size="9">AltGr</text>
   <text x="29" y="27.6" class="tap" font-size="13">/</text>
-  <text x="16.5" y="9.5" class="sub l4" font-size="7">F12</text>
+  <text x="16.5" y="9.5" class="sub l2" font-size="7">&gt;</text>
+  <text x="41.5" y="9.5" class="sub l4" font-size="7">F12</text>
+  <text x="29" y="28.2" class="lay l2" font-size="15">&gt;</text>
   <text x="29" y="28.2" class="lay l4" font-size="15">F12</text>
 </g>
 <g class="key key" data-pos="3,11" transform="translate(901 203.5)">
   <use href="#key-58x58"/>
-  <use href="#icon-shift" class="icon hold" x="22.2" y="44.1" width="13.5" height="13.5"/>
   <text x="29" y="21.2" class="tap" font-size="9">OSM</text>
   <text x="29" y="31.1" class="tap" font-size="9">LSft</text>
 </g>

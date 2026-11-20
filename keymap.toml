@@ -47,15 +47,15 @@ swap_rctl_rgui = false
 # The firmware has a fixed 8 layers and push needs all of them: keep unused ones as all-NO layers.
 [[layer]]
 left = [
-  ["ESCAPE", "Q", "W", "E", "R", "T", "PSCREEN"],
-  ["OSM(MOD_LCTL)", "A", "S", "D", "F", "G", "LSFT(PSCREEN)"],
+  ["ESCAPE", "Q", "W", "E", "R", "T", "VOLU"],
+  ["OSM(MOD_LCTL)", "A", "S", "D", "F", "G", "VOLD"],
   ["OSM(MOD_LSFT)", "LALT_T(Z)", "X", "C", "V", "B"],
   ["LM(3,MOD_LGUI)", "LT(2,SPACE)", "TAB"],
 ]
 right = [
   ["F14", "Y", "U", "I", "O", "P", "SCOLON"],
-  ["NO", "H", "J", "K", "L", "QUOTE", "OSM(MOD_RCTL)"],
-  ["N", "M", "COMMA", "DOT", "RALT_T(SLASH)", "TD(10)"],
+  ["PSCREEN", "H", "J", "K", "L", "QUOTE", "OSM(MOD_RCTL)"],
+  ["N", "M", "COMMA", "DOT", "RALT_T(SLASH)", "OSM(MOD_LSFT)"],
   ["ENTER", "LT(1,BSPACE)", "LT(4,DELETE)"],
 ]
 
@@ -77,13 +77,13 @@ right = [
 left = [
   ["TRNS", "TRNS", "TRNS", "LCTL(PGUP)", "LCTL(PGDOWN)", "LALT(T)", "C_S(EQUAL)"],
   ["TRNS", "TRNS", "TRNS", "LALT(D)", "LCTL(F)", "LCTL(G)", "LCTL(MINUS)"],
-  ["TRNS", "F11", "TRNS", "C_S(LBRACKET)", "C_S(RBRACKET)", "C_S(B)"],
+  ["TRNS", "F11", "TRNS", "LALT(LEFT)", "LALT(RIGHT)", "C_S(B)"],
   ["TRNS", "TRNS", "TRNS"],
 ]
 right = [
-  ["TRNS", "TRNS", "LCBR", "RCBR", "PIPE", "TILD", "TRNS"],
-  ["TRNS", "AMPR", "LPRN", "RPRN", "BSLASH", "GRAVE", "TRNS"],
-  ["TRNS", "LBRACKET", "RBRACKET", "TRNS", "TRNS", "TRNS"],
+  ["TRNS", "EXLM", "LCBR", "RCBR", "ASTR", "PERC", "TILD"],
+  ["TRNS", "AMPR", "LPRN", "RPRN", "PIPE", "GRAVE", "BSLASH"],
+  ["TRNS", "LBRACKET", "RBRACKET", "LT", "GT", "TRNS"],
   ["TRNS", "TRNS", "TRNS"],
 ]
 
